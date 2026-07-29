@@ -1,26 +1,21 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { defineParticleOptions } from '../three/particleOptions'
-import { HERO_MODEL_URLS } from '../three/heroModels'
-import { createSpiralGalaxyShape } from '../three/particles/createShapes'
 import HeroHeader from './HeroHeader.vue'
 import { defineTextOptions } from '../text-typing/textOptions'
 import {
-  getHeroStagePresentation,
-  HERO_OPENING_STAGE_NAME,
-} from '../hero/stagePresentation'
+  createInitialHeroMorph,
+  getHeroStage,
+  HERO_MODEL_URLS,
+  HERO_STAGES,
+} from '../hero/stages'
 import type { MorphEvent } from '../three/types'
-
-// Change animation, renderer, camera, model, and visual values here.
-// This same object is available to every other element in the hero.
 
 const MORPH_DURATION = 1.8
 const HOLD_DURATION = 1.1
 const PARTICLE_COUNT = 72_000
-const openingShape = createSpiralGalaxyShape(PARTICLE_COUNT)
 
 const particleOptions = reactive(defineParticleOptions({
-  // A visual journey from the world around us to the structures inside life.
   modelUrls: [...HERO_MODEL_URLS],
   morphDuration: MORPH_DURATION,
   holdDuration: HOLD_DURATION,
@@ -33,24 +28,21 @@ const particleOptions = reactive(defineParticleOptions({
 
 const textOptions = defineTextOptions()
 
-const headlineStage = ref(HERO_OPENING_STAGE_NAME)
-const morph = ref<MorphEvent>({
-  from: 'spiral-galaxy',
-  to: 'EarthContinents.glb',
-  progress: 0,
-  easedProgress: 0,
-  elapsed: 0,
-  duration: MORPH_DURATION,
-})
+const initialMorph = createInitialHeroMorph(MORPH_DURATION)
+const headlineStage = ref(initialMorph.from)
+const morph = ref<MorphEvent>(initialMorph)
 const headlineText = computed(() => (
-  getHeroStagePresentation(headlineStage.value).headline
+  getHeroStage(headlineStage.value).headline
 ))
-const morphFrom = computed(() => getHeroStagePresentation(morph.value.from).label)
-const morphTo = computed(() => getHeroStagePresentation(morph.value.to).label)
+const morphFrom = computed(() => getHeroStage(morph.value.from).label)
+const morphTo = computed(() => getHeroStage(morph.value.to).label)
 const morphPercent = computed(() => Math.round(morph.value.progress * 100))
 const morphProgressStyle = computed(() => ({
   transform: `scaleX(${morph.value.easedProgress})`,
 }))
+const firstStage = HERO_STAGES[0]
+const lastStage = HERO_STAGES.at(-1) ?? firstStage
+const heroAriaLabel = `Particle forms morphing from ${firstStage.label} to ${lastStage.label}`
 
 function trackMorph(event: MorphEvent) {
   morph.value = event
@@ -60,7 +52,7 @@ function trackMorph(event: MorphEvent) {
 </script>
 
 <template>
-  <section class="hero" aria-label="Particle forms morphing from galaxies to a collision">
+  <section class="hero" :aria-label="heroAriaLabel">
     <HeroHeader
       class="hero__header"
       :text="headlineText"
@@ -69,7 +61,6 @@ function trackMorph(event: MorphEvent) {
     <ParticleCanvas
       class="hero__canvas"
       :options="particleOptions"
-      :opening-shape="openingShape"
       @morph-progress="trackMorph"
     />
     <div

@@ -7,7 +7,6 @@ import type { MorphEvent, ParticleOptions, ParticleOptionsInput, ParticleShape }
 const props = withDefaults(
   defineProps<{
     options?: ParticleOptionsInput
-    openingShape?: ParticleShape
   }>(),
   {
     options: () => ({}),
@@ -45,8 +44,7 @@ async function loadModels(options: ParticleOptions) {
   try {
     const modelShapes = await targetExperience.loadGltfShapes(options.modelUrls, options.model)
     if (!isCurrentModelLoad(targetExperience, currentCreationId, currentModelLoadId)) return
-    const shapes = props.openingShape ? [props.openingShape, ...modelShapes] : modelShapes
-    targetExperience.transitionToShapeSequence(shapes)
+    targetExperience.transitionToShapeSequence(modelShapes)
     targetExperience.start()
   } catch (error) {
     if (!isCurrentModelLoad(targetExperience, currentCreationId, currentModelLoadId)) return
@@ -87,24 +85,6 @@ async function createExperience(options: ParticleOptions): Promise<void> {
     onMorphComplete: (event) => emit('morph-complete', event),
   })
   experience = nextExperience
-
-  if (props.openingShape) {
-    nextExperience.initializeShapeSequence([props.openingShape])
-    nextExperience.start()
-
-    if (options.modelUrls.length > 0) {
-      const currentModelLoadId = ++modelLoadId
-      void loadRemainingInitialModels(
-        nextExperience,
-        props.openingShape,
-        options.modelUrls,
-        options,
-        currentCreationId,
-        currentModelLoadId,
-      )
-    }
-    return
-  }
 
   if (options.modelUrls.length === 0) {
     nextExperience.start()
@@ -169,11 +149,6 @@ watch(
     }
   },
   { deep: true },
-)
-
-watch(
-  () => props.openingShape,
-  () => void createExperience(activeOptions),
 )
 
 onBeforeUnmount(() => {

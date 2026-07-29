@@ -1,44 +1,66 @@
 import fs from 'node:fs'
-import { HERO_MODEL_FILENAMES } from '../app/three/heroModels.ts'
-import { createSpiralGalaxyShape } from '../app/three/particles/createShapes.ts'
 import {
-  HERO_OPENING_STAGE_NAME,
-  HERO_STAGE_PRESENTATION,
-} from '../app/hero/stagePresentation.ts'
+  createInitialHeroMorph,
+  getHeroStage,
+  HERO_MODEL_FILENAMES,
+  HERO_MODEL_URLS,
+  HERO_STAGES,
+} from '../app/hero/stages.ts'
 
-const particleCount = 72_000
-const openingShape = createSpiralGalaxyShape(particleCount)
+const morphDuration = 1.8
+const [firstStage, secondStage] = HERO_STAGES
 const heroSource = fs.readFileSync(new URL('../app/components/Hero.vue', import.meta.url), 'utf8')
 const heroHeaderSource = fs.readFileSync(new URL('../app/components/HeroHeader.vue', import.meta.url), 'utf8')
+const particleCanvasSource = fs.readFileSync(
+  new URL('../app/components/ParticleCanvas.client.vue', import.meta.url),
+  'utf8',
+)
 
-if (openingShape.name !== 'spiral-galaxy') {
-  throw new Error(`Expected the procedural spiral galaxy to open the hero, received ${openingShape.name}.`)
+if (!firstStage || !secondStage) {
+  throw new Error('The hero stage directory must contain at least two stages.')
 }
 
-if (openingShape.positions.length !== particleCount * 3) {
-  throw new Error('The procedural opening shape must fill the complete particle budget.')
+const initialMorph = createInitialHeroMorph(morphDuration)
+if (initialMorph.from !== firstStage.filename || initialMorph.to !== secondStage.filename) {
+  throw new Error('The initial hero flow must follow the stage directory order.')
 }
 
-if (HERO_MODEL_FILENAMES.includes('SolarSystem.glb') || HERO_MODEL_FILENAMES.includes('SpiralGalaxy.glb')) {
-  throw new Error('Mesh-based Solar System and spiral galaxy models must remain outside the active sequence.')
+for (const [index, stage] of HERO_STAGES.entries()) {
+  if (!stage.filename || !stage.label || !stage.headline) {
+    throw new Error(`Hero stage ${index} must define a filename, label, and headline.`)
+  }
+  if (HERO_MODEL_URLS[index] !== `/models/${stage.filename}`) {
+    throw new Error(`Hero model URL ${index} must be derived from its stage filename.`)
+  }
+  if (HERO_MODEL_FILENAMES[index] !== stage.filename) {
+    throw new Error(`Hero model filename ${index} must follow the stage directory order.`)
+  }
+  if (getHeroStage(stage.filename) !== stage) {
+    throw new Error(`Hero stage lookup must return the directory entry for ${stage.filename}.`)
+  }
+
+  const modelUrl = new URL(`../public/models/${stage.filename}`, import.meta.url)
+  if (!fs.existsSync(modelUrl)) throw new Error(`Hero model is missing: ${stage.filename}`)
 }
 
-for (const filename of HERO_MODEL_FILENAMES) {
-  const modelUrl = new URL(`../public/models/${filename}`, import.meta.url)
-  if (!fs.existsSync(modelUrl)) throw new Error(`Hero model is missing: ${filename}`)
+if (new Set(HERO_MODEL_FILENAMES).size !== HERO_MODEL_FILENAMES.length) {
+  throw new Error('Every hero stage filename must be unique.')
+}
+
+if (heroSource.includes('openingShape')
+  || heroSource.includes('opening-shape')
+  || particleCanvasSource.includes('openingShape')) {
+  throw new Error('The canvas must not have a separately configured opening shape.')
+}
+
+if (HERO_STAGES.some((stage) => heroSource.includes(stage.filename))) {
+  throw new Error('Hero.vue must derive stage filenames from the stage directory.')
 }
 
 if (!heroSource.includes('@morph-progress="trackMorph"')
   || !heroSource.includes('readout--bottom-right')
   || !heroSource.includes('hero__morph-progress')) {
   throw new Error('The hero must show the bottom-right model transition progress readout.')
-}
-
-for (const stageName of [HERO_OPENING_STAGE_NAME, ...HERO_MODEL_FILENAMES]) {
-  const presentation = HERO_STAGE_PRESENTATION[stageName]
-  if (!presentation.label || !presentation.headline) {
-    throw new Error(`The hero is missing presentation text for ${stageName}.`)
-  }
 }
 
 if (!heroSource.includes(':text="headlineText"')
@@ -50,4 +72,4 @@ if (!heroSource.includes(':text="headlineText"')
   throw new Error('The hero headline must type stage-synchronized text with a blinking cursor.')
 }
 
-console.log(`opening hero shape: ${openingShape.name}`)
+console.log(`opening hero stage: ${firstStage.filename}`)

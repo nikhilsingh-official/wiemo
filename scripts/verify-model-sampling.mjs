@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import { Box3, BufferGeometry, Float32BufferAttribute, Mesh, Vector3 } from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { GltfParticleLoader } from '../app/three/assets/GltfParticleLoader.ts'
-import { HERO_MODEL_FILENAMES } from '../app/three/heroModels.ts'
+import { HERO_MODEL_FILENAMES } from '../app/hero/stages.ts'
 import { GpuParticleMorph } from '../app/three/particles/GpuParticleMorph.ts'
 import { installNodeGltfShims } from './lib/install-node-gltf-shims.mjs'
 
