@@ -6,8 +6,14 @@ their original materials and textures are not rendered.
 
 ## Active hero sequence
 
-The opening spiral galaxy is generated directly as a particle field by
-`createSpiralGalaxyShape`; it does not load a 3D model.
+The active order and presentation metadata are defined in `app/hero/stages.ts`.
+
+### SpiralGalaxy.glb
+
+- **Model:** Project-authored spiral galaxy with two arms and a galactic core
+- **Generator:** Three.js `GLTFExporter` r185
+- **License:** Project-owned original asset; all rights reserved
+- **Usage:** Particle-sampled opening stage of the hero sequence
 
 ### EarthContinents.glb
 
@@ -70,14 +76,6 @@ The opening spiral galaxy is generated directly as a particle field by
   `scripts/assets/LowPolyHumanSource.glb` and `LowPolyDnaSource.glb`.
 - Both are licensed under Creative Commons Attribution 3.0 Unported and were
   downloaded from Poly Pizza on 2026-07-29 and 2026-07-28 respectively.
-
-### SpiralGalaxy.glb
-
-- **Model:** Project-authored spiral galaxy with two arms and a galactic core
-- **Generator:** Three.js `GLTFExporter` r185
-- **License:** Project-owned original asset; all rights reserved
-- **Status:** Retained for reference; unsuitable for particle sampling because its
-  separate sphere meshes produce a fragmented, bead-like silhouette
 
 ### SolarSystem.glb
 

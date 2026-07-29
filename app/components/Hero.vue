@@ -4,8 +4,8 @@ import { defineParticleOptions } from '../three/particleOptions'
 import HeroHeader from './HeroHeader.vue'
 import { defineTextOptions } from '../text-typing/textOptions'
 import {
-  createInitialHeroMorph,
   getHeroStage,
+  getInitialHeroStageTransition,
   HERO_MODEL_URLS,
   HERO_STAGES,
 } from '../hero/stages'
@@ -28,7 +28,15 @@ const particleOptions = reactive(defineParticleOptions({
 
 const textOptions = defineTextOptions()
 
-const initialMorph = createInitialHeroMorph(MORPH_DURATION)
+const initialTransition = getInitialHeroStageTransition()
+const initialMorph: MorphEvent = {
+  from: initialTransition.from.filename,
+  to: initialTransition.to.filename,
+  progress: 0,
+  easedProgress: 0,
+  elapsed: 0,
+  duration: MORPH_DURATION,
+}
 const headlineStage = ref(initialMorph.from)
 const morph = ref<MorphEvent>(initialMorph)
 const headlineText = computed(() => (

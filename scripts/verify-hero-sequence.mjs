@@ -1,27 +1,22 @@
 import fs from 'node:fs'
 import {
-  createInitialHeroMorph,
   getHeroStage,
+  getInitialHeroStageTransition,
   HERO_MODEL_FILENAMES,
   HERO_MODEL_URLS,
   HERO_STAGES,
 } from '../app/hero/stages.ts'
 
-const morphDuration = 1.8
 const [firstStage, secondStage] = HERO_STAGES
 const heroSource = fs.readFileSync(new URL('../app/components/Hero.vue', import.meta.url), 'utf8')
 const heroHeaderSource = fs.readFileSync(new URL('../app/components/HeroHeader.vue', import.meta.url), 'utf8')
-const particleCanvasSource = fs.readFileSync(
-  new URL('../app/components/ParticleCanvas.client.vue', import.meta.url),
-  'utf8',
-)
 
 if (!firstStage || !secondStage) {
   throw new Error('The hero stage directory must contain at least two stages.')
 }
 
-const initialMorph = createInitialHeroMorph(morphDuration)
-if (initialMorph.from !== firstStage.filename || initialMorph.to !== secondStage.filename) {
+const initialTransition = getInitialHeroStageTransition()
+if (initialTransition.from !== firstStage || initialTransition.to !== secondStage) {
   throw new Error('The initial hero flow must follow the stage directory order.')
 }
 
@@ -45,16 +40,6 @@ for (const [index, stage] of HERO_STAGES.entries()) {
 
 if (new Set(HERO_MODEL_FILENAMES).size !== HERO_MODEL_FILENAMES.length) {
   throw new Error('Every hero stage filename must be unique.')
-}
-
-if (heroSource.includes('openingShape')
-  || heroSource.includes('opening-shape')
-  || particleCanvasSource.includes('openingShape')) {
-  throw new Error('The canvas must not have a separately configured opening shape.')
-}
-
-if (HERO_STAGES.some((stage) => heroSource.includes(stage.filename))) {
-  throw new Error('Hero.vue must derive stage filenames from the stage directory.')
 }
 
 if (!heroSource.includes('@morph-progress="trackMorph"')

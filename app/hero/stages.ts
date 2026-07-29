@@ -1,5 +1,3 @@
-import type { MorphEvent } from '../three/types'
-
 export interface HeroStage {
   filename: string
   label: string
@@ -15,8 +13,6 @@ export const HERO_STAGES = [
   { filename: 'Fullerene.glb', label: 'Atomic scale', headline: 'matter' },
   { filename: 'CmsCollision.glb', label: 'Collision', headline: 'where we start' },
 ] as const satisfies readonly HeroStage[]
-
-export type HeroStageFilename = typeof HERO_STAGES[number]['filename']
 
 export const HERO_MODEL_FILENAMES = HERO_STAGES.map(
   (stage) => stage.filename,
@@ -36,18 +32,11 @@ export function getHeroStage(filename: string): HeroStage {
   return stage
 }
 
-export function createInitialHeroMorph(duration: number): MorphEvent {
+export function getInitialHeroStageTransition(): { from: HeroStage, to: HeroStage } {
   const [firstStage, secondStage] = HERO_STAGES
   if (!firstStage || !secondStage) {
     throw new Error('The hero stage directory requires at least two stages.')
   }
 
-  return {
-    from: firstStage.filename,
-    to: secondStage.filename,
-    progress: 0,
-    easedProgress: 0,
-    elapsed: 0,
-    duration,
-  }
+  return { from: firstStage, to: secondStage }
 }
