@@ -1,0 +1,117 @@
+@use 'variables' as tokens;
+@use 'typography';
+@use 'layout';
+@use 'components';
+@use 'mixins';
+
+:root {
+  --void: #{tokens.$void};
+  --black: #{tokens.$black};
+  --panel: #{tokens.$panel};
+  --panel-2: #{tokens.$panel-2};
+  --line: #{tokens.$line};
+  --line-soft: #{tokens.$line-soft};
+
+  --atlas: #{tokens.$atlas};
+  --beam: #{tokens.$beam};
+  --core: #{tokens.$core};
+  --deep: #{tokens.$deep};
+  --deepest: #{tokens.$deepest};
+  --signal: #{tokens.$signal};
+
+  --ink: #{tokens.$ink};
+  --body-copy: #{tokens.$body-copy};
+  --mute: #{tokens.$mute};
+  --faint: #{tokens.$faint};
+
+  --display: #{tokens.$font-display};
+  --mono: #{tokens.$font-mono};
+  --body: #{tokens.$font-body};
+
+  --max-width: #{tokens.$content-max-width};
+  --gutter: #{tokens.$gutter};
+  --section-padding: #{tokens.$section-padding};
+
+  color: var(--ink);
+  background: var(--black);
+  font-family: var(--body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body,
+#app {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  color: var(--ink);
+  background: var(--black);
+  font-family: var(--body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea,
+select {
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  color: #ffffff;
+  background: var(--atlas);
+}
+
+:focus-visible {
+  @include mixins.focus-ring;
+}
+
+@include mixins.reduced-motion {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

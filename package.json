@@ -1,0 +1,34 @@
+{
+  "name": "particle-physics",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "generate:collision-model": "node scripts/generate-collision-model.mjs",
+    "generate:dna-model": "node scripts/generate-dna-model.mjs",
+    "generate:earth-model": "node scripts/generate-earth-model.mjs",
+    "generate:human-model": "node scripts/generate-human-model.mjs",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "pnpm run test:sequence && pnpm run test:material && pnpm run test:sampling",
+    "test:sequence": "node --experimental-strip-types scripts/verify-hero-sequence.mjs",
+    "test:material": "node --experimental-strip-types scripts/verify-particle-material.mjs",
+    "test:sampling": "node --experimental-strip-types scripts/verify-model-sampling.mjs",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "decap-cms-app": "^3.15.1",
+    "nuxt": "^4.5.1",
+    "three": "^0.185.1",
+    "vue": "^3.5.40",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.185.1",
+    "sass-embedded": "^1.100.0",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.8"
+  }
+}

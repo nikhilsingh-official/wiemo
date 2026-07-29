@@ -1,0 +1,34 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'variables' as tokens;
+
+/// Convert a pixel value to rem while keeping the 16px document baseline explicit.
+@function rem($value, $base: 16px) {
+  @if math.unit($value) != 'px' {
+    @error 'rem() expects a pixel value.';
+  }
+
+  @return math.div($value, $base) * 1rem;
+}
+
+/// Retrieve one of the named colours from the design-language palette.
+@function color($name) {
+  $value: map.get(tokens.$colors, $name);
+
+  @if $value == null {
+    @error 'Unknown colour token: #{$name}.';
+  }
+
+  @return $value;
+}
+
+/// Retrieve a value from the documented 4px spacing scale.
+@function space($step) {
+  $value: map.get(tokens.$spacing, $step);
+
+  @if $value == null {
+    @error 'Unknown spacing step: #{$step}.';
+  }
+
+  @return $value;
+}

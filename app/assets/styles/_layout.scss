@@ -1,0 +1,43 @@
+@use 'variables' as tokens;
+@use 'mixins';
+
+.wrap {
+  @include mixins.content-wrap;
+}
+
+.content-section {
+  padding-block: tokens.$section-padding;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: baseline;
+  margin-bottom: 14px;
+}
+
+.section-number {
+  color: var(--atlas);
+  font-family: tokens.$font-mono;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.lede {
+  max-width: 60ch;
+  margin-top: 6px;
+  color: #cdd6e0;
+  font-size: clamp(1.02rem, 1.6vw, 1.18rem);
+}
+
+.stack {
+  display: grid;
+  gap: 24px;
+}
+
+.visually-hidden {
+  @include mixins.visually-hidden;
+}

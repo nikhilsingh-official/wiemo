@@ -1,0 +1,5 @@
+// Vite injects this module into every Vue SCSS block. Keep it free of CSS output
+// so components receive tokens and helpers without duplicating global rules.
+@forward 'variables';
+@forward 'functions';
+@forward 'mixins';

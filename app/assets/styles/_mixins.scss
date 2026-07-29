@@ -1,0 +1,63 @@
+@use 'variables' as tokens;
+
+@mixin content-wrap {
+  width: 100%;
+  max-width: tokens.$content-max-width;
+  margin-inline: auto;
+  padding-inline: tokens.$gutter;
+}
+
+@mixin mono-label($color: var(--beam)) {
+  color: $color;
+  font-family: tokens.$font-mono;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+@mixin channel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: tokens.$radius-medium;
+  transition: border-color tokens.$transition-fast tokens.$transition-ease;
+
+  &:hover {
+    border-color: var(--deep);
+  }
+}
+
+@mixin focus-ring {
+  outline: 2px solid var(--beam);
+  outline-offset: 4px;
+}
+
+@mixin small-screen {
+  @media (max-width: tokens.$breakpoint-small) {
+    @content;
+  }
+}
+
+@mixin readout-screen {
+  @media (max-width: tokens.$breakpoint-readout) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

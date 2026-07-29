@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Particle Initiative — Design Language v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#000000;
+    --black:#04060B;
+    --panel:#080B12;
+    --panel-2:#0B0F18;
+    --line:#151C28;
+    --line-soft:#0F141D;
+
+    --atlas:#0B80C3;   /* official ATLAS blue — primary */
+    --beam:#33B4EC;    /* brighter azure — hover / active / glow */
+    --core:#BDE8FB;    /* hot cyan-white — particle cores, rare emphasis */
+    --deep:#0A4E74;    /* deep azure — fills, gradients */
+    --deepest:#062F49; /* deepest azure — borders on black */
+    --signal:#F2B441;  /* reserved amber — primary CTA only, used sparingly */
+
+    --ink:#E7EDF3;
+    --mute:#7E8B9A;
+    --faint:#47535F;
+
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --body:'Inter',system-ui,sans-serif;
+
+    --maxw:1080px;
+    --gutter:clamp(20px,5vw,64px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--black);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--atlas);color:#fff}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
+
+  /* ---------- shared type ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:.7rem;
+    font-weight:500;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--beam);
+  }
+  .eyebrow .dim{color:var(--faint)}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.02em}
+  p{color:#c7d0da;max-width:64ch}
+  strong{color:var(--ink);font-weight:500}
+  code{font-family:var(--mono);font-size:.86em;color:var(--core);background:var(--panel);padding:.1em .4em;border-radius:4px;border:1px solid var(--line)}
+  a{color:var(--beam);text-decoration:none}
+
+  /* ---------- masthead ---------- */
+  .masthead{position:relative;height:min(78vh,660px);min-height:460px;background:var(--void);overflow:hidden;border-bottom:1px solid var(--line)}
+  #field{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .mast-grad{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 42%,transparent 40%,rgba(4,6,11,.55) 78%,var(--black) 100%);pointer-events:none}
+  .mast-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 var(--gutter);pointer-events:none}
+  .mast-inner{max-width:var(--maxw);margin:0 auto;width:100%}
+  .mast-title{font-size:clamp(2.6rem,7vw,5.4rem);letter-spacing:-.03em;margin:.5rem 0 1rem;line-height:.98}
+  .mast-title .thin{color:var(--mute);font-weight:400}
+  .mast-sub{font-family:var(--mono);font-size:.82rem;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+
+  /* corner readouts — the signature motif */
+  .readout{position:absolute;font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);pointer-events:none}
+  .readout .hi{color:var(--beam)}
+  .readout.tl{top:var(--gutter);left:var(--gutter)}
+  .readout.tr{top:var(--gutter);right:var(--gutter);text-align:right}
+  .readout.br{bottom:var(--gutter);right:var(--gutter);text-align:right}
+  .readout.bl{bottom:var(--gutter);left:var(--gutter)}
+  .readout .row{display:block;margin-top:3px}
+  @media(max-width:640px){.readout.tl,.readout.bl{display:none}}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(56px,9vw,120px) 0;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+  .sec-num{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--atlas);font-weight:600}
+  .sec-head h2{font-size:clamp(1.7rem,3.6vw,2.5rem)}
+  .lede{font-size:clamp(1.02rem,1.6vw,1.18rem);color:#cdd6e0;margin-top:6px;max-width:60ch}
+
+  /* ---------- colour ---------- */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:40px}
+  .sw{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .sw .chip{height:96px;position:relative}
+  .sw .chip .core-dot{position:absolute;right:12px;bottom:12px;width:14px;height:14px;border-radius:50%;background:var(--core);box-shadow:0 0 12px 2px rgba(189,232,251,.6)}
+  .sw .meta{padding:12px 14px 15px}
+  .sw .nm{font-family:var(--display);font-weight:500;font-size:.98rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .sw .hex{font-family:var(--mono);font-size:.74rem;color:var(--mute);letter-spacing:.03em}
+  .sw .use{font-size:.8rem;color:var(--faint);margin-top:6px;line-height:1.5}
+  .a11y{margin-top:26px;font-family:var(--mono);font-size:.78rem;color:var(--mute);border-left:2px solid var(--deep);padding:4px 0 4px 16px;line-height:1.7}
+
+  /* ---------- type ---------- */
+  .specimen{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:clamp(22px,4vw,40px);margin-top:36px}
+  .specimen + .specimen{margin-top:16px}
+  .spec-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:22px}
+  .spec-label .fam{font-family:var(--display);font-size:1.15rem;font-weight:500}
+  .spec-label .tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--beam)}
+  .glyphs{font-family:var(--display);font-size:clamp(2.4rem,6vw,3.8rem);letter-spacing:-.02em;line-height:1.1}
+  .glyphs.mono{font-family:var(--mono);font-size:clamp(1.5rem,4vw,2.4rem);letter-spacing:.02em}
+  .aa{color:var(--mute);font-family:var(--mono);font-size:.9rem;letter-spacing:.05em;margin-top:14px;word-spacing:.1em}
+  .scale{width:100%;border-collapse:collapse;margin-top:34px;font-size:.9rem}
+  .scale th{text-align:left;font-family:var(--mono);font-weight:500;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);padding:0 14px 12px 0;border-bottom:1px solid var(--line)}
+  .scale td{padding:14px 14px 14px 0;border-bottom:1px solid var(--line-soft);color:var(--mute);font-family:var(--mono);font-size:.82rem;vertical-align:baseline}
+  .scale td.samp{color:var(--ink);font-family:var(--display)}
+  .scale .r-eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.22em;font-size:.72rem;color:var(--beam)}
+
+  /* ---------- principle / feature blocks ---------- */
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:14px;overflow:hidden;margin-top:40px}
+  .cell{background:var(--black);padding:26px 24px}
+  .cell .k{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--atlas);margin-bottom:12px}
+  .cell h3{font-size:1.16rem;margin-bottom:8px}
+  .cell p{font-size:.92rem;color:#b6c0cb}
+
+  /* ---------- hero application diagram ---------- */
+  .hero-demo{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--void);position:relative;overflow:hidden}
+  .hero-demo svg{display:block;width:100%;height:auto}
+  .alt{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+  .alt .badge{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--void);background:var(--beam);padding:5px 9px;border-radius:6px;white-space:nowrap}
+  .alt p{font-size:.92rem}
+
+  /* ---------- spec list ---------- */
+  .speclist{margin-top:34px;border-top:1px solid var(--line)}
+  .speclist .item{display:grid;grid-template-columns:180px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line-soft)}
+  .speclist .item .lab{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--beam);padding-top:2px}
+  .speclist .item p{font-size:.93rem;margin:0}
+  .speclist .item .tokens{font-family:var(--mono);font-size:.78rem;color:var(--mute);margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px}
+  @media(max-width:620px){.speclist .item{grid-template-columns:1fr;gap:8px}}
+
+  /* buttons demo */
+  .btnrow{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;align-items:center}
+  .btn{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:13px 22px;border-radius:8px;cursor:default;border:1px solid transparent;transition:.2s}
+  .btn-primary{background:var(--signal);color:#1a1204;font-weight:600}
+  .btn-ghost{background:transparent;color:var(--beam);border-color:var(--deep)}
+  .btn-solid{background:var(--atlas);color:#fff}
+  .btn-note{font-family:var(--mono);font-size:.72rem;color:var(--faint);letter-spacing:.05em}
+
+  /* footer */
+  footer{padding:56px 0 80px}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+  .foot-grid .hi{color:var(--beam)}
+  .rule{height:1px;background:var(--line);margin-bottom:40px}
+
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <canvas id="field"></canvas>
+  <div class="mast-grad"></div>
+
+  <div class="readout tl"><span class="row"><span class="hi">■</span> PARTICLE INITIATIVE</span><span class="row">DESIGN LANGUAGE</span></div>
+  <div class="readout tr"><span class="row">ATLAS-BLUE <span class="hi">#0B80C3</span></span><span class="row">ON TRUE BLACK</span></div>
+  <div class="readout bl"><span class="row">FIELD / <span class="hi">24K POINTS</span></span><span class="row">GPU-READY</span></div>
+  <div class="readout br"><span class="row">v1.0</span><span class="row">SPEC / <span class="hi">7 SECTIONS</span></span></div>
+
+  <div class="mast-content">
+    <div class="mast-inner">
+      <div class="mast-sub">Visual identity &amp; build reference</div>
+      <h1 class="mast-title">Everything is<br><span class="thin">particles.</span></h1>
+      <div class="mast-sub">A design language for a student particle-physics initiative</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ 01 DIRECTION ============ -->
+<section id="direction">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Direction</h2></div>
+    <p class="lede">The site should feel like an instrument reading out the physical world — precise, dark, and quiet, with a single field of ATLAS-blue points doing the talking. Restraint is the aesthetic. The particles are never decoration; they are the argument.</p>
+
+    <div class="grid2">
+      <div class="cell">
+        <div class="k">Principle 01</div>
+        <h3>Black is the vacuum</h3>
+        <p>True black (<code>#000000</code>) in the hero, a hair of blue-black elsewhere. Empty space is not wasted space — it is the void the particles live in. Never fill it to feel "complete."</p>
+      </div>
+      <div class="cell">
+        <div class="k">Principle 02</div>
+        <h3>One hue, many energies</h3>
+        <p>The palette is essentially monochromatic: ATLAS blue, ranging from deep azure to hot cyan-white cores. Colour variation encodes energy, not category. Reserve warmth for a single call to action.</p>
+      </div>
+      <div class="cell">
+        <div class="k">Principle 03</div>
+        <h3>Instrument readouts</h3>
+        <p>Small, letter-spaced monospace labels sit in the corners like a detector's telemetry — <span style="font-family:var(--mono);font-size:.82em;color:var(--beam)">24K POINTS · GPU-READY</span>. This readout motif is the site's signature, repeated on every screen.</p>
+      </div>
+      <div class="cell">
+        <div class="k">Principle 04</div>
+        <h3>Motion means physics</h3>
+        <p>Nothing animates for flourish. Particles drift with thermal jitter, tracks curve in a magnetic field, events resolve over ~1s. If a motion can't be justified physically, cut it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 COLOUR ============ -->
+<section id="colour">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Colour system</h2></div>
+    <p class="lede">Palette A (Cherenkov dark) tuned to the official ATLAS blue. Read the blues as a single hue climbing in energy from deep azure to hot core. Amber is the one warm exception, held strictly in reserve.</p>
+
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#000000"></div><div class="meta"><div class="nm">Void <span class="hex">#000000</span></div><div class="use">Hero canvas. The vacuum. True black only here.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#04060B"></div><div class="meta"><div class="nm">Black <span class="hex">#04060B</span></div><div class="use">Page background. A trace of blue for depth over long scrolls.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#080B12"></div><div class="meta"><div class="nm">Panel <span class="hex">#080B12</span></div><div class="use">Cards, surfaces, code, raised UI.</div></div></div>
+      <div class="sw"><div class="chip" style="background:linear-gradient(120deg,#062F49,#0A4E74)"></div><div class="meta"><div class="nm">Deep azure <span class="hex">#0A4E74</span></div><div class="use">Borders on black, gradient fills, inactive tracks.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#0B80C3"><div class="core-dot"></div></div><div class="meta"><div class="nm">ATLAS blue <span class="hex">#0B80C3</span></div><div class="use">Primary. Links, key particles, the brand anchor.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#33B4EC"></div><div class="meta"><div class="nm">Beam <span class="hex">#33B4EC</span></div><div class="use">Hover, active tracks, particle glow, eyebrows.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#BDE8FB"></div><div class="meta"><div class="nm">Core <span class="hex">#BDE8FB</span></div><div class="use">Hot particle centres, rare high emphasis, headline highlight.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#E7EDF3"></div><div class="meta"><div class="nm">Ink <span class="hex">#E7EDF3</span></div><div class="use">Primary text. Never pure white.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#7E8B9A"></div><div class="meta"><div class="nm">Mute <span class="hex">#7E8B9A</span></div><div class="use">Secondary text, labels, metadata.</div></div></div>
+      <div class="sw"><div class="chip" style="background:#F2B441"></div><div class="meta"><div class="nm">Signal <span class="hex">#F2B441</span></div><div class="use">Reserved. Primary CTA only — one per screen, at most.</div></div></div>
+    </div>
+
+    <p class="a11y">Contrast — Ink on Black clears WCAG AAA for body text. ATLAS blue <code>#0B80C3</code> on black passes AA for large text and UI, but <strong>not</strong> AA for small body copy: use Beam <code>#33B4EC</code> or lighter for any blue text under 18px. Amber <code>#F2B441</code> on black is high-contrast — that visibility is exactly why it's rationed. All blues remain distinguishable under the common deuteranopia / protanopia CVD types since the system separates by lightness, not hue.</p>
+  </div>
+</section>
+
+<!-- ============ 03 TYPOGRAPHY ============ -->
+<section id="type">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Typography</h2></div>
+    <p class="lede">Two families, three roles. Space Grotesk carries the personality — a grotesque with a faint drafting-instrument stiffness that suits a physics study. JetBrains Mono handles every readout, label, and datum, and is where the reference's letter-spaced small-caps live.</p>
+
+    <div class="specimen">
+      <div class="spec-label"><span class="fam">Space Grotesk</span><span class="tag">Display · Headings · Nav — 400 / 500 / 600 / 700</span></div>
+      <div class="glyphs">Collisions,<br>captured.</div>
+      <div class="aa">AaBbCcGgQqRr &nbsp; 0123456789 &nbsp; μ ν γ e⁺ e⁻ &nbsp; #0B80C3</div>
+    </div>
+
+    <div class="specimen">
+      <div class="spec-label"><span class="fam">JetBrains Mono</span><span class="tag">Readouts · Labels · Data — tracked small caps</span></div>
+      <div class="glyphs mono" style="letter-spacing:.24em;text-transform:uppercase;color:var(--beam)">24K Points · GPU-Ready</div>
+      <div class="aa">GLTF-READY / VERTEX 0,0 / √s = 13 TeV / TRACKS: 5</div>
+    </div>
+
+    <table class="scale">
+      <thead><tr><th>Role</th><th>Family</th><th>Size / Spacing</th><th>Sample</th></tr></thead>
+      <tbody>
+        <tr><td>Display</td><td>Space Grotesk 500</td><td>clamp 2.6–5.4rem / −.03em</td><td class="samp" style="font-size:1.5rem">Everything is particles</td></tr>
+        <tr><td>Heading</td><td>Space Grotesk 500</td><td>1.7–2.5rem / −.02em</td><td class="samp" style="font-size:1.15rem">Colour system</td></tr>
+        <tr><td>Body</td><td>Inter 400</td><td>1rem / 1.7 line</td><td class="samp" style="font-family:var(--body)">Legible for longer reading.</td></tr>
+        <tr><td>Eyebrow</td><td>JetBrains Mono 500</td><td>.7rem / .24em / upper</td><td class="samp r-eyebrow">Section / 02</td></tr>
+        <tr><td>Data</td><td>JetBrains Mono 400</td><td>.8rem / .05em</td><td class="samp" style="font-family:var(--mono);font-size:.85rem">√s = 13 TeV</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alt" style="margin-top:34px">
+      <span class="badge">Fallbacks</span>
+      <p>All three are free on Google Fonts, so your friend can actually ship them. For a body face that reads longer About pages more comfortably, <strong>Inter</strong> is the pick. If you'd rather nod to ATLAS's own identity, their official face is <strong>Open Sans</strong> — swap it in for body without touching the display or mono roles.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 PARTICLE LANGUAGE ============ -->
+<section id="particles">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Particle &amp; motion language</h2></div>
+    <p class="lede">One rendering system, used everywhere: the masthead field, the hero, section transitions. Get these rules right and every particle on the site looks like it came from the same detector.</p>
+
+    <div class="speclist">
+      <div class="item"><div class="lab">Colour spread</div><div><p>Each point samples the blue ramp weighted toward ATLAS blue: roughly 70% <strong>ATLAS</strong>, 22% <strong>Beam</strong>, 6% <strong>Deep</strong>, 2% <strong>Core</strong>. The rare hot cores are what make the field read as luminous rather than flat.</p><div class="tokens"><span>#0B80C3 ×70</span><span>#33B4EC ×22</span><span>#0A4E74 ×6</span><span>#BDE8FB ×2</span></div></div></div>
+      <div class="item"><div class="lab">Size &amp; glow</div><div><p>1–2px points at 1× DPR; cores get a soft additive glow (2–3px blur). Use <code>globalCompositeOperation = "lighter"</code> so overlapping points brighten — that additive bloom is the reference's whole look.</p></div></div>
+      <div class="item"><div class="lab">Thermal jitter</div><div><p>Even at rest, every point drifts on a low-amplitude sine (±0.5px, individual phase). The field is never perfectly still — matter has temperature.</p></div></div>
+      <div class="item"><div class="lab">Curvature</div><div><p>Where points form tracks (the collision hero), they follow curved arcs, not straight lines — charged particles bend in a magnetic field. Opposite "charges" curve opposite ways. This is the single detail that separates the look from a generic node graph.</p></div></div>
+      <div class="item"><div class="lab">Density budget</div><div><p>Cap ≈ 24k points on desktop (matching the reference), scale down on mobile by viewport area. Target 60fps; drop count before dropping framerate.</p></div></div>
+      <div class="item"><div class="lab">Reduced motion</div><div><p>Honour <code>prefers-reduced-motion</code>: render one resolved static frame, no drift, no re-collide loop. Also pause the loop on <code>visibilitychange</code> when the tab is hidden.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 HERO ============ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>The hero — collision is the method</h2></div>
+    <p class="lede">Two beams meet at a central vertex; the collision sprays curved tracks outward, and each track is a way into the site. It resolves over ~1s on load, and re-fires on a "re-collide" trigger so it never reads as a fixed diagram. Rendered in the language above: ATLAS-blue tracks, hot vertex, detector rings, corner readouts.</p>
+
+    <div class="hero-demo">
+      <svg viewBox="0 0 1040 470" role="img" aria-label="Collision-vertex hero applied in the ATLAS-blue language">
+        <rect width="1040" height="470" fill="#000000"/>
+        <circle cx="520" cy="238" r="92" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+        <circle cx="520" cy="238" r="168" fill="none" stroke="#ffffff" stroke-opacity="0.045"/>
+        <circle cx="520" cy="238" r="244" fill="none" stroke="#ffffff" stroke-opacity="0.035"/>
+
+        <!-- beams -->
+        <line x1="70" y1="238" x2="500" y2="238" stroke="#0A4E74" stroke-width="1.5" stroke-dasharray="6 6"/>
+        <line x1="970" y1="238" x2="540" y2="238" stroke="#0A4E74" stroke-width="1.5" stroke-dasharray="6 6"/>
+        <path d="M488 232 l12 6 l-12 6" fill="none" stroke="#33B4EC" stroke-width="1.5"/>
+        <path d="M552 232 l-12 6 l12 6" fill="none" stroke="#33B4EC" stroke-width="1.5"/>
+
+        <!-- faint sub-tracks -->
+        <g fill="none" stroke-width="1" stroke-opacity="0.35">
+          <path d="M520 238 q-40 -46 -96 -60" stroke="#33B4EC"/>
+          <path d="M520 238 q46 -40 104 -52" stroke="#0B80C3"/>
+          <path d="M520 238 q-32 54 -54 88" stroke="#0B80C3"/>
+          <path d="M520 238 q54 34 92 52" stroke="#33B4EC"/>
+        </g>
+
+        <!-- primary tracks -> nav -->
+        <g fill="none" stroke-width="2.4">
+          <path d="M520 238 Q360 150 285 108" stroke="#33B4EC"/>
+          <path d="M520 238 Q690 150 760 108" stroke="#0B80C3"/>
+          <path d="M520 238 Q760 262 895 300" stroke="#33B4EC"/>
+          <path d="M520 238 Q700 350 800 392" stroke="#0B80C3"/>
+          <path d="M520 238 Q345 350 255 392" stroke="#0B80C3"/>
+        </g>
+
+        <!-- vertex -->
+        <circle cx="520" cy="238" r="16" fill="#0B80C3" fill-opacity="0.18"/>
+        <circle cx="520" cy="238" r="5" fill="#BDE8FB"/>
+
+        <!-- nav pills -->
+        <g font-family="'JetBrains Mono',monospace" font-size="14" font-weight="500" letter-spacing="1.5">
+          <rect x="228" y="94" width="112" height="30" rx="15" fill="#000" stroke="#33B4EC"/><text x="284" y="114" text-anchor="middle" fill="#33B4EC">ABOUT</text>
+          <rect x="700" y="94" width="128" height="30" rx="15" fill="#000" stroke="#0B80C3"/><text x="764" y="114" text-anchor="middle" fill="#0B80C3">RESEARCH</text>
+          <rect x="842" y="286" width="112" height="30" rx="15" fill="#000" stroke="#33B4EC"/><text x="898" y="306" text-anchor="middle" fill="#33B4EC">EVENTS</text>
+          <rect x="752" y="378" width="96" height="30" rx="15" fill="#000" stroke="#0B80C3"/><text x="800" y="398" text-anchor="middle" fill="#0B80C3">JOIN</text>
+          <rect x="198" y="378" width="114" height="30" rx="15" fill="#000" stroke="#0B80C3"/><text x="255" y="398" text-anchor="middle" fill="#0B80C3">GALLERY</text>
+        </g>
+
+        <!-- readouts -->
+        <g font-family="'JetBrains Mono',monospace" font-size="11" letter-spacing="2.4" fill="#7E8B9A">
+          <text x="40" y="42">PARTICLE INITIATIVE</text>
+          <text x="1000" y="42" text-anchor="end" fill="#33B4EC">√s = 13 TeV</text>
+          <text x="40" y="446">VERTEX 0,0 · 5 TRACKS</text>
+          <text x="1000" y="446" text-anchor="end">↻ RE-COLLIDE</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="alt">
+      <span class="badge">Alternate</span>
+      <p><strong>Morph field.</strong> Where the collision is overkill — an interior page header, a loading state — fall back to the reference's waving point field morphing between everyday objects (cup → bike → phone) with a rotating caption. Same rendering system, lower intensity. Keep the collision as the front-door method and the morph as connective tissue.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 LAYOUT ============ -->
+<section id="layout">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Layout &amp; components</h2></div>
+    <p class="lede">Wide margins, a single column of content, and the readout motif anchoring the corners. Structure stays quiet so the particle moments carry the weight.</p>
+
+    <div class="speclist">
+      <div class="item"><div class="lab">Grid</div><div><p>Max content width ~1080px, centred, with a fluid gutter (<code>clamp(20px, 5vw, 64px)</code>). Long-form text capped at ~64 characters. One column — resist multi-column density; the vacuum is the point.</p></div></div>
+      <div class="item"><div class="lab">Spacing scale</div><div><p>A 4px base step: 4 · 8 · 12 · 16 · 24 · 40 · 64 · 96. Section padding scales fluidly from 56px (mobile) to 120px (desktop).</p><div class="tokens"><span>4</span><span>8</span><span>16</span><span>24</span><span>40</span><span>64</span><span>96</span></div></div></div>
+      <div class="item"><div class="lab">Readout corners</div><div><p>Every full-screen view carries four monospace corner labels: identity (TL), physics datum (TR), telemetry (BL/BR). This is the signature — treat it as fixed furniture, not decoration to omit when busy.</p></div></div>
+      <div class="item"><div class="lab">Navigation</div><div><p>On the hero, nav lives on the tracks. On inner pages, collapse to a slim top bar: mono small-caps links, a hairline <code>#151C28</code> underline, Beam on hover.</p></div></div>
+      <div class="item"><div class="lab">Cards = channels</div><div><p>Content blocks are "channels" (as in decay channels): panel <code>#080B12</code>, 1px <code>#151C28</code> border, 12–14px radius, a mono eyebrow, a Space Grotesk title. Hover lifts the border to Deep azure.</p></div></div>
+      <div class="item"><div class="lab">Borders &amp; radius</div><div><p>Hairline borders only (1px). Radius 8–16px — soft enough to feel modern, never pill-round except on the mono nav tokens where it echoes particle tracks.</p></div></div>
+    </div>
+
+    <div class="btnrow">
+      <span class="btn btn-primary">Join the initiative</span>
+      <span class="btn btn-solid">Explore research</span>
+      <span class="btn btn-ghost">Read more</span>
+      <span class="btn-note">— amber for the one primary action · ATLAS blue for secondary · ghost for tertiary</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 VOICE ============ -->
+<section id="voice">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Voice &amp; copy</h2></div>
+    <p class="lede">The audience is students deciding whether this is for them. The tone is a working physicist who's genuinely glad you asked — precise, never gatekeeping. Curiosity over credentials.</p>
+
+    <div class="grid2">
+      <div class="cell"><div class="k">Do</div><h3>Plain, then precise</h3><p>Lead with the everyday ("everything around you is particles"), then earn the detail. Let one real datum — <span style="font-family:var(--mono);font-size:.82em;color:var(--beam)">√s = 13 TeV</span> — do more than a paragraph of adjectives.</p></div>
+      <div class="cell"><div class="k">Do</div><h3>Invite, don't impress</h3><p>Empty states and CTAs are invitations: "Come collide with us," not "Submit application." Actions keep one name through the whole flow.</p></div>
+      <div class="cell"><div class="k">Don't</div><h3>No jargon walls</h3><p>Never open with terminology a first-year hasn't met. A term can appear once it's been made welcome — labels teach, they don't test.</p></div>
+      <div class="cell"><div class="k">Don't</div><h3>No hype physics</h3><p>Skip "unlock the secrets of the universe." The subject is astonishing on its own; overselling it reads as insecurity. Specific beats cosmic.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <div class="foot-grid">
+      <span>PARTICLE INITIATIVE · <span class="hi">DESIGN LANGUAGE v1.0</span></span>
+      <span>ATLAS-BLUE <span class="hi">#0B80C3</span> ON <span class="hi">#000000</span></span>
+      <span>SPACE GROTESK · JETBRAINS MONO</span>
+      <span class="hi">↻ RE-COLLIDE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var canvas=document.getElementById('field');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0,pts=[],running=true,t=0;
+
+  // ATLAS-blue ramp, weighted toward primary
+  var palette=[
+    '11,128,195','11,128,195','11,128,195','11,128,195','11,128,195','11,128,195','11,128,195', // atlas ×7
+    '51,180,236','51,180,236', // beam ×2
+    '10,78,116', // deep
+    '189,232,251' // hot core
+  ];
+
+  function resize(){
+    W=canvas.clientWidth;H=canvas.clientHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+
+  function build(){
+    pts=[];
+    // waving "flag" field, centred, echoing the reference
+    var area=W*H;
+    var count=Math.min(2400,Math.floor(area/620)); // doc-weight, not full 24k
+    var fieldW=Math.min(W*0.62,760), fieldH=Math.min(H*0.62,380);
+    var ox=(W-fieldW)/2, oy=(H-fieldH)/2;
+    for(var i=0;i<count;i++){
+      var u=Math.random(), v=Math.random();
+      var col=palette[(Math.random()*palette.length)|0];
+      var hot=col==='189,232,251';
+      pts.push({
+        u:u,v:v,
+        bx:ox+u*fieldW, by:oy+v*fieldH,
+        col:col, hot:hot,
+        r:hot?1.6:(Math.random()*1.1+0.5),
+        a:Math.random()*0.5+0.35,
+        ph:Math.random()*Math.PI*2,
+        sp:Math.random()*0.6+0.4
+      });
+    }
+  }
+
+  function frame(){
+    if(!running)return;
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    t+=0.012;
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      // flag wave: horizontal phase drives a vertical + z-ish displacement
+      var wave=Math.sin(p.u*7 - t*1.4 + p.v*2.0);
+      var wave2=Math.cos(p.u*4 - t*1.0);
+      var dx=wave2*6*p.sp;
+      var dy=wave*10*p.sp + Math.sin(p.ph+t*0.8)*1.2; // thermal jitter baked in
+      var depth=0.7+0.3*wave; // fake lighting from the wave
+      var x=p.bx+dx, y=p.by+dy;
+      var alpha=p.a*depth;
+      ctx.beginPath();
+      ctx.fillStyle='rgba('+p.col+','+alpha.toFixed(3)+')';
+      ctx.arc(x,y,p.r,0,6.283);
+      ctx.fill();
+      if(p.hot){
+        ctx.fillStyle='rgba(189,232,251,'+(alpha*0.4).toFixed(3)+')';
+        ctx.beginPath();ctx.arc(x,y,p.r*2.6,0,6.283);ctx.fill();
+      }
+    }
+    ctx.globalCompositeOperation='source-over';
+    requestAnimationFrame(frame);
+  }
+
+  function staticFrame(){
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      ctx.beginPath();
+      ctx.fillStyle='rgba('+p.col+','+p.a.toFixed(3)+')';
+      ctx.arc(p.bx,p.by,p.r,0,6.283);ctx.fill();
+    }
+    ctx.globalCompositeOperation='source-over';
+  }
+
+  window.addEventListener('resize',function(){clearTimeout(window.__rt);window.__rt=setTimeout(resize,150)});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){running=false;}
+    else if(!reduce){running=true;requestAnimationFrame(frame);}
+  });
+
+  resize();
+  if(reduce){staticFrame();}else{requestAnimationFrame(frame);}
+})();
+</script>
+</body>
+</html>
