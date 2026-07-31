@@ -142,10 +142,11 @@ watch(
 .hero__text {
   position: absolute;
   left: 15%;
-  top: 40%;
+  top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
+  gap: 10px;
   z-index: 1;
 }
 
