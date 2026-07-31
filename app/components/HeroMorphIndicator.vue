@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <aside>
+  <aside class="readout readout--bottom-right">
     <span class="readout__row">
       <span class="hero__morph-key">From</span>
       {{ morphFrom }}
@@ -28,6 +28,8 @@ defineProps<{
 
 <style scoped lang="scss">
 .hero__morph-key {
+  display: inline-block;
+  width: 4.8em;
   color: var(--faint);
 }
 

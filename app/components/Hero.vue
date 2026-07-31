@@ -150,9 +150,6 @@ watch(
 }
 
 .hero__morph-readout {
-  position: absolute;
-  right: 2.5%;
-  bottom: 2.5%;
   width: clamp(150px, 14vw, 210px);
 }
 </style>
