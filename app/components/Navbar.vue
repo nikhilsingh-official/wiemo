@@ -7,7 +7,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
     <NuxtLink class="navbar__brand" to="/" aria-label="Wiemo home">
       <img
         class="navbar__brand-mark"
-        src="/logos/wiemo_navbar.svg"
+        src="/logos/wiemo_navbar_darkmode.svg"
         alt=""
         aria-hidden="true"
       >
@@ -32,6 +32,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 
 <style scoped lang="scss">
 .navbar {
+  position: relative;
   display: flex;
   align-items: center;
   gap: clamp(10px, 1.2vw, 20px);
@@ -39,13 +40,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   overflow-x: auto;
   padding: 8px;
   isolation: isolate;
-  background:
-    linear-gradient(
-      115deg,
-      rgb(189 232 251 / 8%),
-      rgb(8 11 18 / 48%) 32%,
-      rgb(11 15 24 / 62%)
-    );
+  background: transparent;
   border: 1px solid rgb(189 232 251 / 14%);
   box-shadow:
     0 18px 48px rgb(0 0 0 / 38%),
@@ -53,7 +48,23 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   scrollbar-width: none;
-  opacity: 0.75;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background:
+      linear-gradient(
+        115deg,
+        rgb(189 232 251 / 8%),
+        rgb(8 11 18 / 48%) 32%,
+        rgb(11 15 24 / 62%)
+      );
+    content: '';
+    opacity: 0.75;
+  }
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -165,7 +176,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 }
 
 @supports not (backdrop-filter: blur(1px)) {
-  .navbar {
+  .navbar::before {
     background: rgb(8 11 18 / 94%);
   }
 }
