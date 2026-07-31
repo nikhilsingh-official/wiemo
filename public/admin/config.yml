@@ -2,6 +2,7 @@ backend:
   name: github
   repo: nikhilsingh-official/wiemo
   branch: main
+  base_url: https://wiemo-oauth.vercel.app
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
