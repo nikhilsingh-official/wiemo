@@ -5,6 +5,11 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 <template>
   <nav class="navbar" aria-label="Particle physics site navigation">
     <ul class="navbar__list">
+      <li class="navbar__item navbar__logo">
+        <NuxtLink class="navbar__link" to="/">
+          wiemo
+        </NuxtLink>
+      </li>
       <li
         v-for="item in NAVBAR_ITEMS"
         :key="item.to"
@@ -41,7 +46,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   backdrop-filter: blur(18px) saturate(145%);
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   scrollbar-width: none;
-
+  opacity: 0.75;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -64,6 +69,10 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 .navbar__item {
   display: flex;
   align-items: center;
+}
+
+.navbar__logo {
+  padding: 16px;
 }
 
 .navbar__link {
