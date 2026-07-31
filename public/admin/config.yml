@@ -10,13 +10,59 @@ public_folder: "/images/uploads"
 collections:
   - name: "blog"
     label: "Blog"
+    label_singular: "Blog Post"
     folder: "content/blog"
     create: true
+    identifier_field: "title"
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} - {{date}}"
     fields:
       - { label: "Layout", name: "layout", widget: "hidden", default: "blog" }
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Publish Date", name: "date", widget: "datetime" }
-      - { label: "Featured Image", name: "thumbnail", widget: "image" }
-      - { label: "Rating (scale of 1-5)", name: "rating", widget: "number" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Heading"
+        name: "title"
+        widget: "string"
+        hint: "Main post title shown on the blog page and article page."
+      - label: "Subheading / Strapline"
+        name: "subtitle"
+        widget: "string"
+        required: false
+        hint: "Short supporting line under the heading."
+      - label: "Excerpt"
+        name: "excerpt"
+        widget: "text"
+        hint: "One or two sentence summary for blog cards, SEO, and previews."
+      - label: "Author Name"
+        name: "author"
+        widget: "string"
+        default: "WIEMO"
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm"
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+      - label: "Cover Image"
+        name: "coverImage"
+        widget: "image"
+        choose_url: false
+        media_library:
+          config:
+            multiple: false
+      - label: "Cover Image Alt Text"
+        name: "coverImageAlt"
+        widget: "string"
+        hint: "Describe the cover image for accessibility."
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        required: false
+        summary: "{{fields.tag}}"
+        field: { label: "Tag", name: "tag", widget: "string" }
+      - label: "Featured Post"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        required: false
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
