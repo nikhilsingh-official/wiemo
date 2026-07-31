@@ -8,9 +8,9 @@ import {
   Points,
   ShaderMaterial,
 } from 'three'
-import type { ParticleShape } from '../types'
+import type { ParticleShape } from '../types.ts'
 import { particleFragmentShader, particleVertexShader } from './shaders.ts'
-import type { MorphEvent } from '../types'
+import type { MorphEvent } from '../types.ts'
 
 interface GpuParticleMorphOptions {
   pixelRatio: number

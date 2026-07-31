@@ -1,22 +1,28 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
-import { defineParticleOptions } from '../three/particleOptions'
-import HeroHeader from './HeroHeader.vue'
-import { defineTextOptions } from '../text-typing/textOptions'
-import {
-  getHeroStage,
-  getInitialHeroStageTransition,
-  HERO_MODEL_URLS,
-  HERO_STAGES,
-} from '../hero/stages'
-import type { MorphEvent } from '../three/types'
+import { computed, ref, watch } from 'vue'
+import { defineParticleOptions } from '~/hero/three/particleOptions'
+import { defineTextOptions } from '~/hero/text-typing/textOptions'
+import type { HeroStage } from '~/hero/stages'
+import type { MorphEvent } from '~/hero/three/types'
 
 const MORPH_DURATION = 1.8
 const HOLD_DURATION = 1.1
 const PARTICLE_COUNT = 72_000
 
-const particleOptions = reactive(defineParticleOptions({
-  modelUrls: [...HERO_MODEL_URLS],
+const route = useRoute()
+const activeHeroStages = computed<readonly HeroStage[]>(() => {
+  const stages = route.meta.heroStages
+  if (!stages?.length) {
+    throw new Error(`Route "${route.path}" must define heroStages page metadata.`)
+  }
+  return stages
+})
+const particleOptions = computed(() => defineParticleOptions({
+  modelUrls: activeHeroStages.value.map(
+    (stage) => `/models/${stage.modelFilename}`,
+  ),
+  modelNames: activeHeroStages.value.map(getParticleStageName),
+  autoPlay: activeHeroStages.value.length > 1,
   morphDuration: MORPH_DURATION,
   holdDuration: HOLD_DURATION,
   particleCount: PARTICLE_COUNT,
@@ -28,66 +34,90 @@ const particleOptions = reactive(defineParticleOptions({
 
 const textOptions = defineTextOptions()
 
-const initialTransition = getInitialHeroStageTransition()
-const initialMorph: MorphEvent = {
-  from: initialTransition.from.filename,
-  to: initialTransition.to.filename,
-  progress: 0,
-  easedProgress: 0,
-  elapsed: 0,
-  duration: MORPH_DURATION,
-}
-const headlineStage = ref(initialMorph.from)
-const morph = ref<MorphEvent>(initialMorph)
-const headlineText = computed(() => (
-  getHeroStage(headlineStage.value).headline
-))
-const morphFrom = computed(() => getHeroStage(morph.value.from).label)
-const morphTo = computed(() => getHeroStage(morph.value.to).label)
+const headlineStage = ref<HeroStage>(getFirstActiveStage())
+const morph = ref<MorphEvent>(createSettledMorph(headlineStage.value))
+const headlineText = computed(() => headlineStage.value.headline)
+const morphFrom = computed(() => getEventStage(morph.value.from).label)
+const morphTo = computed(() => getEventStage(morph.value.to).label)
 const morphPercent = computed(() => Math.round(morph.value.progress * 100))
 const morphProgressStyle = computed(() => ({
   transform: `scaleX(${morph.value.easedProgress})`,
 }))
-const firstStage = HERO_STAGES[0]
-const lastStage = HERO_STAGES.at(-1) ?? firstStage
-const heroAriaLabel = `Particle forms morphing from ${firstStage.label} to ${lastStage.label}`
+const heroAriaLabel = computed(() => {
+  const firstStage = activeHeroStages.value[0]
+  const lastStage = activeHeroStages.value.at(-1) ?? firstStage
+  if (!firstStage || !lastStage) return 'Particle model animation'
+  if (firstStage === lastStage) return `Particle form: ${firstStage.label}`
+  return `Particle forms cycling from ${firstStage.label} to ${lastStage.label}`
+})
+
+function getParticleStageName(stage: HeroStage): string {
+  return stage.modelFilename
+}
+
+function getFirstActiveStage(): HeroStage {
+  const firstStage = activeHeroStages.value[0]
+  if (!firstStage) {
+    throw new Error('The hero requires at least one stage.')
+  }
+  return firstStage
+}
+
+function createSettledMorph(stage: HeroStage): MorphEvent {
+  const stageName = getParticleStageName(stage)
+  return {
+    from: stageName,
+    to: stageName,
+    progress: 1,
+    easedProgress: 1,
+    elapsed: 0,
+    duration: MORPH_DURATION,
+  }
+}
+
+function getEventStage(stageName: string): HeroStage {
+  return activeHeroStages.value.find(
+    (stage) => getParticleStageName(stage) === stageName,
+  ) ?? headlineStage.value
+}
 
 function trackMorph(event: MorphEvent) {
   morph.value = event
-  headlineStage.value = event.to
+  headlineStage.value = getEventStage(event.to)
 }
+
+watch(
+  activeHeroStages,
+  () => {
+    const firstStage = getFirstActiveStage()
+    headlineStage.value = firstStage
+    morph.value = createSettledMorph(firstStage)
+  },
+  { flush: 'sync' },
+)
 
 </script>
 
 <template>
   <section class="hero" :aria-label="heroAriaLabel">
-    <HeroHeader
-      class="hero__header"
-      :text="headlineText"
-      :textoptions="textOptions"
+    <HeroText
+      class="hero__text"
+      :headline-text="headlineText"
+      :text-options="textOptions"
     />
     <ParticleCanvas
       class="hero__canvas"
       :options="particleOptions"
       @morph-progress="trackMorph"
     />
-    <div
-      class="readout readout--bottom-right hero__morph-readout"
+    <HeroMorphIndicator
+      class="hero__morph-readout"
       aria-label="Particle model transition progress"
-    >
-      <span class="readout__row">
-        <span class="hero__morph-key">From</span>
-        {{ morphFrom }}
-      </span>
-      <span class="readout__row readout__highlight">
-        <span class="hero__morph-key">To</span>
-        {{ morphTo }}
-      </span>
-      <span class="hero__morph-progress" aria-hidden="true">
-        <span class="hero__morph-progress-bar" :style="morphProgressStyle" />
-      </span>
-      <span class="readout__row hero__morph-percent">{{ morphPercent }}%</span>
-    </div>
+      :morph-from="morphFrom"
+      :morph-to="morphTo"
+      :morph-percent="morphPercent"
+      :morph-progress-style="morphProgressStyle"
+    />
   </section>
 </template>
 
@@ -109,44 +139,20 @@ function trackMorph(event: MorphEvent) {
   height: 100%;
 }
 
-.hero__header {
+.hero__text {
   position: absolute;
   left: 15%;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
   z-index: 1;
 }
 
 .hero__morph-readout {
+  position: absolute;
+  right: 2.5%;
+  bottom: 2.5%;
   width: clamp(150px, 14vw, 210px);
-}
-
-.hero__morph-key {
-  display: inline-block;
-  width: 4.8em;
-  color: var(--faint);
-}
-
-.hero__morph-progress {
-  display: block;
-  height: 1px;
-  margin-top: 9px;
-  overflow: hidden;
-  background: var(--deepest);
-}
-
-.hero__morph-progress-bar {
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--beam);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--beam) 70%, transparent);
-  transform-origin: left center;
-  transition: transform 80ms linear;
-}
-
-.hero__morph-percent {
-  margin-top: 4px;
-  color: var(--faint);
 }
 </style>

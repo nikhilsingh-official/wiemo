@@ -1,4 +1,4 @@
-import type { TextOptions, TextOptionsInput } from './types'
+import type { TextOptions, TextOptionsInput } from './types.ts'
 
 export const DEFAULT_TEXT_OPTIONS = Object.freeze({
   typingDelay: 55,

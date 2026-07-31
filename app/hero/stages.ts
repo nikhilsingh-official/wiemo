@@ -1,42 +1,77 @@
 export interface HeroStage {
-  filename: string
+  modelFilename: string
   label: string
   headline: string
 }
 
-/** The ordered source of truth for every stage shown by the hero canvas and UI. */
-export const HERO_STAGES = [
-  { filename: 'SpiralGalaxy.glb', label: 'Galaxy', headline: 'galaxies' },
-  { filename: 'EarthContinents.glb', label: 'Earth', headline: 'worlds' },
-  { filename: 'DNA.glb', label: 'DNA', headline: 'life' },
-  { filename: 'Human.glb', label: 'Human', headline: 'you' },
-  { filename: 'Fullerene.glb', label: 'Atomic scale', headline: 'matter' },
-  { filename: 'CmsCollision.glb', label: 'Collision', headline: 'where we start' },
+export const HERO_STAGE = {
+  galaxy: {
+    modelFilename: 'SpiralGalaxy.glb',
+    label: 'Galaxy',
+    headline: 'galaxies',
+  },
+  earth: {
+    modelFilename: 'EarthContinents.glb',
+    label: 'Earth',
+    headline: 'worlds',
+  },
+  dna: {
+    modelFilename: 'DNA.glb',
+    label: 'DNA',
+    headline: 'life',
+  },
+  human: {
+    modelFilename: 'Human.glb',
+    label: 'Human',
+    headline: 'you',
+  },
+  matter: {
+    modelFilename: 'Fullerene.glb',
+    label: 'Atomic scale',
+    headline: 'matter',
+  },
+  collision: {
+    modelFilename: 'CmsCollision.glb',
+    label: 'Collision',
+    headline: 'where we start',
+  },
+  about: {
+    modelFilename: 'People.glb',
+    label: 'People',
+    headline: 'people',
+  },
+  gallery: {
+    modelFilename: 'Camera.glb',
+    label: 'Camera',
+    headline: 'moments',
+  },
+  blog: {
+    modelFilename: 'Speech.glb',
+    label: 'Speech',
+    headline: 'ideas',
+  },
+  timeline: {
+    modelFilename: 'Hourglass.glb',
+    label: 'Hourglass',
+    headline: 'time',
+  },
+  volunteer: {
+    modelFilename: 'Handshake.glb',
+    label: 'Handshake',
+    headline: 'collaboration',
+  },
+  totalImpact: {
+    modelFilename: 'EarthContinents.glb',
+    label: 'Total impact',
+    headline: 'impact',
+  },
+} as const satisfies Record<string, HeroStage>
+
+export const HOME_HERO_STAGES = [
+  HERO_STAGE.galaxy,
+  HERO_STAGE.earth,
+  HERO_STAGE.dna,
+  HERO_STAGE.human,
+  HERO_STAGE.matter,
+  HERO_STAGE.collision,
 ] as const satisfies readonly HeroStage[]
-
-export const HERO_MODEL_FILENAMES = HERO_STAGES.map(
-  (stage) => stage.filename,
-)
-
-export const HERO_MODEL_URLS = HERO_STAGES.map(
-  (stage) => `/models/${stage.filename}`,
-)
-
-const stageByFilename = new Map<string, HeroStage>(
-  HERO_STAGES.map((stage) => [stage.filename, stage]),
-)
-
-export function getHeroStage(filename: string): HeroStage {
-  const stage = stageByFilename.get(filename)
-  if (!stage) throw new Error(`Unknown hero stage: ${filename}`)
-  return stage
-}
-
-export function getInitialHeroStageTransition(): { from: HeroStage, to: HeroStage } {
-  const [firstStage, secondStage] = HERO_STAGES
-  if (!firstStage || !secondStage) {
-    throw new Error('The hero stage directory requires at least two stages.')
-  }
-
-  return { from: firstStage, to: secondStage }
-}

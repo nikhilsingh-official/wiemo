@@ -29,6 +29,8 @@ export interface ParticleRendererOptions {
 /** The single public configuration contract for the canvas and Three.js engine. */
 export interface ParticleOptions {
   modelUrls: string[]
+  /** Optional semantic names emitted by morph events, aligned by model URL index. */
+  modelNames: string[]
   particleCount: number
   autoPlay: boolean
   morphDuration: number

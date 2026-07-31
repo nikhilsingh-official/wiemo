@@ -4,17 +4,17 @@ import {
   Timer,
   WebGLRenderer,
 } from 'three'
-import { GltfParticleLoader } from './assets/GltfParticleLoader'
-import { defineParticleOptions } from './particleOptions'
-import { GpuParticleMorph } from './particles/GpuParticleMorph'
-import { createDefaultShapes } from './particles/createShapes'
+import { GltfParticleLoader } from './assets/GltfParticleLoader.ts'
+import { defineParticleOptions } from './particleOptions.ts'
+import { GpuParticleMorph } from './particles/GpuParticleMorph.ts'
+import { createDefaultShapes } from './particles/createShapes.ts'
 import type {
   GltfShapeOptions,
   ParticleExperienceEvents,
   ParticleOptions,
   ParticleOptionsInput,
   ParticleShape,
-} from './types'
+} from './types.ts'
 
 /** Owns the Three.js lifecycle and exposes the small public API the UI needs. */
 export class ParticleExperience {
@@ -23,6 +23,7 @@ export class ParticleExperience {
   private readonly renderer: WebGLRenderer
   private readonly timer = new Timer()
   private readonly loader = new GltfParticleLoader()
+  private readonly shapeCache = new Map<string, Promise<ParticleShape>>()
   private readonly particles: GpuParticleMorph
   private readonly resizeObserver: ResizeObserver
   private options: ParticleOptions
@@ -102,19 +103,37 @@ export class ParticleExperience {
     this.resize()
   }
 
-  async loadGltfShape(
+  loadGltfShape(
     url: string,
     options: GltfShapeOptions = this.options.model,
+    name?: string,
   ): Promise<ParticleShape> {
-    return this.loader.load(url, this.options.particleCount, options)
+    const cacheKey = JSON.stringify({ url, options })
+    let shape = this.shapeCache.get(cacheKey)
+    if (!shape) {
+      shape = this.loader.load(url, this.options.particleCount, options)
+      this.shapeCache.set(cacheKey, shape)
+      void shape.catch(() => {
+        if (this.shapeCache.get(cacheKey) === shape) {
+          this.shapeCache.delete(cacheKey)
+        }
+      })
+    }
+
+    if (!name) return shape
+    return shape.then((loadedShape) => ({
+      ...loadedShape,
+      name,
+    }))
   }
 
   async loadGltfShapes(
     urls: string[],
     options: GltfShapeOptions = this.options.model,
+    names: string[] = [],
   ): Promise<ParticleShape[]> {
     return Promise.all(
-      urls.map((url) => this.loadGltfShape(url, options)),
+      urls.map((url, index) => this.loadGltfShape(url, options, names[index])),
     )
   }
 
@@ -140,6 +159,7 @@ export class ParticleExperience {
     this.particles.dispose()
     this.renderer.dispose()
     this.timer.dispose()
+    this.shapeCache.clear()
   }
 
   private readonly tick = (): void => {

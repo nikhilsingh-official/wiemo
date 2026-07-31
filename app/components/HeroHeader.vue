@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { defineTextOptions } from '../text-typing/textOptions'
-import type { TextOptionsInput } from '../text-typing/types'
+import { defineTextOptions } from '~/hero/text-typing/textOptions'
+import type { TextOptionsInput } from '~/hero/text-typing/types'
 
 const props = withDefaults(
   defineProps<{
@@ -17,9 +17,11 @@ const options = computed(() => defineTextOptions(props.textoptions))
 const displayedText = ref('')
 const announcedText = ref('')
 const prefersReducedMotion = ref(false)
+
 const cursorStyle = computed(() => ({
   animationDuration: `${options.value.cursorBlinkDuration}ms`,
 }))
+
 let typingTimer: ReturnType<typeof setTimeout> | undefined
 let reducedMotionQuery: MediaQueryList | undefined
 let isMounted = false
@@ -93,10 +95,8 @@ onBeforeUnmount(() => {
       <span aria-hidden="true">
         <span class="anchor-text">Particles are</span>
         <span class="change-text">
-          {{ displayedText }}<span
-            class="hero-header__cursor"
-            :style="cursorStyle"
-          >|</span>
+          {{ displayedText }}
+          <span class="hero-header__cursor" :style="cursorStyle">|</span>
         </span>
       </span>
       <span
@@ -115,7 +115,7 @@ onBeforeUnmount(() => {
 .anchor-text {
   display: block;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 3vw;
+  font-size: 4.5vw;
   font-weight: 700;
   color: white;
 }
@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
 .change-text {
   display: block;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 3vw;
+  font-size: 4.5vw;
   font-weight: 700;
   color: $atlas;
 }

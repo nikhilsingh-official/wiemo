@@ -1,4 +1,6 @@
-import type { ParticleShape } from '../types'
+import type { ParticleShape } from '../types.ts'
+
+export const SPIRAL_GALAXY_PARTICLE_COUNT = 72_000
 
 function random(index: number, salt: number): number {
   const value = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453

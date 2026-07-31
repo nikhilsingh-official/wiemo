@@ -1,7 +1,8 @@
-import type { ParticleOptions, ParticleOptionsInput } from './types'
+import type { ParticleOptions, ParticleOptionsInput } from './types.ts'
 
 export const DEFAULT_PARTICLE_OPTIONS = Object.freeze({
   modelUrls: Object.freeze([] as string[]),
+  modelNames: Object.freeze([] as string[]),
   particleCount: 24_000,
   autoPlay: true,
   morphDuration: 1.8,
@@ -32,10 +33,17 @@ export const DEFAULT_PARTICLE_OPTIONS = Object.freeze({
 
 /** Merges partial, nested overrides into a complete and independent options object. */
 export function defineParticleOptions(overrides: ParticleOptionsInput = {}): ParticleOptions {
+  const modelUrls = [...(overrides.modelUrls ?? DEFAULT_PARTICLE_OPTIONS.modelUrls)]
+  const modelNames = [...(overrides.modelNames ?? DEFAULT_PARTICLE_OPTIONS.modelNames)]
+  if (modelNames.length > 0 && modelNames.length !== modelUrls.length) {
+    throw new Error('modelNames must be empty or contain one name for every modelUrl.')
+  }
+
   return {
     ...DEFAULT_PARTICLE_OPTIONS,
     ...overrides,
-    modelUrls: [...(overrides.modelUrls ?? DEFAULT_PARTICLE_OPTIONS.modelUrls)],
+    modelUrls,
+    modelNames,
     camera: {
       ...DEFAULT_PARTICLE_OPTIONS.camera,
       ...overrides.camera,

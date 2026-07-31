@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { ParticleExperience } from '../three/ParticleExperience'
-import { defineParticleOptions } from '../three/particleOptions'
-import type { MorphEvent, ParticleOptions, ParticleOptionsInput, ParticleShape } from '../three/types'
+import { ParticleExperience } from '~/hero/three/ParticleExperience'
+import { defineParticleOptions } from '~/hero/three/particleOptions'
+import type { MorphEvent, ParticleOptions, ParticleOptionsInput, ParticleShape } from '~/hero/three/types'
 
 const props = withDefaults(
   defineProps<{
@@ -42,7 +42,11 @@ async function loadModels(options: ParticleOptions) {
   const currentModelLoadId = ++modelLoadId
 
   try {
-    const modelShapes = await targetExperience.loadGltfShapes(options.modelUrls, options.model)
+    const modelShapes = await targetExperience.loadGltfShapes(
+      options.modelUrls,
+      options.model,
+      options.modelNames,
+    )
     if (!isCurrentModelLoad(targetExperience, currentCreationId, currentModelLoadId)) return
     targetExperience.transitionToShapeSequence(modelShapes)
     targetExperience.start()
@@ -57,12 +61,13 @@ async function loadRemainingInitialModels(
   targetExperience: ParticleExperience,
   firstShape: ParticleShape,
   urls: string[],
+  names: string[],
   options: ParticleOptions,
   currentCreationId: number,
   currentModelLoadId: number,
 ): Promise<void> {
   try {
-    const remainingShapes = await targetExperience.loadGltfShapes(urls, options.model)
+    const remainingShapes = await targetExperience.loadGltfShapes(urls, options.model, names)
     if (!isCurrentModelLoad(targetExperience, currentCreationId, currentModelLoadId)) return
     targetExperience.initializeShapeSequence([firstShape, ...remainingShapes])
   } catch (error) {
@@ -92,19 +97,25 @@ async function createExperience(options: ParticleOptions): Promise<void> {
   }
 
   try {
-    const firstShape = await nextExperience.loadGltfShape(options.modelUrls[0]!, options.model)
+    const firstShape = await nextExperience.loadGltfShape(
+      options.modelUrls[0]!,
+      options.model,
+      options.modelNames[0],
+    )
     if (!isCurrentModelLoad(nextExperience, currentCreationId, initialModelLoadId)) return
 
     nextExperience.initializeShapeSequence([firstShape])
     nextExperience.start()
 
     const remainingUrls = options.modelUrls.slice(1)
+    const remainingNames = options.modelNames.slice(1)
     if (remainingUrls.length > 0) {
       const currentModelLoadId = ++modelLoadId
       void loadRemainingInitialModels(
         nextExperience,
         firstShape,
         remainingUrls,
+        remainingNames,
         options,
         currentCreationId,
         currentModelLoadId,
@@ -134,6 +145,7 @@ watch(
       || nextOptions.renderer.antialias !== activeOptions.renderer.antialias
       || nextOptions.renderer.powerPreference !== activeOptions.renderer.powerPreference
     const modelsChanged = JSON.stringify(nextOptions.modelUrls) !== JSON.stringify(activeOptions.modelUrls)
+      || JSON.stringify(nextOptions.modelNames) !== JSON.stringify(activeOptions.modelNames)
       || JSON.stringify(nextOptions.model) !== JSON.stringify(activeOptions.model)
 
     activeOptions = nextOptions

@@ -3,10 +3,12 @@ import {
   BufferAttribute,
   Mesh,
   Object3D,
+  Points,
+  SkinnedMesh,
   Vector3,
 } from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import type { GltfShapeOptions, ParticleShape } from '../types'
+import type { GltfShapeOptions, ParticleShape } from '../types.ts'
 
 interface MeshSurface {
   /** Nine XYZ values per triangle, already transformed into world space. */
@@ -24,6 +26,10 @@ interface SampledSurface {
 
 interface CollectedSurface {
   meshes: MeshSurface[]
+  bounds: Box3
+}
+
+interface CollectedPointCloud extends SampledSurface {
   bounds: Box3
 }
 
@@ -49,6 +55,21 @@ export class GltfParticleLoader {
     options: GltfShapeOptions,
     name = 'scene',
   ): ParticleShape {
+    const pointCloud = this.collectPointCloud(root)
+    if (pointCloud.positions.length > 0) {
+      const sampled = this.samplePointCloud(pointCloud, particleCount)
+      return {
+        name,
+        positions: this.normalize(
+          sampled.positions,
+          options.center,
+          options.size,
+          pointCloud.bounds,
+        ),
+        brightness: sampled.brightness,
+      }
+    }
+
     const surface = this.collectSurface(root)
 
     if (surface.meshes.length === 0) {
@@ -68,6 +89,55 @@ export class GltfParticleLoader {
       positions: normalized,
       brightness: sampled.brightness,
     }
+  }
+
+  private collectPointCloud(root: Object3D): CollectedPointCloud {
+    root.updateWorldMatrix(true, true)
+    const positions: number[] = []
+    const brightness: number[] = []
+    const bounds = new Box3()
+    const point = new Vector3()
+
+    root.traverse((object) => {
+      if (!(object instanceof Points)) return
+      const sourcePositions = object.geometry.getAttribute('position') as BufferAttribute | undefined
+      if (!sourcePositions) return
+      const sourceBrightness = object.geometry.getAttribute('_particlebrightness') as BufferAttribute | undefined
+
+      for (let index = 0; index < sourcePositions.count; index += 1) {
+        point.fromBufferAttribute(sourcePositions, index).applyMatrix4(object.matrixWorld)
+        positions.push(point.x, point.y, point.z)
+        brightness.push(sourceBrightness?.getX(index) ?? 1)
+        bounds.expandByPoint(point)
+      }
+    })
+
+    return {
+      positions: Float32Array.from(positions),
+      brightness: Float32Array.from(brightness),
+      bounds,
+    }
+  }
+
+  private samplePointCloud(source: SampledSurface, particleCount: number): SampledSurface {
+    const sourceCount = source.positions.length / 3
+    const positions = new Float32Array(particleCount * 3)
+    const brightness = new Float32Array(particleCount)
+    if (sourceCount === 0) return { positions, brightness }
+
+    for (let index = 0; index < particleCount; index += 1) {
+      const sourceIndex = particleCount <= sourceCount
+        ? Math.floor(index * sourceCount / particleCount)
+        : index % sourceCount
+      const sourceOffset = sourceIndex * 3
+      const targetOffset = index * 3
+      positions[targetOffset] = source.positions[sourceOffset]!
+      positions[targetOffset + 1] = source.positions[sourceOffset + 1]!
+      positions[targetOffset + 2] = source.positions[sourceOffset + 2]!
+      brightness[index] = source.brightness[sourceIndex]!
+    }
+
+    return { positions, brightness }
   }
 
   private collectSurface(root: Object3D): CollectedSurface {
@@ -97,9 +167,9 @@ export class GltfParticleLoader {
         const indexB = index ? index.getX(offset + 1) : offset + 1
         const indexC = index ? index.getX(offset + 2) : offset + 2
 
-        a.fromBufferAttribute(position, indexA).applyMatrix4(object.matrixWorld)
-        b.fromBufferAttribute(position, indexB).applyMatrix4(object.matrixWorld)
-        c.fromBufferAttribute(position, indexC).applyMatrix4(object.matrixWorld)
+        this.readWorldVertex(object, position, indexA, a)
+        this.readWorldVertex(object, position, indexB, b)
+        this.readWorldVertex(object, position, indexC, c)
 
         const area = edgeAB.subVectors(b, a).cross(edgeAC.subVectors(c, a)).length() * 0.5
         if (area <= Number.EPSILON) continue
@@ -128,6 +198,17 @@ export class GltfParticleLoader {
     })
 
     return { meshes, bounds }
+  }
+
+  private readWorldVertex(
+    mesh: Mesh,
+    positions: BufferAttribute,
+    index: number,
+    target: Vector3,
+  ): Vector3 {
+    target.fromBufferAttribute(positions, index)
+    if (mesh instanceof SkinnedMesh) mesh.applyBoneTransform(index, target)
+    return target.applyMatrix4(mesh.matrixWorld)
   }
 
   private sampleSurface(meshes: MeshSurface[], particleCount: number): SampledSurface {
