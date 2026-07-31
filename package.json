@@ -13,8 +13,9 @@
   "dependencies": {
     "@nuxt/content": "3.15.2",
     "better-sqlite3": "^13.0.1",
-    "decap-cms-app": "^3.15.1",
+    "hast-util-to-html": "9.0.5",
     "nuxt": "^4.5.1",
+    "nuxt-studio": "1.7.0",
     "three": "^0.185.1",
     "vue": "^3.5.40",
     "vue-router": "^5.2.0"
