@@ -1,0 +1,185 @@
+<script setup lang="ts">
+type BlogCardPost = {
+  path: string
+  title: string
+  subheading: string
+  excerpt: string
+  author?: string
+  date: Date | string
+  thumbnail: string
+  thumbnailAlt: string
+  tags?: string[]
+}
+
+defineProps<{
+  post: BlogCardPost
+  featured?: boolean
+}>()
+
+const formatDate = (date: Date | string) =>
+  new Intl.DateTimeFormat('en', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(new Date(date))
+</script>
+
+<template>
+  <article :class="['blog-card', { 'blog-card--featured': featured }]">
+    <NuxtLink
+      :to="post.path"
+      class="blog-card__link"
+    >
+      <div class="blog-card__media">
+        <img
+          :src="post.thumbnail"
+          :alt="post.thumbnailAlt"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="blog-card__body">
+        <div class="blog-card__meta">
+          <span>{{ post.author ?? 'WIEMO' }}</span>
+          <time :datetime="String(post.date)">{{ formatDate(post.date) }}</time>
+        </div>
+
+        <h2>{{ post.title }}</h2>
+        <p class="blog-card__subheading">{{ post.subheading }}</p>
+        <p>{{ post.excerpt }}</p>
+
+        <ul
+          v-if="post.tags?.length"
+          class="blog-card__tags"
+          aria-label="Post tags"
+        >
+          <li
+            v-for="tag in post.tags"
+            :key="tag"
+          >
+            {{ tag }}
+          </li>
+        </ul>
+      </div>
+    </NuxtLink>
+  </article>
+</template>
+
+<style scoped lang="scss">
+.blog-card {
+  overflow: hidden;
+  border: 1px solid rgb(189 232 251 / 12%);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgb(8 11 18 / 86%), rgb(4 6 11 / 96%));
+  box-shadow: 0 22px 60px rgb(0 0 0 / 22%);
+
+  &__link {
+    display: grid;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__media {
+    position: relative;
+    min-height: 220px;
+    background: var(--panel-2);
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, transparent 42%, rgb(0 0 0 / 58%)),
+        radial-gradient(circle at 18% 18%, rgb(51 180 236 / 22%), transparent 38%);
+      content: '';
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      filter: saturate(0.82) contrast(1.04);
+    }
+  }
+
+  &__body {
+    display: grid;
+    gap: 12px;
+    padding: clamp(20px, 3vw, 30px);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    color: var(--mute);
+    font-family: $font-mono;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    max-width: 13ch;
+    color: var(--ink);
+    font-size: clamp(1.45rem, 4vw, 2.4rem);
+    line-height: 0.98;
+  }
+
+  p {
+    color: var(--body-copy);
+    line-height: 1.7;
+  }
+
+  &__subheading {
+    color: var(--core);
+    font-size: 1.02rem;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 6px 9px;
+      border: 1px solid rgb(51 180 236 / 22%);
+      border-radius: 999px;
+      color: var(--beam);
+      font-family: $font-mono;
+      font-size: 0.64rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+  }
+
+  &--featured {
+    .blog-card__link {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+
+    .blog-card__media {
+      min-height: 420px;
+    }
+
+    .blog-card__body {
+      align-content: center;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  .blog-card--featured .blog-card__link {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-card--featured .blog-card__media {
+    min-height: 260px;
+  }
+}
+</style>
