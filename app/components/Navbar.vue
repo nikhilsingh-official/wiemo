@@ -4,12 +4,15 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 
 <template>
   <nav class="navbar" aria-label="Particle physics site navigation">
+    <NuxtLink class="navbar__brand" to="/" aria-label="Wiemo home">
+      <img
+        class="navbar__brand-mark"
+        src="/logos/wiemo_navbar.svg"
+        alt=""
+        aria-hidden="true"
+      >
+    </NuxtLink>
     <ul class="navbar__list">
-      <li class="navbar__item navbar__logo">
-        <NuxtLink class="navbar__link" to="/">
-          wiemo
-        </NuxtLink>
-      </li>
       <li
         v-for="item in NAVBAR_ITEMS"
         :key="item.to"
@@ -29,8 +32,12 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 
 <style scoped lang="scss">
 .navbar {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 20px);
   min-height: 56px;
   overflow-x: auto;
+  padding: 8px;
   isolation: isolate;
   background:
     linear-gradient(
@@ -52,6 +59,35 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   }
 }
 
+.navbar__brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: clamp(12px, 1.3vw, 20px);
+  border-radius: 14px;
+  transition:
+    background-color $transition-fast $transition-ease,
+    filter $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgb(51 180 236 / 8%);
+    filter: drop-shadow(0 0 12px rgb(51 180 236 / 28%));
+  }
+
+  &:focus-visible {
+    outline-offset: -2px;
+  }
+}
+
+.navbar__brand-mark {
+  display: block;
+  width: clamp(112px, 11vw, 160px);
+  height: auto;
+  max-height: 30px;
+}
+
 .navbar__list {
   display: flex;
   width: 100%;
@@ -61,7 +97,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   align-items: center;
   justify-content: space-between;
   gap: clamp(4px, 0.5vw, 8px);
-  padding: 8px;
+  padding: 0;
   border-radius: inherit;
   list-style: none;
 }
@@ -69,10 +105,6 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 .navbar__item {
   display: flex;
   align-items: center;
-}
-
-.navbar__logo {
-  padding: 16px;
 }
 
 .navbar__link {
@@ -139,6 +171,18 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 }
 
 @media (max-width: $breakpoint-small) {
+  .navbar {
+    gap: 8px;
+  }
+
+  .navbar__brand {
+    padding-inline: 10px;
+  }
+
+  .navbar__brand-mark {
+    width: 104px;
+  }
+
   .navbar__list {
     justify-content: flex-start;
   }
