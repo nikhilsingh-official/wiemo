@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   css: ['~/assets/styles/base.scss'],
+
   app: {
     head: {
       title: 'particle-physics',
@@ -11,6 +12,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   vite: {
     css: {
       preprocessorOptions: {
@@ -24,4 +26,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  modules: ['@nuxt/content'],
 })

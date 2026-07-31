@@ -6,6 +6,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "generate:galaxy-model": "node scripts/generate-galaxy-model.mjs",
     "generate:collision-model": "node scripts/generate-collision-model.mjs",
     "generate:dna-model": "node scripts/generate-dna-model.mjs",
     "generate:earth-model": "node scripts/generate-earth-model.mjs",
@@ -19,6 +20,8 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@nuxt/content": "3.15.2",
+    "better-sqlite3": "^13.0.1",
     "decap-cms-app": "^3.15.1",
     "nuxt": "^4.5.1",
     "three": "^0.185.1",
