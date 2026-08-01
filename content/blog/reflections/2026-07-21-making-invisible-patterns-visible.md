@@ -3,6 +3,7 @@ title: Making Invisible Patterns Visible
 author: Nikhil Singh
 date: 2026-07-21
 description: The hero particle system is a useful metaphor for the blog itself. A good science article should start with complexity, then reveal enough structure for the reader to keep going.
+excerpt: This placeholder post connects the particle canvas theme to hands-on learning: invisible systems become understandable once students can see their traces.
 draft: false
 featured: false
 imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public domain"

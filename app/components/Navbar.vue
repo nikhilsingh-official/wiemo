@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NAVBAR_BLOG_POSTS, NAVBAR_ITEMS } from '~/navbar/items'
+import { NAVBAR_BLOG_CATEGORIES, NAVBAR_BLOG_POSTS, NAVBAR_ITEMS } from '~/navbar/items'
 
 const route = useRoute()
 
@@ -26,16 +26,16 @@ const formatDate = (date: Date | string) =>
         :key="item.to"
         :class="[
           'navbar__item',
-          { 'navbar__item--dropdown': item.to === '/blog' },
+          { 'navbar__item--dropdown': item.label === 'Blog' },
         ]"
       >
-        <template v-if="item.to === '/blog'">
+        <template v-if="item.label === 'Blog'">
           <NuxtLink
             :class="[
               'navbar__link',
               { 'navbar__link--active': route.path.startsWith('/blog') },
             ]"
-            to="/blog"
+            :to="item.to"
             aria-haspopup="true"
           >
             {{ item.label }}
@@ -46,6 +46,15 @@ const formatDate = (date: Date | string) =>
             class="navbar__dropdown"
             aria-label="Blog posts"
           >
+            <NuxtLink
+              v-for="category in NAVBAR_BLOG_CATEGORIES"
+              :key="category.to"
+              class="navbar__dropdown-link navbar__dropdown-link--category"
+              :to="category.to"
+            >
+              <span>{{ category.title }}</span>
+            </NuxtLink>
+
             <NuxtLink
               v-for="post in NAVBAR_BLOG_POSTS"
               :key="post.to"
@@ -282,6 +291,10 @@ const formatDate = (date: Date | string) =>
     color: var(--core);
     background: rgb(51 180 236 / 9%);
   }
+}
+
+.navbar__dropdown-link--category {
+  border-bottom: 1px solid rgb(189 232 251 / 10%);
 }
 
 @supports not (backdrop-filter: blur(1px)) {

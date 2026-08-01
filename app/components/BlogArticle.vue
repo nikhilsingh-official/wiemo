@@ -1,19 +1,19 @@
 <script setup lang="ts">
-const route = useRoute()
-
-const { data: post } = await useAsyncData(`blog-post-${route.path}`, () =>
-  queryCollection('blog')
-    .where('draft', '=', false)
-    .path(route.path)
-    .first()
-)
-
-if (!post.value) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Blog post not found',
-  })
+type BlogArticlePost = {
+  title: string
+  subheading: string
+  author?: string
+  date: Date | string
+  thumbnail: string
+  thumbnailAlt: string
+  imageCredit?: string
 }
+
+defineProps<{
+  post: BlogArticlePost
+  backTo: string
+  backLabel: string
+}>()
 
 const formatDate = (date: Date | string) =>
   new Intl.DateTimeFormat('en', {
@@ -21,25 +21,16 @@ const formatDate = (date: Date | string) =>
     month: 'long',
     year: 'numeric',
   }).format(new Date(date))
-
-useSeoMeta({
-  title: () => post.value?.title ?? 'Blog',
-  description: () => post.value?.excerpt ?? '',
-  ogImage: () => post.value?.thumbnail ?? '',
-})
 </script>
 
 <template>
-  <main
-    v-if="post"
-    class="blog-post"
-  >
+  <main class="blog-post">
     <article class="blog-post__article">
       <NuxtLink
-        to="/blog"
+        :to="backTo"
         class="blog-post__back"
       >
-        Back to blog
+        {{ backLabel }}
       </NuxtLink>
 
       <header class="blog-post__header">

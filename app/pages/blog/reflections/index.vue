@@ -2,19 +2,14 @@
 import { HERO_STAGE } from '~/hero/stages'
 
 definePageMeta({
-  heroStages: [HERO_STAGE.blog],
+  heroStages: [HERO_STAGE.reflections],
 })
 
-const { data: posts } = await useAsyncData('blog-posts', () =>
-  queryCollection('blog')
+const { data: posts } = await useAsyncData('reflection-posts', () =>
+  queryCollection('reflections')
     .where('draft', '=', false)
     .order('date', 'DESC')
     .all()
-)
-
-const featuredPost = computed(() => posts.value?.find((post) => post.featured))
-const remainingPosts = computed(() =>
-  posts.value?.filter((post) => post.path !== featuredPost.value?.path) ?? []
 )
 </script>
 
@@ -22,32 +17,26 @@ const remainingPosts = computed(() =>
   <main class="content-section blog-page">
     <div class="wrap">
       <header class="blog-page__header">
-        <p class="eyebrow">Field Notes</p>
-        <h1>Blog</h1>
+        <p class="eyebrow">Blog</p>
+        <h1>Reflections</h1>
         <p class="lede">
-          Placeholder posts for Studio-backed stories, updates, and learning resources.
+          Notes, ideas, and observations from the work behind WIEMO.
         </p>
       </header>
 
-      <BlogCard
-        v-if="featuredPost"
-        :post="featuredPost"
-        featured
-      />
-
       <section
-        v-if="remainingPosts.length"
+        v-if="posts?.length"
         class="blog-page__grid"
-        aria-label="Blog posts"
+        aria-label="Reflection posts"
       >
         <BlogCard
-          v-for="post in remainingPosts"
+          v-for="post in posts"
           :key="post.path"
           :post="post"
         />
       </section>
 
-      <p v-if="!posts?.length">No posts found.</p>
+      <p v-else>No reflections found.</p>
     </div>
   </main>
 </template>
@@ -65,7 +54,6 @@ const remainingPosts = computed(() =>
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(18px, 3vw, 28px);
-    margin-top: clamp(18px, 3vw, 28px);
   }
 }
 
