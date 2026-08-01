@@ -110,22 +110,29 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .hero-header__heading {
   margin: 0;
+  max-width: min(12ch, 72vw);
+  line-height: 0.98;
 }
 
 .anchor-text {
   display: block;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 4.5vw;
+  font-family: $font-display;
+  font-size: clamp(3rem, 5vw, 5.6rem);
   font-weight: 700;
+  line-height: 0.98;
   color: white;
 }
 
 .change-text {
   display: block;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 4.5vw;
+  min-height: 1.06em;
+  margin-top: 0.04em;
+  font-family: $font-display;
+  font-size: clamp(3rem, 5vw, 5.6rem);
   font-weight: 700;
+  line-height: 1.02;
   color: $atlas;
+  overflow-wrap: anywhere;
 }
 
 .hero-header__cursor {
@@ -155,6 +162,17 @@ onBeforeUnmount(() => {
   .hero-header__cursor {
     opacity: 1;
     animation: none;
+  }
+}
+
+@media (max-width: $breakpoint-small) {
+  .hero-header__heading {
+    max-width: min(11ch, 82vw);
+  }
+
+  .anchor-text,
+  .change-text {
+    font-size: clamp(2.6rem, 12vw, 4rem);
   }
 }
 </style>

@@ -71,7 +71,7 @@ export const SITE_CONTENT = {
     },
     {
       title: 'Blog',
-      to: '/blog',
+      to: '/blog/reflections',
       copy: 'Field notes, workshop updates and particle-physics learning stories for the Studio CMS prototype.',
     },
   ],

@@ -90,13 +90,11 @@ const formatDate = (date: Date | string) =>
   overflow: visible;
   padding: 8px;
   isolation: isolate;
-  background: transparent;
-  border: 1px solid rgb(189 232 251 / 14%);
-  box-shadow:
-    0 18px 48px rgb(0 0 0 / 38%),
-    inset 0 1px 0 rgb(255 255 255 / 7%);
-  backdrop-filter: blur(18px) saturate(145%);
-  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  background: rgb(8 11 18 / 10%);
+  border: 1px solid rgb(189 232 251 / 10%);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 34%);
+  backdrop-filter: blur(28px) saturate(165%) contrast(112%);
+  -webkit-backdrop-filter: blur(28px) saturate(165%) contrast(112%);
   scrollbar-width: none;
 
   &::before {
@@ -107,12 +105,12 @@ const formatDate = (date: Date | string) =>
     background:
       linear-gradient(
         115deg,
-        rgb(189 232 251 / 8%),
-        rgb(8 11 18 / 48%) 32%,
-        rgb(11 15 24 / 62%)
+        rgb(8 11 18 / 20%),
+        rgb(8 11 18 / 34%) 42%,
+        rgb(8 11 18 / 18%)
       );
     content: '';
-    opacity: 0.75;
+    opacity: 1;
   }
 
   &::-webkit-scrollbar {
@@ -299,7 +297,7 @@ const formatDate = (date: Date | string) =>
 
 @supports not (backdrop-filter: blur(1px)) {
   .navbar::before {
-    background: rgb(8 11 18 / 94%);
+    background: rgb(8 11 18 / 88%);
   }
 }
 

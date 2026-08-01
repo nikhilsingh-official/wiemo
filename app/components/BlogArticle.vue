@@ -97,7 +97,7 @@ const formatDate = (date: Date | string) =>
 
     h1 {
       color: var(--ink);
-      font-family: Georgia, 'Times New Roman', serif;
+      font-family: $font-display;
       font-size: clamp(2.7rem, 7vw, 5.7rem);
       font-weight: 500;
       letter-spacing: 0;
@@ -157,7 +157,7 @@ const formatDate = (date: Date | string) =>
     max-width: 720px;
     margin-inline: auto;
     color: var(--body-copy);
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: $font-body;
     font-size: clamp(1.12rem, 2vw, 1.28rem);
     line-height: 1.78;
   }

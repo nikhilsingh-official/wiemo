@@ -34,7 +34,7 @@ withDefaults(
 
 <style scoped lang="scss">
 .hero__eyebrow {
-  font-family: "JetBrains Mono", sans-serif;
+  font-family: $font-mono;
   max-width: 42rem;
   font-size: clamp(0.72rem, 1.05vw, 1.05rem);
   color: var(--faint);
@@ -44,7 +44,7 @@ withDefaults(
 
 .hero__copy {
   max-width: 44rem;
-  margin: 1rem 0 0;
+  margin: 1.25rem 0 0;
   color: var(--body-copy);
   line-height: 1.7;
 }
