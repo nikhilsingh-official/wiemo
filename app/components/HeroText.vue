@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HeroHeader from '~/components/HeroHeader.vue'
+import { SITE_CONTENT } from '~/content/siteContent'
 import type { TextOptionsInput } from '~/hero/text-typing/types'
 
 withDefaults(
@@ -15,18 +16,18 @@ withDefaults(
 
 <template>
   <div>
-    <h3 class="hero__eyebrow">What Is Everything Made Of?</h3>
+    <h3 class="hero__eyebrow">{{ SITE_CONTENT.initiativeName }}</h3>
     <HeroHeader
       class="hero__header"
       :text="headlineText"
       :textoptions="textOptions"
     />
     <p class="hero__copy">
-      Lorem Ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      {{ SITE_CONTENT.shortDescription }}
     </p>
     <div class="hero__CTA">
-      <NuxtLink><button class="hero__CTA__bright">Volunteer</button></NuxtLink>
-      <NuxtLink><button class="hero__CTA__dim">Learn More</button></NuxtLink>
+      <NuxtLink to="/volunteer"><button class="hero__CTA__bright">Volunteer</button></NuxtLink>
+      <NuxtLink to="/about"><button class="hero__CTA__dim">Learn More</button></NuxtLink>
     </div>
   </div>
 </template>
@@ -34,8 +35,11 @@ withDefaults(
 <style scoped lang="scss">
 .hero__eyebrow {
   font-family: "JetBrains Mono", sans-serif;
-  font-size: 1.2vw;
+  max-width: 42rem;
+  font-size: clamp(0.72rem, 1.05vw, 1.05rem);
   color: var(--faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .hero__copy {

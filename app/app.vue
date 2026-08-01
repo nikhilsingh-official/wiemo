@@ -1,10 +1,13 @@
 <script setup lang="ts">
+const route = useRoute()
+const showHero = computed(() => Boolean(route.meta.heroStages?.length))
 </script>
 <template>
   <NuxtRouteAnnouncer />
   <Navbar class="navbar__main" />
-  <Hero />
+  <Hero v-if="showHero" />
   <NuxtPage />
+  <SiteFooter />
 </template>
 <style lang="scss" scoped>
 .navbar__main {

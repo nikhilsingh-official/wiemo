@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { NAVBAR_ITEMS } from '~/navbar/items'
+import { NAVBAR_BLOG_POSTS, NAVBAR_ITEMS } from '~/navbar/items'
+
+const route = useRoute()
+
+const formatDate = (date: Date | string) =>
+  new Intl.DateTimeFormat('en', {
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(date))
 </script>
 
 <template>
@@ -16,9 +24,42 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
       <li
         v-for="item in NAVBAR_ITEMS"
         :key="item.to"
-        class="navbar__item"
+        :class="[
+          'navbar__item',
+          { 'navbar__item--dropdown': item.to === '/blog' },
+        ]"
       >
+        <template v-if="item.to === '/blog'">
+          <NuxtLink
+            :class="[
+              'navbar__link',
+              { 'navbar__link--active': route.path.startsWith('/blog') },
+            ]"
+            to="/blog"
+            aria-haspopup="true"
+          >
+            {{ item.label }}
+          </NuxtLink>
+
+          <div
+            v-if="NAVBAR_BLOG_POSTS.length"
+            class="navbar__dropdown"
+            aria-label="Blog posts"
+          >
+            <NuxtLink
+              v-for="post in NAVBAR_BLOG_POSTS"
+              :key="post.to"
+              class="navbar__dropdown-link"
+              :to="post.to"
+            >
+              <span>{{ post.title }}</span>
+              <time :datetime="String(post.date)">{{ formatDate(post.date) }}</time>
+            </NuxtLink>
+          </div>
+        </template>
+
         <NuxtLink
+          v-else
           class="navbar__link"
           exact-active-class="navbar__link--active"
           :to="item.to"
@@ -37,7 +78,7 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   align-items: center;
   gap: clamp(10px, 1.2vw, 20px);
   min-height: 56px;
-  overflow-x: auto;
+  overflow: visible;
   padding: 8px;
   isolation: isolate;
   background: transparent;
@@ -114,8 +155,21 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 }
 
 .navbar__item {
+  position: relative;
   display: flex;
   align-items: center;
+}
+
+.navbar__item--dropdown {
+  &:hover,
+  &:focus-within {
+    .navbar__dropdown {
+      visibility: visible;
+      opacity: 1;
+      transform: translate(-50%, 0);
+      pointer-events: auto;
+    }
+  }
 }
 
 .navbar__link {
@@ -175,6 +229,61 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
   }
 }
 
+.navbar__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  display: grid;
+  width: min(360px, calc(100vw - 40px));
+  padding: 8px;
+  border: 1px solid rgb(189 232 251 / 14%);
+  border-radius: 8px;
+  background: rgb(6 9 15 / 96%);
+  box-shadow: 0 24px 56px rgb(0 0 0 / 42%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -4px);
+  transition:
+    opacity $transition-fast $transition-ease,
+    transform $transition-fast $transition-ease,
+    visibility $transition-fast $transition-ease;
+  visibility: hidden;
+}
+
+.navbar__dropdown-link {
+  display: grid;
+  gap: 5px;
+  padding: 13px 14px;
+  border-radius: 6px;
+  color: var(--body-copy);
+  text-decoration: none;
+  transition:
+    background-color $transition-fast $transition-ease,
+    color $transition-fast $transition-ease;
+
+  span {
+    color: var(--ink);
+    font-family: $font-display;
+    font-size: 0.98rem;
+    line-height: 1.16;
+  }
+
+  time {
+    color: var(--mute);
+    font-family: $font-mono;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--core);
+    background: rgb(51 180 236 / 9%);
+  }
+}
+
 @supports not (backdrop-filter: blur(1px)) {
   .navbar::before {
     background: rgb(8 11 18 / 94%);
@@ -184,6 +293,8 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 @media (max-width: $breakpoint-small) {
   .navbar {
     gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .navbar__brand {
@@ -200,6 +311,28 @@ import { NAVBAR_ITEMS } from '~/navbar/items'
 
   .navbar__link {
     padding-inline: 12px;
+  }
+
+  .navbar__item--dropdown {
+    position: static;
+  }
+
+  .navbar__dropdown {
+    position: fixed;
+    top: 92px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    transform: translateY(-4px);
+  }
+
+  .navbar__item--dropdown {
+    &:hover,
+    &:focus-within {
+      .navbar__dropdown {
+        transform: translateY(0);
+      }
+    }
   }
 }
 </style>
