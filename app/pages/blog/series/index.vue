@@ -13,7 +13,7 @@ const { data: posts } = await useAsyncData('series-posts', () =>
 )
 
 const seriesList = computed(() => {
-  const seriesBySlug = new Map<string, { slug: string, title: string, count: number }>()
+  const seriesBySlug = new Map<string, { slug: string, title: string, count: number, complexityRating: number }>()
 
   for (const post of posts.value ?? []) {
     const existing = seriesBySlug.get(post.seriesSlug)
@@ -25,6 +25,7 @@ const seriesList = computed(() => {
     seriesBySlug.set(post.seriesSlug, {
       slug: post.seriesSlug,
       title: post.seriesTitle,
+      complexityRating: post.complexityRating,
       count: 1,
     })
   }
@@ -56,7 +57,10 @@ const seriesList = computed(() => {
           :to="`/blog/series/${series.slug}`"
         >
           <h2>{{ series.title }}</h2>
-          <p>{{ series.count }} {{ series.count === 1 ? 'post' : 'posts' }}</p>
+          <div class="series-card__meta">
+            <p>{{ series.count }} {{ series.count === 1 ? 'post' : 'posts' }}</p>
+            <p>Complexity {{ series.complexityRating }}/10</p>
+          </div>
         </NuxtLink>
       </section>
 
@@ -95,6 +99,12 @@ const seriesList = computed(() => {
 
   h2 {
     color: var(--core);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
   }
 
   p {

@@ -28,6 +28,7 @@ export default defineContentConfig({
       schema: blogPostSchema.extend({
         seriesTitle: z.string(),
         seriesSlug: z.string(),
+        complexityRating: z.number().int().min(1).max(10),
       }),
     }),
   },

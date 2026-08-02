@@ -18,6 +18,7 @@ if (!posts.value?.length) {
 }
 
 const seriesTitle = computed(() => posts.value?.[0]?.seriesTitle ?? 'Series')
+const complexityRating = computed(() => posts.value?.[0]?.complexityRating)
 
 useSeoMeta({
   title: () => seriesTitle.value,
@@ -38,6 +39,12 @@ useSeoMeta({
       <header class="series-page__header">
         <p class="eyebrow">Series</p>
         <h1>{{ seriesTitle }}</h1>
+        <p
+          v-if="complexityRating"
+          class="series-page__complexity"
+        >
+          Complexity {{ complexityRating }}/10
+        </p>
       </header>
 
       <section
@@ -74,6 +81,15 @@ useSeoMeta({
   &__header {
     max-width: 720px;
     margin-bottom: clamp(28px, 5vw, 56px);
+  }
+
+  &__complexity {
+    margin-top: 18px;
+    color: var(--beam);
+    font-family: $font-mono;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   &__grid {
