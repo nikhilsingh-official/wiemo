@@ -15,6 +15,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+seriesPart: 3
 complexityRating: 4
 ---
 

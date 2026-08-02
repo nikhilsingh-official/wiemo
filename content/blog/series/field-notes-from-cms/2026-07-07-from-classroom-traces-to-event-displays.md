@@ -15,6 +15,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+seriesPart: 1
 complexityRating: 7
 ---
 

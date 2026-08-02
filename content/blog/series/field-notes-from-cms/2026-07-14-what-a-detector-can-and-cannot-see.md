@@ -15,6 +15,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+seriesPart: 2
 complexityRating: 7
 ---
 

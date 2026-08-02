@@ -15,6 +15,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+seriesPart: 1
 complexityRating: 2
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Uncertainty Budgets for Beginners
 subheading: A complex filler article for introducing uncertainty as a collection of named limits rather than a vague doubt.
-excerpt: Students can handle uncertainty when it is broken into readable sources: instrument limits, timing choices, repeated trials, and model assumptions.
+excerpt: "Students can handle uncertainty when it is broken into readable sources: instrument limits, timing choices, repeated trials, and model assumptions."
 author: WIEMO Program Team
 date: 2026-07-16
 thumbnail: /images/blog/classroom-science.jpg
@@ -15,6 +15,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+seriesPart: 2
 complexityRating: 9
 ---
 

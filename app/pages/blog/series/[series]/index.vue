@@ -6,7 +6,7 @@ const { data: posts } = await useAsyncData(`series-${seriesSlug.value}-posts`, (
   queryCollection('series')
     .where('draft', '=', false)
     .where('seriesSlug', '=', seriesSlug.value)
-    .order('date', 'DESC')
+    .order('seriesPart', 'ASC')
     .all()
 )
 

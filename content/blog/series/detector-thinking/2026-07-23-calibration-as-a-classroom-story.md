@@ -15,6 +15,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+seriesPart: 3
 complexityRating: 9
 ---
 

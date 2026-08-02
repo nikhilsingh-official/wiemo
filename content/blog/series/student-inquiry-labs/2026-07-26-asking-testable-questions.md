@@ -15,6 +15,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+seriesPart: 4
 complexityRating: 4
 ---
 
