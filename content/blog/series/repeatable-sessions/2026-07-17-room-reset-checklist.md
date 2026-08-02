@@ -2,6 +2,7 @@
 title: Room Reset Checklist
 subheading: A lightweight template for preparing the same classroom activity in very different school spaces.
 excerpt: Before a session starts, the room setup often decides whether the first ten minutes feel calm or improvised.
+postExcerpt: Before a session starts, the room setup often decides whether the first ten minutes feel calm or improvised.
 author: WIEMO Program Team
 date: 2026-07-17
 thumbnail: /images/blog/classroom-science.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+energyTier: ev
 seriesPart: 3
 complexityRating: 2
 ---

@@ -1,4 +1,5 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
+import { ENERGY_TIER_IDS } from './shared/energyTiers'
 
 const blogPostSchema = z.object({
   title: z.string(),
@@ -26,9 +27,11 @@ export default defineContentConfig({
       type: 'page',
       source: 'blog/series/**/*.md',
       schema: blogPostSchema.extend({
+        postExcerpt: z.string(),
         seriesTitle: z.string(),
         seriesSlug: z.string(),
         seriesPart: z.number().int().positive(),
+        energyTier: z.enum(ENERGY_TIER_IDS),
         complexityRating: z.number().int().min(1).max(10),
       }),
     }),

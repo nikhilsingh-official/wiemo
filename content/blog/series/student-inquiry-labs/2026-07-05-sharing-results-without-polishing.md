@@ -2,6 +2,7 @@
 title: Sharing Results Without Polishing
 subheading: A reflection format for helping students present unfinished findings honestly.
 excerpt: Not every investigation ends neatly, so this post models how students can share uncertainty without treating it as failure.
+postExcerpt: Not every investigation ends neatly, so this post models how students can share uncertainty without treating it as failure.
 author: WIEMO Program Team
 date: 2026-07-05
 thumbnail: /images/blog/classroom-science.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+energyTier: kev
 seriesPart: 1
 complexityRating: 4
 ---

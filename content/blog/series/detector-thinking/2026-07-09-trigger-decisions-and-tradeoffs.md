@@ -2,6 +2,7 @@
 title: Trigger Decisions and Tradeoffs
 subheading: A high-complexity post about deciding what data to keep when the experiment produces too much to store.
 excerpt: Trigger logic gives students a concrete way to discuss speed, selectivity, missed events, and why more data is not always more useful.
+postExcerpt: Trigger logic gives students a concrete way to discuss speed, selectivity, missed events, and why more data is not always more useful.
 author: WIEMO Program Team
 date: 2026-07-09
 thumbnail: /images/blog/hubble-field.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public d
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Hubble_Ultra_Deep_Field_part_d.jpg
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+energyTier: tev
 seriesPart: 1
 complexityRating: 9
 ---

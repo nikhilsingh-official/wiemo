@@ -2,6 +2,7 @@
 title: Building a Repeatable Session
 subheading: A sample operations post for documenting lesson structure, facilitation notes, and partner feedback.
 excerpt: Repeatability matters when a workshop moves between schools, facilitators, and room setups, so this post treats each session as something the team can improve rather than simply repeat.
+postExcerpt: Repeatability matters when a workshop moves between schools, facilitators, and room setups, so this post treats each session as something the team can improve rather than simply repeat.
 author: WIEMO Program Team
 date: 2026-07-24
 thumbnail: /images/blog/classroom-science.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+energyTier: ev
 seriesPart: 4
 complexityRating: 2
 ---

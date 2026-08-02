@@ -2,6 +2,7 @@
 title: Building a Layered Model
 subheading: A high-complexity placeholder about teaching detector systems as coordinated layers instead of one magic box.
 excerpt: A detector becomes easier to reason about when students can assign each layer a role, limitation, and kind of evidence.
+postExcerpt: A detector becomes easier to reason about when students can assign each layer a role, limitation, and kind of evidence.
 author: WIEMO Program Team
 date: 2026-07-30
 thumbnail: /images/blog/hubble-field.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public d
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Hubble_Ultra_Deep_Field_part_d.jpg
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+energyTier: tev
 seriesPart: 4
 complexityRating: 9
 ---

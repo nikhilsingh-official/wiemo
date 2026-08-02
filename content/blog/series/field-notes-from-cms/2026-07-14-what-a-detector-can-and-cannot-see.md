@@ -2,6 +2,7 @@
 title: What a Detector Can and Cannot See
 subheading: A field note about using detector limits as a teaching tool rather than a footnote.
 excerpt: Students understand measurements better when the lesson includes what the instrument misses, filters, or only infers indirectly.
+postExcerpt: Students understand measurements better when the lesson includes what the instrument misses, filters, or only infers indirectly.
 author: WIEMO Program Team
 date: 2026-07-14
 thumbnail: /images/blog/student-lab.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+energyTier: gev
 seriesPart: 2
 complexityRating: 7
 ---

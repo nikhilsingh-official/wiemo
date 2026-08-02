@@ -2,6 +2,7 @@
 title: Materials Bin Inventory
 subheading: A simple post for tracking reusable workshop materials before and after a school visit.
 excerpt: A shared inventory makes it easier to notice what is missing before the team is already on the way to a session.
+postExcerpt: A shared inventory makes it easier to notice what is missing before the team is already on the way to a session.
 author: WIEMO Program Team
 date: 2026-07-10
 thumbnail: /images/blog/student-lab.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+energyTier: ev
 seriesPart: 2
 complexityRating: 2
 ---

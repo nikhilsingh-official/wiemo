@@ -2,6 +2,7 @@
 title: Small Group Data Tables
 subheading: A post about making student measurements comparable without making every group do identical work.
 excerpt: Data tables help students coordinate, but the table should support thinking instead of becoming the whole activity.
+postExcerpt: Data tables help students coordinate, but the table should support thinking instead of becoming the whole activity.
 author: WIEMO Program Team
 date: 2026-07-12
 thumbnail: /images/blog/student-lab.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+energyTier: kev
 seriesPart: 2
 complexityRating: 4
 ---

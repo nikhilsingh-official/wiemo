@@ -2,6 +2,7 @@
 title: Observation Before Explanation
 subheading: A classroom routine for slowing down the jump from seeing a result to naming the concept behind it.
 excerpt: When learners observe first and explain later, the discussion has more evidence and fewer memorized answers.
+postExcerpt: When learners observe first and explain later, the discussion has more evidence and fewer memorized answers.
 author: WIEMO Program Team
 date: 2026-07-19
 thumbnail: /images/blog/classroom-science.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+energyTier: kev
 seriesPart: 3
 complexityRating: 4
 ---

@@ -8,6 +8,7 @@ definePageMeta({
 const { data: posts } = await useAsyncData('series-posts', () =>
   queryCollection('series')
     .where('draft', '=', false)
+    .order('date', 'ASC')
     .all()
 )
 
@@ -16,7 +17,7 @@ const seriesList = computed(() => {
   const seriesBySlug = new Map<string, {
     slug: string
     title: string
-    complexityRating: number
+    energyTier: SeriesPost['energyTier']
     posts: SeriesPost[]
   }>()
 
@@ -30,15 +31,28 @@ const seriesList = computed(() => {
     seriesBySlug.set(post.seriesSlug, {
       slug: post.seriesSlug,
       title: post.seriesTitle,
-      complexityRating: post.complexityRating,
+      energyTier: post.energyTier,
       posts: [post],
     })
   }
 
   return Array.from(seriesBySlug.values()).map(series => ({
     ...series,
-    posts: series.posts.sort((a, b) => a.seriesPart - b.seriesPart),
+    posts: series.posts.map(post => ({
+      path: post.path,
+      title: post.title,
+      date: post.date,
+      thumbnail: post.thumbnail,
+      thumbnailAlt: post.thumbnailAlt,
+      // `excerpt` is reserved by Nuxt Content, so the schema exposes its parsed alias.
+      excerpt: post.postExcerpt,
+    })),
   }))
+})
+
+useSeoMeta({
+  title: 'Series energy spectrum',
+  description: 'Explore WIEMO learning series across five particle-physics-inspired energy tiers.',
 })
 </script>
 
@@ -46,24 +60,23 @@ const seriesList = computed(() => {
   <main class="content-section blog-page">
     <div class="wrap">
       <header class="blog-page__header">
-        <p class="eyebrow">Blog</p>
-        <h1>Series</h1>
+        <p class="eyebrow">Blog / Series</p>
+        <h1>Energy spectrum</h1>
         <p class="lede">
-          Follow each learning path from its lowest energy state to its most advanced ideas.
+          Follow learning paths across a spectrum of ideas. Introductory series begin at
+          lower-energy bands; advanced series sit deeper in the spectrum, where energy
+          increases downward.
+        </p>
+        <p class="blog-page__note">
+          A spectrum has no intrinsic up or down convention&mdash;this orientation keeps the
+          journey from foundational to collider-scale thinking readable from top to bottom.
         </p>
       </header>
 
-      <section
+      <SeriesEnergySpectrum
         v-if="seriesList.length"
-        class="series-list"
-        aria-label="Blog series"
-      >
-        <SeriesEnergyStrip
-          v-for="series in seriesList"
-          :key="series.slug"
-          :series="series"
-        />
-      </section>
+        :series-list="seriesList"
+      />
 
       <p v-else>No series found.</p>
     </div>
@@ -75,13 +88,16 @@ const seriesList = computed(() => {
   min-height: 100vh;
 
   &__header {
-    max-width: 720px;
-    margin-bottom: clamp(28px, 5vw, 56px);
+    max-width: 800px;
+    margin-bottom: clamp(44px, 7vw, 80px);
   }
-}
 
-.series-list {
-  display: grid;
-  min-width: 0;
+  &__note {
+    max-width: 70ch;
+    margin-top: 18px;
+    color: var(--mute);
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
 }
 </style>

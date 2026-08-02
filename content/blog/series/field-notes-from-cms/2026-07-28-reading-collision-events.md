@@ -2,6 +2,7 @@
 title: Reading Collision Events
 subheading: A placeholder field note for helping students interpret visual traces from high-energy physics experiments.
 excerpt: Collision images can look overwhelming, so the session starts by separating tracks, deposits, labels, and the story they suggest.
+postExcerpt: Collision images can look overwhelming, so the session starts by separating tracks, deposits, labels, and the story they suggest.
 author: WIEMO Program Team
 date: 2026-07-28
 thumbnail: /images/blog/hubble-field.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public d
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Hubble_Ultra_Deep_Field_part_d.jpg
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+energyTier: gev
 seriesPart: 4
 complexityRating: 7
 ---

@@ -2,6 +2,7 @@
 title: Asking Testable Questions
 subheading: A starter inquiry lab post about turning student curiosity into something the group can actually investigate.
 excerpt: Students often arrive with big questions, so the first move is helping them reshape wonder into a testable classroom-scale experiment.
+postExcerpt: Students often arrive with big questions, so the first move is helping them reshape wonder into a testable classroom-scale experiment.
 author: WIEMO Program Team
 date: 2026-07-26
 thumbnail: /images/blog/student-lab.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+energyTier: kev
 seriesPart: 4
 complexityRating: 4
 ---

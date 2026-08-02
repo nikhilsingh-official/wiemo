@@ -2,6 +2,7 @@
 title: Facilitator Handoff
 subheading: Notes for making a workshop understandable to the next person who has to run it.
 excerpt: A handoff post captures what the plan said, what the room did, and what a future facilitator should change.
+postExcerpt: A handoff post captures what the plan said, what the room did, and what a future facilitator should change.
 author: WIEMO Program Team
 date: 2026-07-03
 thumbnail: /images/blog/classroom-science.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+energyTier: ev
 seriesPart: 1
 complexityRating: 2
 ---

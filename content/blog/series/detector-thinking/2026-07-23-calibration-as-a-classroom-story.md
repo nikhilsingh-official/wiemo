@@ -2,6 +2,7 @@
 title: Calibration as a Classroom Story
 subheading: A demanding session note about making calibration feel like a scientific practice rather than background maintenance.
 excerpt: Calibration can be taught as a story about agreement between instruments, known references, and measurements the team does not yet trust.
+postExcerpt: Calibration can be taught as a story about agreement between instruments, known references, and measurements the team does not yet trust.
 author: WIEMO Program Team
 date: 2026-07-23
 thumbnail: /images/blog/student-lab.jpg
@@ -15,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+energyTier: tev
 seriesPart: 3
 complexityRating: 9
 ---
