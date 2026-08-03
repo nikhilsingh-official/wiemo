@@ -35,6 +35,7 @@ const activeNode = ref<NodeIdentity | null>(null)
 const keyboardMode = ref(false)
 const lastPointerType = ref('')
 const cardsBelow = ref(new Set<string>())
+const seriesAtScrollEnd = ref(new Set<string>())
 
 const seriesByTier = computed(() => {
   const grouped = new Map<EnergyTier, SpectrumSeries[]>()
@@ -112,6 +113,36 @@ const isActiveNode = (identity: NodeIdentity) =>
 
 const isActiveSeries = (seriesSlug: string) =>
   activeNode.value?.seriesSlug === seriesSlug
+
+const isAtScrollEnd = (seriesSlug: string) =>
+  seriesAtScrollEnd.value.has(seriesSlug)
+
+const syncSeriesScroll = (event: Event, seriesSlug: string) => {
+  const viewport = event.currentTarget as HTMLElement
+  const atEnd = viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 2
+  const updatedSeries = new Set(seriesAtScrollEnd.value)
+
+  if (atEnd) {
+    updatedSeries.add(seriesSlug)
+  }
+  else {
+    updatedSeries.delete(seriesSlug)
+  }
+
+  seriesAtScrollEnd.value = updatedSeries
+}
+
+const scrollSeriesRight = (event: MouseEvent) => {
+  const button = event.currentTarget as HTMLButtonElement
+  const viewport = button
+    .closest<HTMLElement>('.series-level__plot')
+    ?.querySelector<HTMLElement>('.series-level__viewport')
+
+  viewport?.scrollBy({
+    left: Math.max(240, viewport.clientWidth * 0.72),
+    behavior: 'smooth',
+  })
+}
 
 const positionCard = (event: Event, identity: NodeIdentity) => {
   const target = event.currentTarget as HTMLElement
@@ -304,66 +335,88 @@ onBeforeUnmount(() => {
               <NuxtLink :to="`/blog/series/${series.slug}`">View all</NuxtLink>
             </div>
 
-            <div
-              :class="[
-                'series-level__plot',
-                { 'series-level__plot--scrollable': series.posts.length > 4 },
-              ]"
-            >
-              <ol
-                :style="trackStyle(series.posts.length, series.energyTier)"
-                :aria-label="`${series.title} posts, oldest to newest`"
+            <div class="series-level__plot">
+              <div
+                :class="[
+                  'series-level__viewport',
+                  { 'series-level__viewport--scrollable': series.posts.length > 4 },
+                ]"
+                @scroll="syncSeriesScroll($event, series.slug)"
               >
-                <li
-                  v-for="(post, index) in series.posts"
-                  :key="post.path"
-                  class="series-node"
-                  :style="nodeStyle(index, series.posts.length, series.energyTier)"
+                <ol
+                  :style="trackStyle(series.posts.length, series.energyTier)"
+                  :aria-label="`${series.title} posts, oldest to newest`"
                 >
-                  <NuxtLink
-                    :to="post.path"
-                    :class="[
-                      'series-node__link',
-                      { 'series-node__link--open': isActiveNode(nodeIdentity(series, post)) },
-                    ]"
-                    data-energy-node
-                    :aria-label="`${post.title}, ${formatDate(post.date)}${index === series.posts.length - 1 ? ', newest post' : ''}`"
-                    @pointerenter="openFromPointer($event, nodeIdentity(series, post))"
-                    @pointerleave="closeFromPointer($event, nodeIdentity(series, post))"
-                    @focus="openFromFocus($event, nodeIdentity(series, post))"
-                    @blur="closeFromFocus(nodeIdentity(series, post))"
-                    @click="handleNodeClick($event, nodeIdentity(series, post))"
+                  <li
+                    v-for="(post, index) in series.posts"
+                    :key="post.path"
+                    class="series-node"
+                    :style="nodeStyle(index, series.posts.length, series.energyTier)"
                   >
-                    <span
+                    <NuxtLink
+                      :to="post.path"
                       :class="[
-                        'series-node__point',
-                        { 'series-node__point--newest': index === series.posts.length - 1 },
+                        'series-node__link',
+                        { 'series-node__link--open': isActiveNode(nodeIdentity(series, post)) },
                       ]"
-                      aria-hidden="true"
-                    />
-                    <span class="series-node__label">{{ post.title }}</span>
-
-                    <span
-                      :class="[
-                        'series-node__card',
-                        { 'series-node__card--below': cardsBelow.has(post.path) },
-                      ]"
-                      aria-hidden="true"
+                      data-energy-node
+                      :aria-label="`${post.title}, ${formatDate(post.date)}${index === series.posts.length - 1 ? ', newest post' : ''}`"
+                      @pointerenter="openFromPointer($event, nodeIdentity(series, post))"
+                      @pointerleave="closeFromPointer($event, nodeIdentity(series, post))"
+                      @focus="openFromFocus($event, nodeIdentity(series, post))"
+                      @blur="closeFromFocus(nodeIdentity(series, post))"
+                      @click="handleNodeClick($event, nodeIdentity(series, post))"
                     >
-                      <img
-                        :src="post.thumbnail"
-                        :alt="post.thumbnailAlt"
-                        loading="lazy"
+                      <span
+                        :class="[
+                          'series-node__point',
+                          { 'series-node__point--newest': index === series.posts.length - 1 },
+                        ]"
+                        aria-hidden="true"
+                      />
+                      <span class="series-node__label">{{ post.title }}</span>
+
+                      <span
+                        :class="[
+                          'series-node__card',
+                          { 'series-node__card--below': cardsBelow.has(post.path) },
+                        ]"
+                        aria-hidden="true"
                       >
-                      <span class="series-node__card-copy">
-                        <time :datetime="String(post.date)">{{ formatDate(post.date) }}</time>
-                        <strong>{{ post.title }}</strong>
-                        <span>{{ post.excerpt }}</span>
+                        <img
+                          :src="post.thumbnail"
+                          :alt="post.thumbnailAlt"
+                          loading="lazy"
+                        >
+                        <span class="series-node__card-copy">
+                          <time :datetime="String(post.date)">{{ formatDate(post.date) }}</time>
+                          <strong>{{ post.title }}</strong>
+                          <span>{{ post.excerpt }}</span>
+                        </span>
                       </span>
-                    </span>
-                  </NuxtLink>
-                </li>
-              </ol>
+                    </NuxtLink>
+                  </li>
+                </ol>
+              </div>
+
+              <span
+                v-if="series.posts.length > 4"
+                :class="[
+                  'series-level__scroll-fade',
+                  { 'series-level__scroll-fade--hidden': isAtScrollEnd(series.slug) },
+                ]"
+                aria-hidden="true"
+              />
+              <button
+                v-if="series.posts.length > 4"
+                class="series-level__scroll-next"
+                type="button"
+                :disabled="isAtScrollEnd(series.slug)"
+                :aria-label="`Show newer posts in ${series.title}`"
+                @click="scrollSeriesRight"
+              >
+                <span aria-hidden="true" />
+              </button>
             </div>
           </article>
         </section>
@@ -580,6 +633,11 @@ onBeforeUnmount(() => {
   position: relative;
   min-width: 0;
   height: 100%;
+}
+
+.series-level__viewport {
+  min-width: 0;
+  height: 100%;
 
   ol {
     --track-padding: 0px;
@@ -621,6 +679,68 @@ onBeforeUnmount(() => {
       min-width: calc(var(--post-count) * var(--node-column-width) + var(--track-padding) * 2);
       grid-template-columns: repeat(var(--post-count), var(--node-column-width));
     }
+  }
+}
+
+.series-level__scroll-fade {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: 0;
+  bottom: 8px;
+  width: 104px;
+  background: linear-gradient(90deg, transparent, rgb(0 0 0 / 28%));
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+
+  &--hidden {
+    opacity: 0;
+  }
+}
+
+.series-level__scroll-next {
+  position: absolute;
+  z-index: 6;
+  top: var(--line-y);
+  right: 10px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgb(189 232 251 / 24%);
+  border-radius: 50%;
+  background: rgb(4 6 11 / 76%);
+  box-shadow: 0 0 18px rgb(0 0 0 / 38%);
+  cursor: pointer;
+  place-items: center;
+  transform: translateY(-50%);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 180ms ease;
+
+  span {
+    width: 8px;
+    height: 8px;
+    border-top: 1px solid var(--tier-colour);
+    border-right: 1px solid var(--tier-colour);
+    transform: translateX(-2px) rotate(45deg);
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: color-mix(in srgb, var(--tier-colour) 66%, transparent);
+    background: rgb(8 11 18 / 92%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--tier-colour);
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -909,6 +1029,8 @@ onBeforeUnmount(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .series-level,
+  .series-level__scroll-fade,
+  .series-level__scroll-next,
   .series-node__label,
   .series-node__card {
     transition: none;
