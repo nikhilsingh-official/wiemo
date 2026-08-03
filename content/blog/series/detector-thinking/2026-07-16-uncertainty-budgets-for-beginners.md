@@ -16,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+seriesDescription: Advanced lessons on uncertainty, calibration, selection, and layered detector systems.
 energyTier: tev
 seriesPart: 2
 complexityRating: 9

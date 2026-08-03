@@ -18,11 +18,12 @@ if (!posts.value?.length) {
 }
 
 const seriesTitle = computed(() => posts.value?.[0]?.seriesTitle ?? 'Series')
+const seriesDescription = computed(() => posts.value?.[0]?.seriesDescription)
 const complexityRating = computed(() => posts.value?.[0]?.complexityRating)
 
 useSeoMeta({
   title: () => seriesTitle.value,
-  description: () => `Posts in ${seriesTitle.value}.`,
+  description: () => seriesDescription.value ?? `Posts in ${seriesTitle.value}.`,
 })
 </script>
 
@@ -39,6 +40,9 @@ useSeoMeta({
       <header class="series-page__header">
         <p class="eyebrow">Series</p>
         <h1>{{ seriesTitle }}</h1>
+        <p v-if="seriesDescription" class="series-page__description">
+          {{ seriesDescription }}
+        </p>
         <p
           v-if="complexityRating"
           class="series-page__complexity"
@@ -90,6 +94,13 @@ useSeoMeta({
     font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+  }
+
+  &__description {
+    max-width: 62ch;
+    margin-top: 16px;
+    color: var(--body-copy);
+    line-height: 1.65;
   }
 
   &__grid {

@@ -16,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: student-inquiry-labs
 seriesTitle: Student Inquiry Labs
+seriesDescription: Classroom routines that turn curiosity into observable, testable investigations.
 energyTier: kev
 seriesPart: 1
 complexityRating: 4

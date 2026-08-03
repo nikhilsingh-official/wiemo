@@ -16,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+seriesDescription: Advanced lessons on uncertainty, calibration, selection, and layered detector systems.
 energyTier: tev
 seriesPart: 3
 complexityRating: 9

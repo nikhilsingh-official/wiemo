@@ -16,6 +16,7 @@ imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public d
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Hubble_Ultra_Deep_Field_part_d.jpg
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+seriesDescription: Accessible bridges from familiar evidence to the way CMS records collision events.
 energyTier: gev
 seriesPart: 3
 complexityRating: 7

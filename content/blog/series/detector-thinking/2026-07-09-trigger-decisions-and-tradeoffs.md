@@ -16,6 +16,7 @@ imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public d
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Hubble_Ultra_Deep_Field_part_d.jpg
 seriesSlug: detector-thinking
 seriesTitle: Detector Thinking
+seriesDescription: Advanced lessons on uncertainty, calibration, selection, and layered detector systems.
 energyTier: tev
 seriesPart: 1
 complexityRating: 9

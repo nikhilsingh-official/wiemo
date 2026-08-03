@@ -16,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+seriesDescription: Practical systems for making workshops easier to hand off, reset, and improve.
 energyTier: ev
 seriesPart: 2
 complexityRating: 2

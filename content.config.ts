@@ -29,6 +29,7 @@ export default defineContentConfig({
       schema: blogPostSchema.extend({
         postExcerpt: z.string(),
         seriesTitle: z.string(),
+        seriesDescription: z.string().optional(),
         seriesSlug: z.string(),
         seriesPart: z.number().int().positive(),
         energyTier: z.enum(ENERGY_TIER_IDS),

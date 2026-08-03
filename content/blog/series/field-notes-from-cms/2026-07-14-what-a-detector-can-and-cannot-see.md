@@ -16,6 +16,7 @@ imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+seriesDescription: Accessible bridges from familiar evidence to the way CMS records collision events.
 energyTier: gev
 seriesPart: 2
 complexityRating: 7

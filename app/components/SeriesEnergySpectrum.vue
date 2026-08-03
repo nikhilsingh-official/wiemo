@@ -17,6 +17,7 @@ type SpectrumPost = {
 type SpectrumSeries = {
   slug: string
   title: string
+  description?: string
   energyTier: EnergyTier
   posts: SpectrumPost[]
 }
@@ -53,10 +54,9 @@ const tierFor = (energyTier: EnergyTier) =>
   ENERGY_TIERS.find(tier => tier.id === energyTier)!
 
 const mobileSeries = computed(() =>
-  props.seriesList.map(series => ({
-    series,
-    tier: tierFor(series.energyTier),
-  })),
+  ENERGY_TIERS.flatMap(tier =>
+    (seriesByTier.value.get(tier.id) ?? []).map(series => ({ series, tier })),
+  ),
 )
 
 const accessibleDescription = computed(() => {
@@ -65,19 +65,40 @@ const accessibleDescription = computed(() => {
     return `${series.title} is in the ${tier?.label ?? series.energyTier} ${tier?.name ?? ''} tier`
   })
 
-  return `Energy spectrum with energy increasing downward from eV to TeV. ${assignments.join('. ')}. Within each series, posts run oldest to newest from left to right, and a ring marks the newest post.`
+  return `Series difficulty increases downward from foundational to advanced, with harder series shown more dimly. ${assignments.join('. ')}. Within each series, posts run oldest to newest from left to right and become brighter, with a ring marking the newest post.`
 })
+
+const difficultyProgress = (energyTier: EnergyTier) => {
+  const tierIndex = ENERGY_TIERS.findIndex(tier => tier.id === energyTier)
+
+  return Math.max(tierIndex, 0) / Math.max(ENERGY_TIERS.length - 1, 1)
+}
+
+const nodeColour = (postProgress: number, energyTier: EnergyTier) => {
+  const difficulty = difficultyProgress(energyTier)
+  const lightness = 34 + postProgress * 50 - difficulty * 14
+
+  return `hsl(199 82% ${lightness}%)`
+}
 
 const tierStyle = (tier: EnergyTierDefinition) => ({
-  '--tier-colour': tier.colour,
-  '--node-size': `${tier.nodeSize}px`,
-  '--tier-glow': `${tier.glow}px`,
+  '--tier-colour': `hsl(199 82% ${64 - difficultyProgress(tier.id) * 18}%)`,
 })
 
-const nodePosition = (index: number, count: number) => {
-  const position = count === 1 ? 100 : (index / (count - 1)) * 100
+const trackStyle = (count: number, energyTier: EnergyTier) => ({
+  '--post-count': count,
+  '--track-start-colour': nodeColour(0, energyTier),
+  '--track-end-colour': nodeColour(1, energyTier),
+})
 
-  return { '--node-position': `${position}%` }
+const nodeStyle = (index: number, count: number, energyTier: EnergyTier) => {
+  const postProgress = count === 1 ? 1 : index / (count - 1)
+  const difficulty = difficultyProgress(energyTier)
+
+  return {
+    '--node-colour': nodeColour(postProgress, energyTier),
+    '--node-glow': `${(4 + postProgress * 17) * (1 - difficulty * 0.35)}px`,
+  }
 }
 
 const nodeIdentity = (series: SpectrumSeries, post: SpectrumPost): NodeIdentity => ({
@@ -107,16 +128,22 @@ const positionCard = (event: Event, identity: NodeIdentity) => {
     const frameRect = frame.getBoundingClientRect()
     const cardHeight = card.getBoundingClientRect().height
     const linePositions = Array.from(
-      frame.querySelectorAll<HTMLElement>('.series-level__line'),
-      line => line.getBoundingClientRect().top,
+      frame.querySelectorAll<HTMLElement>('.series-level__plot'),
+      (plot) => {
+        const lineOffset = Number.parseFloat(
+          getComputedStyle(plot).getPropertyValue('--line-y'),
+        )
+
+        return plot.getBoundingClientRect().top + lineOffset
+      },
     )
     const previousLine = linePositions.filter(position => position < nodeY - 1).at(-1)
     const nextLine = linePositions.find(position => position > nodeY + 1)
     const clearance = 12
     const cardOffset = 18
-    const nodeRadius = Number.parseFloat(
-      getComputedStyle(target).getPropertyValue('--node-size'),
-    ) / 2
+    const nodeDiameter = target.querySelector<HTMLElement>('.series-node__point')
+      ?.getBoundingClientRect().height ?? 22
+    const nodeRadius = nodeDiameter / 2
     const upperBoundary = previousLine ?? frameRect.top
     const lowerBoundary = nextLine ?? frameRect.bottom
     const hasRoomAbove = nodeY - cardOffset - cardHeight >= upperBoundary + clearance
@@ -224,17 +251,9 @@ onBeforeUnmount(() => {
         <h2 id="spectrum-title">Series spectrum</h2>
       </div>
 
-      <div class="energy-spectrum__legend" aria-label="Diagram key">
-        <span class="energy-spectrum__legend-item">
-          <span class="energy-spectrum__legend-node" aria-hidden="true" />
-          Post
-        </span>
-        <span class="energy-spectrum__legend-item">
-          <span class="energy-spectrum__legend-node energy-spectrum__legend-node--newest" aria-hidden="true" />
-          Newest
-        </span>
-        <span class="energy-spectrum__direction">Oldest <i aria-hidden="true" /> Newest</span>
-      </div>
+      <p class="energy-spectrum__guide">
+        Newer = brighter <span aria-hidden="true">&middot;</span> Harder = dimmer
+      </p>
     </header>
 
     <p id="spectrum-description" class="visually-hidden">
@@ -246,12 +265,6 @@ onBeforeUnmount(() => {
       role="group"
       aria-describedby="spectrum-description"
     >
-      <aside class="energy-axis" aria-hidden="true">
-        <span class="energy-axis__title">Energy</span>
-        <span class="energy-axis__line" />
-        <span class="energy-axis__caption">Increases downward</span>
-      </aside>
-
       <div class="energy-spectrum__lanes">
         <section
           v-for="tier in ENERGY_TIERS"
@@ -287,23 +300,25 @@ onBeforeUnmount(() => {
           >
             <div class="series-level__identity">
               <h3>{{ series.title }}</h3>
+              <p v-if="series.description">{{ series.description }}</p>
               <NuxtLink :to="`/blog/series/${series.slug}`">View all</NuxtLink>
             </div>
 
-            <div class="series-level__plot">
-              <span class="series-level__line" aria-hidden="true" />
-              <ol :aria-label="`${series.title} posts, oldest to newest`">
+            <div
+              :class="[
+                'series-level__plot',
+                { 'series-level__plot--scrollable': series.posts.length > 4 },
+              ]"
+            >
+              <ol
+                :style="trackStyle(series.posts.length, series.energyTier)"
+                :aria-label="`${series.title} posts, oldest to newest`"
+              >
                 <li
                   v-for="(post, index) in series.posts"
                   :key="post.path"
-                  :class="[
-                    'series-node',
-                    {
-                      'series-node--first': index === 0,
-                      'series-node--last': index === series.posts.length - 1,
-                    },
-                  ]"
-                  :style="nodePosition(index, series.posts.length)"
+                  class="series-node"
+                  :style="nodeStyle(index, series.posts.length, series.energyTier)"
                 >
                   <NuxtLink
                     :to="post.path"
@@ -367,6 +382,7 @@ onBeforeUnmount(() => {
             <small>{{ tier.name }} energy</small>
           </div>
           <h3>{{ series.title }}</h3>
+          <p v-if="series.description">{{ series.description }}</p>
         </header>
 
         <ol>
@@ -419,8 +435,7 @@ onBeforeUnmount(() => {
 }
 
 .energy-spectrum__kicker,
-.energy-spectrum__legend,
-.energy-spectrum__direction,
+.energy-spectrum__guide,
 .spectrum-lane__header,
 .series-level__identity a,
 .series-node__label,
@@ -438,116 +453,19 @@ onBeforeUnmount(() => {
   font-size: 0.63rem;
 }
 
-.energy-spectrum__legend {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px 18px;
+.energy-spectrum__guide {
+  max-width: 36ch;
+  margin-bottom: 2px;
   color: var(--mute);
   font-size: 0.58rem;
-}
-
-.energy-spectrum__legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.energy-spectrum__legend-node {
-  position: relative;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--atlas);
-
-  &--newest::after {
-    position: absolute;
-    inset: -4px;
-    border: 1px solid rgb(231 237 243 / 72%);
-    border-radius: 50%;
-    content: '';
-  }
-}
-
-.energy-spectrum__direction {
-  display: inline-grid;
-  grid-template-columns: auto 52px auto;
-  align-items: center;
-  gap: 8px;
-
-  i {
-    position: relative;
-    height: 1px;
-    background: rgb(126 139 154 / 50%);
-
-    &::after {
-      position: absolute;
-      top: -2px;
-      right: 0;
-      width: 5px;
-      height: 5px;
-      border-top: 1px solid rgb(126 139 154 / 70%);
-      border-right: 1px solid rgb(126 139 154 / 70%);
-      content: '';
-      transform: rotate(45deg);
-    }
-  }
+  line-height: 1.6;
+  text-align: right;
 }
 
 .energy-spectrum__desktop {
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
   border: 1px solid rgb(189 232 251 / 12%);
   border-radius: 10px;
   background: rgb(4 6 11 / 72%);
-}
-
-.energy-axis {
-  position: relative;
-  border-right: 1px solid rgb(189 232 251 / 10%);
-  color: var(--mute);
-  font-family: $font-mono;
-  font-size: 0.56rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.energy-axis__title {
-  position: absolute;
-  top: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.energy-axis__line {
-  position: absolute;
-  top: 70px;
-  bottom: 62px;
-  left: 50%;
-  width: 1px;
-  background: linear-gradient(180deg, #062f49, #0a4e74, #0b80c3, #33b4ec, #bde8fb);
-
-  &::after {
-    position: absolute;
-    bottom: -1px;
-    left: -4px;
-    width: 8px;
-    height: 8px;
-    border-right: 1px solid #bde8fb;
-    border-bottom: 1px solid #bde8fb;
-    content: '';
-    transform: rotate(45deg);
-  }
-}
-
-.energy-axis__caption {
-  position: absolute;
-  right: 8px;
-  bottom: 28px;
-  left: 8px;
-  line-height: 1.45;
-  text-align: center;
 }
 
 .energy-spectrum__lanes {
@@ -622,15 +540,27 @@ onBeforeUnmount(() => {
 
 .series-level__identity {
   min-width: 0;
-  padding-top: calc(var(--line-y) - 24px);
+  padding-top: 86px;
 
   h3 {
+    display: -webkit-box;
     overflow: hidden;
     color: var(--ink);
     font-size: clamp(0.9rem, 1.5vw, 1.15rem);
     line-height: 1.1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  p {
+    display: -webkit-box;
+    margin-top: 7px;
+    overflow: hidden;
+    color: var(--mute);
+    font-size: 0.67rem;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   a {
@@ -652,48 +582,63 @@ onBeforeUnmount(() => {
   height: 100%;
 
   ol {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-}
+    --track-padding: 0px;
+    --node-column-width: calc(100% / var(--post-count));
 
-.series-level__line {
-  position: absolute;
-  top: var(--line-y);
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: var(--tier-colour);
-  box-shadow: 0 0 calc(var(--tier-glow) * 0.4) color-mix(in srgb, var(--tier-colour) 42%, transparent);
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(var(--post-count), minmax(0, 1fr));
+    margin: 0;
+    padding-inline: var(--track-padding);
+    list-style: none;
+
+    &::before {
+      position: absolute;
+      top: var(--line-y);
+      right: calc(var(--track-padding) + var(--node-column-width) / 2);
+      left: calc(var(--track-padding) + var(--node-column-width) / 2);
+      height: 1px;
+      background: linear-gradient(90deg, var(--track-start-colour), var(--track-end-colour));
+      box-shadow: 0 0 8px rgb(51 180 236 / 18%);
+      content: '';
+    }
+  }
+
+  &--scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-color: rgb(51 180 236 / 42%) transparent;
+    scrollbar-width: thin;
+
+    ol {
+      --track-padding: 64px;
+      --node-column-width: 160px;
+
+      width: calc(var(--post-count) * var(--node-column-width) + var(--track-padding) * 2);
+      min-width: calc(var(--post-count) * var(--node-column-width) + var(--track-padding) * 2);
+      grid-template-columns: repeat(var(--post-count), var(--node-column-width));
+    }
+  }
 }
 
 .series-node {
-  position: absolute;
-  top: var(--line-y);
-  left: var(--node-position);
-  width: 128px;
-  height: 78px;
-  transform: translateX(-50%);
-
-  &--first {
-    transform: none;
-  }
-
-  &--last {
-    transform: translateX(-100%);
-  }
+  position: relative;
+  min-width: 0;
 }
 
 .series-node__link {
-  position: relative;
+  position: absolute;
+  top: var(--line-y);
+  left: 50%;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 128px;
+  height: 78px;
   color: inherit;
   text-decoration: none;
+  transform: translateX(-50%);
 
   &:focus-visible {
     border-radius: 4px;
@@ -720,14 +665,14 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   left: 50%;
-  width: var(--node-size);
-  height: var(--node-size);
-  border: 1px solid color-mix(in srgb, var(--tier-colour) 82%, white);
+  width: 22px;
+  height: 22px;
+  border: 1px solid color-mix(in srgb, var(--node-colour) 80%, white);
   border-radius: 50%;
-  background: var(--tier-colour);
+  background: var(--node-colour);
   box-shadow:
-    0 0 var(--tier-glow) color-mix(in srgb, var(--tier-colour) 48%, transparent),
-    0 0 calc(var(--tier-glow) * 1.7) color-mix(in srgb, var(--tier-colour) 20%, transparent);
+    0 0 var(--node-glow) color-mix(in srgb, var(--node-colour) 56%, transparent),
+    0 0 calc(var(--node-glow) * 1.7) color-mix(in srgb, var(--node-colour) 24%, transparent);
   transform: translate(-50%, -50%);
 
   &--newest::after {
@@ -739,19 +684,9 @@ onBeforeUnmount(() => {
   }
 }
 
-.series-node--first .series-node__point {
-  left: 0;
-}
-
-.series-node--last .series-node__point {
-  right: 0;
-  left: auto;
-  transform: translate(50%, -50%);
-}
-
 .series-node__label {
   position: absolute;
-  top: calc(var(--node-size) / 2 + 13px);
+  top: 24px;
   left: 50%;
   display: -webkit-box;
   width: 118px;
@@ -760,20 +695,10 @@ onBeforeUnmount(() => {
   font-size: 0.55rem;
   line-height: 1.45;
   text-align: center;
+  transform: translateX(-50%);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   transition: color 160ms ease;
-}
-
-.series-node--first .series-node__label {
-  left: 0;
-  text-align: left;
-}
-
-.series-node--last .series-node__label {
-  right: 0;
-  left: auto;
-  text-align: right;
 }
 
 .series-node__card {
@@ -806,31 +731,8 @@ onBeforeUnmount(() => {
 }
 
 .series-node__card--below {
-  top: calc(var(--node-size) / 2 + 18px);
+  top: 29px;
   bottom: auto;
-}
-
-.series-node--first .series-node__card {
-  left: 0;
-  transform: translateY(5px);
-}
-
-.series-node--first .series-node__link:hover .series-node__card,
-.series-node--first .series-node__link:focus-visible .series-node__card,
-.series-node--first .series-node__link--open .series-node__card {
-  transform: translateY(0);
-}
-
-.series-node--last .series-node__card {
-  right: 0;
-  left: auto;
-  transform: translateY(5px);
-}
-
-.series-node--last .series-node__link:hover .series-node__card,
-.series-node--last .series-node__link:focus-visible .series-node__card,
-.series-node--last .series-node__link--open .series-node__card {
-  transform: translateY(0);
 }
 
 .series-node__card-copy {
@@ -875,20 +777,12 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 800px) and (min-width: 640px) {
-  .energy-spectrum__desktop {
-    grid-template-columns: 52px minmax(0, 1fr);
-  }
-
   .series-level,
   .spectrum-lane__empty {
     grid-template-columns: 118px minmax(0, 1fr);
     gap: 16px;
     padding-right: 18px;
     padding-left: 14px;
-  }
-
-  .series-node {
-    width: 104px;
   }
 
   .series-node__label {
@@ -908,8 +802,8 @@ onBeforeUnmount(() => {
     padding-bottom: 30px;
   }
 
-  .energy-spectrum__legend {
-    display: none;
+  .energy-spectrum__guide {
+    text-align: left;
   }
 
   .energy-spectrum__desktop {
@@ -950,6 +844,13 @@ onBeforeUnmount(() => {
 
       h3 {
         font-size: 1.35rem;
+      }
+
+      > p {
+        max-width: 58ch;
+        color: var(--mute);
+        font-size: 0.78rem;
+        line-height: 1.55;
       }
     }
 

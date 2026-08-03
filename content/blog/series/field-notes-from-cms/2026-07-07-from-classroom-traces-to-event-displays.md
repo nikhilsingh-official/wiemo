@@ -16,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: field-notes-from-cms
 seriesTitle: Field Notes from CMS
+seriesDescription: Accessible bridges from familiar evidence to the way CMS records collision events.
 energyTier: gev
 seriesPart: 1
 complexityRating: 7

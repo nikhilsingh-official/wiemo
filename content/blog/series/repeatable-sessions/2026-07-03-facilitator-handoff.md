@@ -16,6 +16,7 @@ imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: repeatable-sessions
 seriesTitle: Repeatable Sessions
+seriesDescription: Practical systems for making workshops easier to hand off, reset, and improve.
 energyTier: ev
 seriesPart: 1
 complexityRating: 2

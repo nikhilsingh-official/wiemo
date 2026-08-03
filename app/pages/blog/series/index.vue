@@ -17,6 +17,7 @@ const seriesList = computed(() => {
   const seriesBySlug = new Map<string, {
     slug: string
     title: string
+    description?: string
     energyTier: SeriesPost['energyTier']
     posts: SeriesPost[]
   }>()
@@ -31,6 +32,7 @@ const seriesList = computed(() => {
     seriesBySlug.set(post.seriesSlug, {
       slug: post.seriesSlug,
       title: post.seriesTitle,
+      description: post.seriesDescription,
       energyTier: post.energyTier,
       posts: [post],
     })
@@ -63,13 +65,8 @@ useSeoMeta({
         <p class="eyebrow">Blog / Series</p>
         <h1>Energy spectrum</h1>
         <p class="lede">
-          Follow learning paths across a spectrum of ideas. Introductory series begin at
-          lower-energy bands; advanced series sit deeper in the spectrum, where energy
-          increases downward.
-        </p>
-        <p class="blog-page__note">
-          A spectrum has no intrinsic up or down convention&mdash;this orientation keeps the
-          journey from foundational to collider-scale thinking readable from top to bottom.
+          Follow learning paths across a spectrum of ideas. Series become more challenging
+          as you move down; within each series, newer posts glow brighter from left to right.
         </p>
       </header>
 
@@ -92,12 +89,5 @@ useSeoMeta({
     margin-bottom: clamp(44px, 7vw, 80px);
   }
 
-  &__note {
-    max-width: 70ch;
-    margin-top: 18px;
-    color: var(--mute);
-    font-size: 0.82rem;
-    line-height: 1.7;
-  }
 }
 </style>
