@@ -32,7 +32,6 @@
   --gutter: #{tokens.$gutter};
   --section-padding: #{tokens.$section-padding};
 
-  color: var(--ink);
   background: var(--black);
   font-family: var(--body);
   font-synthesis: none;
@@ -61,12 +60,18 @@ body,
 
 body {
   overflow-x: hidden;
-  color: var(--ink);
   background: var(--black);
   font-family: var(--body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+// Keep the site's light foreground inside Nuxt-owned UI. Nuxt Studio mounts as
+// a sibling of these roots and needs to inherit its own light-theme foreground.
+#__nuxt,
+#teleports {
+  color: var(--ink);
 }
 
 main {
