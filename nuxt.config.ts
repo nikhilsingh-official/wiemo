@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'particle-physics',
+      htmlAttrs: {
+        class: 'dark',
+      },
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
       ],
