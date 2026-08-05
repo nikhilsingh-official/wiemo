@@ -1,7 +1,43 @@
 <script setup lang="ts">
-import { NAVBAR_BLOG_CATEGORIES, NAVBAR_BLOG_POSTS, NAVBAR_ITEMS } from '~/navbar/items'
+import { NAVBAR_BLOG_CATEGORIES, NAVBAR_ITEMS } from '~/navbar/items'
 
 const route = useRoute()
+
+type NavbarBlogPost = {
+  title: string
+  to: string
+  date: Date | string
+}
+
+const toNavbarBlogPost = (post: { title: string, path: string, date: Date | string }): NavbarBlogPost => ({
+  title: post.title,
+  to: post.path,
+  date: post.date,
+})
+
+const { data: queriedBlogPosts } = await useAsyncData('navbar-blog-posts', async () => {
+  const [reflections, series] = await Promise.all([
+    queryCollection('reflections')
+      .select('title', 'path', 'date')
+      .where('draft', '=', false)
+      .order('date', 'DESC')
+      .limit(3)
+      .all(),
+    queryCollection('series')
+      .select('title', 'path', 'date')
+      .where('draft', '=', false)
+      .order('date', 'DESC')
+      .limit(3)
+      .all(),
+  ])
+
+  return [...reflections, ...series]
+    .map(toNavbarBlogPost)
+    .sort((postA, postB) => new Date(postB.date).getTime() - new Date(postA.date).getTime())
+    .slice(0, 3)
+})
+
+const navbarBlogPosts = computed(() => queriedBlogPosts.value ?? [])
 
 const formatDate = (date: Date | string) =>
   new Intl.DateTimeFormat('en', {
@@ -42,7 +78,7 @@ const formatDate = (date: Date | string) =>
           </NuxtLink>
 
           <div
-            v-if="NAVBAR_BLOG_POSTS.length"
+            v-if="navbarBlogPosts.length"
             class="navbar__dropdown"
             aria-label="Blog posts"
           >
@@ -56,7 +92,7 @@ const formatDate = (date: Date | string) =>
             </NuxtLink>
 
             <NuxtLink
-              v-for="post in NAVBAR_BLOG_POSTS"
+              v-for="post in navbarBlogPosts"
               :key="post.to"
               class="navbar__dropdown-link"
               :to="post.to"
