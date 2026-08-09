@@ -71,13 +71,13 @@ withDefaults(
 .hero__CTA__bright {
   isolation: isolate;
   overflow: hidden;
-  color: #eefaff;
+  color: var(--ink);
   background: transparent;
-  border-color: rgb(51 180 236 / 34%);
+  border-color: color-mix(in srgb, var(--beam) 34%, transparent);
   box-shadow:
     0 12px 28px rgb(0 0 0 / 26%),
-    0 0 18px rgb(11 128 195 / 16%),
-    inset 0 1px 0 rgb(255 255 255 / 14%);
+    0 0 18px color-mix(in srgb, var(--atlas) 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--ink) 14%, transparent);
   backdrop-filter: blur(14px) saturate(130%);
   -webkit-backdrop-filter: blur(14px) saturate(130%);
 }
@@ -89,31 +89,31 @@ withDefaults(
   background:
     linear-gradient(
       135deg,
-      rgb(255 255 255 / 7%),
-      rgb(51 180 236 / 18%) 42%,
-      rgb(11 128 195 / 16%)
+      color-mix(in srgb, var(--ink) 7%, transparent),
+      color-mix(in srgb, var(--beam) 18%, transparent) 42%,
+      color-mix(in srgb, var(--atlas) 16%, transparent)
     );
   content: '';
 }
 
 .hero__CTA__bright:hover {
-  color: #ffffff;
-  border-color: rgb(51 180 236 / 54%);
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--beam) 54%, transparent);
   box-shadow:
     0 14px 32px rgb(0 0 0 / 30%),
-    0 0 24px rgb(51 180 236 / 22%),
-    inset 0 1px 0 rgb(255 255 255 / 18%);
+    0 0 24px color-mix(in srgb, var(--beam) 22%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--ink) 18%, transparent);
 }
 
 .hero__CTA__dim {
   color: var(--faint);
   background: transparent;
-  border-color: rgb(189 232 251 / 24%);
+  border-color: color-mix(in srgb, var(--core) 24%, transparent);
 }
 
 .hero__CTA__dim:hover {
   color: var(--beam);
-  background: rgb(51 180 236 / 6%);
-  border-color: rgb(51 180 236 / 38%);
+  background: color-mix(in srgb, var(--beam) 6%, transparent);
+  border-color: color-mix(in srgb, var(--beam) 38%, transparent);
 }
 </style>

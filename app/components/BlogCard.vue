@@ -71,10 +71,14 @@ const formatDate = (date: Date | string) =>
 <style scoped lang="scss">
 .blog-card {
   overflow: hidden;
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(145deg, rgb(8 11 18 / 86%), rgb(4 6 11 / 96%));
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--panel) 86%, transparent),
+      color-mix(in srgb, var(--black) 96%, transparent)
+    );
   box-shadow: 0 22px 60px rgb(0 0 0 / 22%);
 
   &__link {
@@ -94,7 +98,11 @@ const formatDate = (date: Date | string) =>
       inset: 0;
       background:
         linear-gradient(180deg, transparent 42%, rgb(0 0 0 / 58%)),
-        radial-gradient(circle at 18% 18%, rgb(51 180 236 / 22%), transparent 38%);
+        radial-gradient(
+          circle at 18% 18%,
+          color-mix(in srgb, var(--beam) 22%, transparent),
+          transparent 38%
+        );
       content: '';
     }
 
@@ -151,7 +159,7 @@ const formatDate = (date: Date | string) =>
 
     li {
       padding: 6px 9px;
-      border: 1px solid rgb(51 180 236 / 22%);
+      border: 1px solid color-mix(in srgb, var(--beam) 22%, transparent);
       border-radius: 999px;
       color: var(--beam);
       font-family: $font-mono;

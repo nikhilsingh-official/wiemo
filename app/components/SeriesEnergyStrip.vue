@@ -144,10 +144,10 @@ const scaleStyle = {
   width: 100%;
   min-width: 0;
   padding-block: 44px;
-  border-top: 1px solid rgb(189 232 251 / 14%);
+  border-top: 1px solid color-mix(in srgb, var(--core) 14%, transparent);
 
   &:last-child {
-    border-bottom: 1px solid rgb(189 232 251 / 14%);
+    border-bottom: 1px solid color-mix(in srgb, var(--core) 14%, transparent);
   }
 }
 
@@ -224,7 +224,7 @@ const scaleStyle = {
   overflow-x: auto;
   margin-top: 14px;
   padding: 6px 4px 4px;
-  scrollbar-color: rgb(51 180 236 / 42%) transparent;
+  scrollbar-color: color-mix(in srgb, var(--beam) 42%, transparent) transparent;
   scrollbar-width: thin;
 }
 
@@ -282,7 +282,11 @@ const scaleStyle = {
     z-index: 0;
     width: 100%;
     height: calc(var(--step-rise) + var(--node-stroke));
-    background: linear-gradient(90deg, var(--energy-colour), rgb(189 232 251 / 20%));
+    background: linear-gradient(
+      90deg,
+      var(--energy-colour),
+      color-mix(in srgb, var(--core) 20%, transparent)
+    );
     box-shadow: 0 0 calc(var(--energy) * 10px) color-mix(in srgb, var(--energy-colour) 55%, transparent);
     clip-path: polygon(
       0 calc(100% - var(--node-stroke)),
@@ -314,7 +318,8 @@ const scaleStyle = {
   box-shadow:
     0 0 calc(2px + var(--energy) * 10px) color-mix(in srgb, var(--energy-colour) calc(20% + var(--energy) * 45%), transparent),
     0 0 calc(var(--energy) * 30px) color-mix(in srgb, var(--energy-colour) calc(var(--energy) * 38%), transparent),
-    inset 0 0 calc(var(--energy) * 7px) rgb(255 255 255 / calc(var(--energy) * 0.72));
+    inset 0 0 calc(var(--energy) * 7px)
+      color-mix(in srgb, var(--ink) calc(var(--energy) * 72%), transparent);
   transform: translate(-50%, -50%);
   transition:
     transform $transition-fast $transition-ease,

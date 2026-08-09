@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { COLOR_MODE_ATTRIBUTE } from '~~/shared/colorMode'
 import { HERO_STAGE } from '~/hero/stages'
 
 definePageMeta({
@@ -53,16 +54,59 @@ const TRAIL_RISE_RESPONSE = 7.5
 const TRAIL_DECAY_RESPONSE = 2.1
 const ROTATION_FOLLOW_RESPONSE = 10.5
 type TrailDirection = -1 | 1
+type CanvasPalette = {
+  beam: string
+  compositeOperation: GlobalCompositeOperation
+  core: string
+  ink: string
+}
 
 let animationFrameId = 0
 let scrollAnimationFrameId = 0
 let resizeObserver: ResizeObserver | undefined
+let themeObserver: MutationObserver | undefined
 let currentRotation = 0
 let targetRotation = 0
 let displayedTrailStrength = 0
 let displayedTrailDirection: TrailDirection = -1
 let acceleratorPeakRatio = DEFAULT_PEAK_RATIO
 let lastRenderTimestamp = 0
+let canvasPalette: CanvasPalette = {
+  beam: '51 180 236',
+  compositeOperation: 'lighter',
+  core: '189 232 251',
+  ink: '255 255 255',
+}
+
+function resolveRgbChannels(value: string, fallback: string) {
+  const hex = value.trim().match(/^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i)
+
+  if (hex) {
+    return hex
+      .slice(1)
+      .map(channel => Number.parseInt(channel, 16))
+      .join(' ')
+  }
+
+  const rgb = value.trim().match(/^rgba?\(\s*(\d+)\D+(\d+)\D+(\d+)/i)
+  return rgb ? rgb.slice(1, 4).join(' ') : fallback
+}
+
+function syncCanvasPalette() {
+  const root = document.documentElement
+  const styles = getComputedStyle(root)
+
+  canvasPalette = {
+    beam: resolveRgbChannels(styles.getPropertyValue('--beam'), canvasPalette.beam),
+    compositeOperation: root.getAttribute(COLOR_MODE_ATTRIBUTE) === 'light' ? 'source-over' : 'lighter',
+    core: resolveRgbChannels(styles.getPropertyValue('--core'), canvasPalette.core),
+    ink: resolveRgbChannels(styles.getPropertyValue('--ink'), canvasPalette.ink),
+  }
+}
+
+function canvasColor(channels: string, alpha: number) {
+  return `rgb(${channels} / ${Math.min(1, Math.max(0, alpha))})`
+}
 
 function syncCanvasResolution(canvas: HTMLCanvasElement) {
   const rect = canvas.getBoundingClientRect()
@@ -87,24 +131,24 @@ function drawParticle(ctx: CanvasRenderingContext2D, x: number, y: number, scale
   const glow = ctx.createRadialGradient(x, y, 0, x, y, radius * 5.8)
   const glowAlpha = 0.72 + pulse * 0.2
 
-  glow.addColorStop(0, 'rgb(255 255 255 / 0.95)')
-  glow.addColorStop(0.18, `rgb(189 232 251 / ${glowAlpha})`)
-  glow.addColorStop(0.45, `rgb(51 180 236 / ${0.24 + pulse * 0.16})`)
-  glow.addColorStop(1, 'rgb(51 180 236 / 0)')
+  glow.addColorStop(0, canvasColor(canvasPalette.ink, 0.95))
+  glow.addColorStop(0.18, canvasColor(canvasPalette.core, glowAlpha))
+  glow.addColorStop(0.45, canvasColor(canvasPalette.beam, 0.24 + pulse * 0.16))
+  glow.addColorStop(1, canvasColor(canvasPalette.beam, 0))
 
   ctx.save()
-  ctx.globalCompositeOperation = 'lighter'
+  ctx.globalCompositeOperation = canvasPalette.compositeOperation
   ctx.fillStyle = glow
   ctx.beginPath()
   ctx.arc(x, y, radius * 5.8, 0, Math.PI * 2)
   ctx.fill()
 
-  ctx.fillStyle = '#ffffff'
+  ctx.fillStyle = canvasColor(canvasPalette.ink, 1)
   ctx.beginPath()
   ctx.arc(x, y, radius, 0, Math.PI * 2)
   ctx.fill()
 
-  ctx.strokeStyle = `rgb(189 232 251 / ${0.56 + pulse * 0.28})`
+  ctx.strokeStyle = canvasColor(canvasPalette.core, 0.56 + pulse * 0.28)
   ctx.lineWidth = Math.max(1, scale * (0.75 + pulse * 0.22))
   ctx.beginPath()
   ctx.arc(x, y, radius * 1.65, 0, Math.PI * 2)
@@ -147,18 +191,18 @@ function drawParticleTrail(
   }
 
   ctx.save()
-  ctx.globalCompositeOperation = 'lighter'
+  ctx.globalCompositeOperation = canvasPalette.compositeOperation
   ctx.lineCap = 'round'
 
-  ctx.strokeStyle = `rgb(51 180 236 / ${0.11 * trailAlpha * shimmerAlpha})`
+  ctx.strokeStyle = canvasColor(canvasPalette.beam, 0.11 * trailAlpha * shimmerAlpha)
   ctx.lineWidth = lineWidth * 3.8
   strokeTrailLayer(trailLength, 0.04)
 
-  ctx.strokeStyle = `rgb(51 180 236 / ${0.28 * trailAlpha * shimmerAlpha})`
+  ctx.strokeStyle = canvasColor(canvasPalette.beam, 0.28 * trailAlpha * shimmerAlpha)
   ctx.lineWidth = lineWidth * 1.75
   strokeTrailLayer(trailLength * 0.72, 0.025)
 
-  ctx.strokeStyle = `rgb(189 232 251 / ${0.52 * trailAlpha * shimmerAlpha})`
+  ctx.strokeStyle = canvasColor(canvasPalette.core, 0.52 * trailAlpha * shimmerAlpha)
   ctx.lineWidth = lineWidth
   strokeTrailLayer(trailLength * 0.38, 0.01)
 
@@ -221,6 +265,13 @@ onMounted(() => {
 
   const acceleratorImage = new Image()
   acceleratorImage.src = '/images/accelerator-ring.svg'
+
+  syncCanvasPalette()
+  themeObserver = new MutationObserver(syncCanvasPalette)
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: [COLOR_MODE_ATTRIBUTE],
+  })
 
   const render = (timestamp = 0) => {
     updateScrollState()
@@ -321,6 +372,7 @@ onUnmounted(() => {
   cancelAnimationFrame(animationFrameId)
   cancelAnimationFrame(scrollAnimationFrameId)
   resizeObserver?.disconnect()
+  themeObserver?.disconnect()
   window.removeEventListener('scroll', queueScrollStateUpdate)
   window.removeEventListener('resize', queueScrollStateUpdate)
 })
@@ -448,13 +500,13 @@ onUnmounted(() => {
     left: 50%;
     width: 15px;
     aspect-ratio: 1;
-    border: 1px solid rgb(189 232 251 / 82%);
+    border: 1px solid color-mix(in srgb, var(--core) 82%, transparent);
     border-radius: 50%;
     background: #ffffff;
     box-shadow:
-      0 0 14px rgb(189 232 251 / 92%),
-      0 0 44px rgb(51 180 236 / 72%),
-      0 0 86px rgb(51 180 236 / 36%);
+      0 0 14px color-mix(in srgb, var(--core) 92%, transparent),
+      0 0 44px color-mix(in srgb, var(--beam) 72%, transparent),
+      0 0 86px color-mix(in srgb, var(--beam) 36%, transparent);
     transform: translate(-50%, -50%);
     animation: accelerator-particle-pulse 2.4s ease-in-out infinite;
     pointer-events: none;
@@ -462,7 +514,7 @@ onUnmounted(() => {
     &::after {
       position: absolute;
       inset: -16px;
-      border: 1px solid rgb(189 232 251 / 38%);
+      border: 1px solid color-mix(in srgb, var(--core) 38%, transparent);
       border-radius: 50%;
       animation: accelerator-particle-ring 2.4s ease-out infinite;
       content: '';
@@ -471,7 +523,11 @@ onUnmounted(() => {
 
   &__card-shell :deep(.blog-card) {
     border-radius: 16px;
-    background: linear-gradient(145deg, rgb(8 11 18 / 98%), rgb(4 6 11 / 99%));
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--panel) 98%, transparent),
+      color-mix(in srgb, var(--black) 99%, transparent)
+    );
     box-shadow: 0 18px 54px rgb(0 0 0 / 32%);
   }
 
@@ -514,7 +570,7 @@ onUnmounted(() => {
     span {
       width: 26px;
       height: 2px;
-      background: rgb(189 232 251 / 24%);
+      background: color-mix(in srgb, var(--core) 24%, transparent);
       transition: background 180ms ease, transform 180ms ease;
     }
 
@@ -587,17 +643,17 @@ onUnmounted(() => {
   0%,
   100% {
     box-shadow:
-      0 0 12px rgb(189 232 251 / 82%),
-      0 0 34px rgb(51 180 236 / 58%),
-      0 0 68px rgb(51 180 236 / 28%);
+      0 0 12px color-mix(in srgb, var(--core) 82%, transparent),
+      0 0 34px color-mix(in srgb, var(--beam) 58%, transparent),
+      0 0 68px color-mix(in srgb, var(--beam) 28%, transparent);
     transform: translate(-50%, -50%) scale(0.92);
   }
 
   48% {
     box-shadow:
-      0 0 18px rgb(189 232 251 / 98%),
-      0 0 52px rgb(51 180 236 / 82%),
-      0 0 98px rgb(51 180 236 / 42%);
+      0 0 18px color-mix(in srgb, var(--core) 98%, transparent),
+      0 0 52px color-mix(in srgb, var(--beam) 82%, transparent),
+      0 0 98px color-mix(in srgb, var(--beam) 42%, transparent);
     transform: translate(-50%, -50%) scale(1.08);
   }
 }

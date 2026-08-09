@@ -2,6 +2,11 @@
 import { NAVBAR_BLOG_CATEGORIES, NAVBAR_ITEMS } from '~/navbar/items'
 
 const route = useRoute()
+const { colorMode, toggleColorMode } = useColorMode()
+
+const colorModeToggleLabel = computed(() =>
+  `Switch to ${colorMode.value === 'dark' ? 'light' : 'dark'} mode`,
+)
 
 type NavbarBlogPost = {
   title: string
@@ -50,8 +55,14 @@ const formatDate = (date: Date | string) =>
   <nav class="navbar" aria-label="Particle physics site navigation">
     <NuxtLink class="navbar__brand" to="/" aria-label="Wiemo home">
       <img
-        class="navbar__brand-mark"
+        class="navbar__brand-mark navbar__brand-mark--dark"
         src="/logos/wiemo_navbar_darkmode.svg"
+        alt=""
+        aria-hidden="true"
+      >
+      <img
+        class="navbar__brand-mark navbar__brand-mark--light"
+        src="/logos/wiemo_navbar.svg"
         alt=""
         aria-hidden="true"
       >
@@ -113,8 +124,38 @@ const formatDate = (date: Date | string) =>
         </NuxtLink>
       </li>
     </ul>
+    <button
+      class="navbar__theme-toggle"
+      type="button"
+      :aria-label="colorModeToggleLabel"
+      :aria-pressed="colorMode === 'light'"
+      :title="colorModeToggleLabel"
+      @click="toggleColorMode"
+    >
+      <svg class="navbar__theme-icon navbar__theme-icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20.2 15.2A8.5 8.5 0 0 1 8.8 3.8 8.5 8.5 0 1 0 20.2 15.2Z" />
+      </svg>
+      <svg class="navbar__theme-icon navbar__theme-icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="3.5" />
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+      </svg>
+    </button>
   </nav>
 </template>
+
+<style lang="scss">
+:root[data-theme='light'] {
+  .navbar__brand-mark--dark,
+  .navbar__theme-icon--moon {
+    display: none;
+  }
+
+  .navbar__brand-mark--light,
+  .navbar__theme-icon--sun {
+    display: block;
+  }
+}
+</style>
 
 <style scoped lang="scss">
 .navbar {
@@ -126,8 +167,8 @@ const formatDate = (date: Date | string) =>
   overflow: visible;
   padding: 8px;
   isolation: isolate;
-  background: rgb(8 11 18 / 10%);
-  border: 1px solid rgb(189 232 251 / 10%);
+  background: color-mix(in srgb, var(--panel) 28%, transparent);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   box-shadow: 0 24px 70px rgb(0 0 0 / 34%);
   backdrop-filter: blur(28px) saturate(165%) contrast(112%);
   -webkit-backdrop-filter: blur(28px) saturate(165%) contrast(112%);
@@ -141,9 +182,9 @@ const formatDate = (date: Date | string) =>
     background:
       linear-gradient(
         115deg,
-        rgb(8 11 18 / 20%),
-        rgb(8 11 18 / 34%) 42%,
-        rgb(8 11 18 / 18%)
+        color-mix(in srgb, var(--panel) 20%, transparent),
+        color-mix(in srgb, var(--panel) 44%, transparent) 42%,
+        color-mix(in srgb, var(--panel) 24%, transparent)
       );
     content: '';
     opacity: 1;
@@ -167,8 +208,8 @@ const formatDate = (date: Date | string) =>
     filter $transition-fast $transition-ease;
 
   &:hover {
-    background: rgb(51 180 236 / 8%);
-    filter: drop-shadow(0 0 12px rgb(51 180 236 / 28%));
+    background: color-mix(in srgb, var(--beam) 8%, transparent);
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--beam) 28%, transparent));
   }
 
   &:focus-visible {
@@ -181,6 +222,59 @@ const formatDate = (date: Date | string) =>
   width: 160px;
   height: auto;
   max-height: 30px;
+}
+
+.navbar__brand-mark--light {
+  display: none;
+}
+
+.navbar__theme-toggle {
+  display: inline-flex;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--beam) 20%, transparent);
+  border-radius: 14px;
+  color: var(--beam);
+  background: color-mix(in srgb, var(--panel) 40%, transparent);
+  transition:
+    color $transition-fast $transition-ease,
+    background-color $transition-fast $transition-ease,
+    border-color $transition-fast $transition-ease,
+    transform $transition-fast $transition-ease;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--core);
+    background: color-mix(in srgb, var(--beam) 12%, transparent);
+    border-color: color-mix(in srgb, var(--beam) 45%, transparent);
+    transform: rotate(8deg);
+  }
+
+  &:focus-visible {
+    outline-offset: -2px;
+  }
+}
+
+.navbar__theme-icon {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.navbar__theme-icon--moon {
+  fill: currentColor;
+  stroke: none;
+}
+
+.navbar__theme-icon--sun {
+  display: none;
 }
 
 .navbar__list {
@@ -242,7 +336,7 @@ const formatDate = (date: Date | string) =>
     left: 14px;
     height: 1px;
     background: var(--beam);
-    box-shadow: 0 0 9px rgb(51 180 236 / 70%);
+    box-shadow: 0 0 9px color-mix(in srgb, var(--beam) 70%, transparent);
     content: '';
     opacity: 0;
     transform: scaleX(0.35);
@@ -253,8 +347,8 @@ const formatDate = (date: Date | string) =>
 
   &:hover {
     color: var(--beam);
-    background: rgb(51 180 236 / 8%);
-    text-shadow: 0 0 18px rgb(51 180 236 / 35%);
+    background: color-mix(in srgb, var(--beam) 8%, transparent);
+    text-shadow: 0 0 18px color-mix(in srgb, var(--beam) 35%, transparent);
   }
 
   &:focus-visible {
@@ -263,7 +357,7 @@ const formatDate = (date: Date | string) =>
 
   &--active {
     color: var(--beam);
-    background: rgb(11 128 195 / 11%);
+    background: color-mix(in srgb, var(--atlas) 11%, transparent);
 
     &::after {
       opacity: 1;
@@ -279,9 +373,9 @@ const formatDate = (date: Date | string) =>
   display: grid;
   width: min(360px, calc(100vw - 40px));
   padding: 8px;
-  border: 1px solid rgb(189 232 251 / 14%);
+  border: 1px solid color-mix(in srgb, var(--core) 14%, transparent);
   border-radius: 8px;
-  background: rgb(6 9 15 / 96%);
+  background: color-mix(in srgb, var(--panel) 96%, transparent);
   box-shadow: 0 24px 56px rgb(0 0 0 / 42%);
   opacity: 0;
   pointer-events: none;
@@ -323,7 +417,7 @@ const formatDate = (date: Date | string) =>
   &:hover,
   &:focus-visible {
     color: var(--core);
-    background: rgb(51 180 236 / 9%);
+    background: color-mix(in srgb, var(--beam) 9%, transparent);
   }
 }
 
@@ -384,12 +478,12 @@ const formatDate = (date: Date | string) =>
 }
 
 .navbar__dropdown-link--category {
-  border-bottom: 1px solid rgb(189 232 251 / 10%);
+  border-bottom: 1px solid color-mix(in srgb, var(--core) 10%, transparent);
 }
 
 @supports not (backdrop-filter: blur(1px)) {
   .navbar::before {
-    background: rgb(8 11 18 / 88%);
+    background: color-mix(in srgb, var(--panel) 88%, transparent);
   }
 }
 

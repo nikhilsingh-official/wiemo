@@ -18,8 +18,8 @@ import { SITE_CONTENT } from '~/content/siteContent'
 
 <style scoped lang="scss">
 .site-footer {
-  border-top: 1px solid $line-soft;
-  background: $void;
+  border-top: 1px solid var(--line-soft);
+  background: var(--void);
 }
 
 .site-footer__inner {

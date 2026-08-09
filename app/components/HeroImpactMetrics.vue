@@ -27,9 +27,9 @@ import { SITE_CONTENT } from '~/content/siteContent'
   z-index: 2;
   width: min(420px, calc(100vw - (var(--gutter) * 2)));
   padding: 16px;
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 18px;
-  background: rgb(8 11 18 / 42%);
+  background: color-mix(in srgb, var(--panel) 52%, transparent);
   box-shadow: 0 18px 48px rgb(0 0 0 / 28%);
   backdrop-filter: blur(16px) saturate(132%);
   -webkit-backdrop-filter: blur(16px) saturate(132%);
@@ -54,7 +54,7 @@ import { SITE_CONTENT } from '~/content/siteContent'
   display: grid;
   gap: 4px;
   padding-top: 10px;
-  border-top: 1px solid rgb(51 180 236 / 22%);
+  border-top: 1px solid color-mix(in srgb, var(--beam) 22%, transparent);
 
   dt {
     color: var(--faint);

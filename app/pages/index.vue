@@ -142,9 +142,13 @@ definePageMeta({
 .impact-card,
 .page-preview {
   padding: 34px;
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 18px;
-  background: linear-gradient(145deg, rgb(8 11 18 / 78%), rgb(4 6 11 / 92%));
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--panel) 78%, transparent),
+    color-mix(in srgb, var(--black) 92%, transparent)
+  );
 }
 
 .impact-card {
@@ -186,9 +190,9 @@ definePageMeta({
   min-width: 0;
   min-height: 150px;
   padding: 24px;
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 18px;
-  background: rgb(255 255 255 / 3%);
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
 
   img {
     max-height: 74px;

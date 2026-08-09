@@ -27,8 +27,13 @@ const showHero = computed(() => Boolean(route.meta.heroStages?.length))
 
   :deep(.blog-post) {
     background:
-      radial-gradient(circle at 50% 0%, rgb(11 128 195 / 11%), transparent 544px),
-      linear-gradient(180deg, rgb(4 6 11 / 44%), rgb(0 0 0 / 16%) 42%, rgb(4 6 11 / 46%));
+      radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--atlas) 11%, transparent), transparent 544px),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--black) 44%, transparent),
+        color-mix(in srgb, var(--void) 16%, transparent) 42%,
+        color-mix(in srgb, var(--black) 46%, transparent)
+      );
   }
 }
 

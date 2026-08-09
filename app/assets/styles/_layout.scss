@@ -1,4 +1,4 @@
-@use 'variables' as tokens;
+@use 'variables' as *;
 @use 'mixins';
 
 .wrap {
@@ -21,7 +21,7 @@
 .lede {
   max-width: 600px;
   margin-top: 6px;
-  color: #cdd6e0;
+  color: var(--body-copy);
   font-size: 19px;
 }
 

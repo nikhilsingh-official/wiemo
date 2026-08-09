@@ -201,9 +201,9 @@ onUnmounted(stopTimer)
   align-items: center;
   gap: 10px;
   padding: 10px 14px;
-  border: 1px solid rgb(51 180 236 / 30%);
+  border: 1px solid color-mix(in srgb, var(--beam) 30%, transparent);
   border-radius: 999px;
-  background: rgb(11 128 195 / 9%);
+  background: color-mix(in srgb, var(--atlas) 9%, transparent);
   color: var(--core);
   font-family: $font-mono;
   font-size: 10px;
@@ -237,7 +237,7 @@ onUnmounted(stopTimer)
   inset: 0 auto 0 0;
   width: var(--timeline-progress);
   background: var(--beam);
-  box-shadow: 0 0 16px rgb(51 180 236 / 72%);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--beam) 72%, transparent);
   transition: width 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -248,12 +248,12 @@ onUnmounted(stopTimer)
   left: var(--timeline-progress);
   width: 12px;
   height: 12px;
-  border: 2px solid #fff;
+  border: 2px solid var(--panel);
   border-radius: 50%;
   background: var(--signal);
   box-shadow:
-    0 0 0 6px rgb(242 180 65 / 10%),
-    0 0 24px 6px rgb(242 180 65 / 70%);
+    0 0 0 6px color-mix(in srgb, var(--signal) 10%, transparent),
+    0 0 24px 6px color-mix(in srgb, var(--signal) 70%, transparent);
   transform: translate(-50%, -50%);
   transition: left 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -319,7 +319,7 @@ onUnmounted(stopTimer)
   border-color: var(--signal);
   box-shadow:
     inset 0 0 0 8px var(--black),
-    0 0 22px rgb(242 180 65 / 30%);
+    0 0 22px color-mix(in srgb, var(--signal) 30%, transparent);
   color: var(--signal);
   transform: scale(1.12);
 }
@@ -332,9 +332,13 @@ onUnmounted(stopTimer)
   min-height: 210px;
   margin-top: 72px;
   padding: 34px 42px;
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 18px;
-  background: linear-gradient(120deg, rgb(11 15 24 / 92%), rgb(8 11 18 / 70%));
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--panel-2) 92%, transparent),
+    color-mix(in srgb, var(--panel) 70%, transparent)
+  );
   box-shadow: 0 30px 90px rgb(0 0 0 / 32%);
 
   h2 {

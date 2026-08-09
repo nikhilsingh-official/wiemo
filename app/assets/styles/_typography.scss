@@ -1,4 +1,4 @@
-@use 'variables' as tokens;
+@use 'variables' as *;
 
 @font-face {
   font-family: 'General Sans';
@@ -68,7 +68,7 @@ h1,
 h2,
 h3 {
   color: var(--ink);
-  font-family: tokens.$font-display;
+  font-family: $font-display;
   font-weight: 500;
   letter-spacing: -1px;
   line-height: 1.08;
@@ -104,7 +104,7 @@ code {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 4px;
-  font-family: tokens.$font-mono;
+  font-family: $font-mono;
   font-size: 14px;
 }
 
@@ -135,7 +135,7 @@ code {
 a {
   color: var(--beam);
   text-decoration: none;
-  transition: color tokens.$transition-fast tokens.$transition-ease;
+  transition: color $transition-fast $transition-ease;
 
   &:hover {
     color: var(--core);

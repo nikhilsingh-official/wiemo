@@ -471,7 +471,7 @@ onBeforeUnmount(() => {
 
 .energy-spectrum {
   min-width: 0;
-  border-top: 1px solid rgb(189 232 251 / 12%);
+  border-top: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
 }
 
 .energy-spectrum__header {
@@ -516,9 +516,9 @@ onBeforeUnmount(() => {
 }
 
 .energy-spectrum__desktop {
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 10px;
-  background: rgb(4 6 11 / 72%);
+  background: color-mix(in srgb, var(--black) 72%, transparent);
 }
 
 .energy-spectrum__lanes {
@@ -528,7 +528,7 @@ onBeforeUnmount(() => {
 .spectrum-lane {
   position: relative;
   min-width: 0;
-  border-bottom: 1px solid rgb(189 232 251 / 9%);
+  border-bottom: 1px solid color-mix(in srgb, var(--core) 9%, transparent);
 
   &:last-child {
     border-bottom: 0;
@@ -660,7 +660,7 @@ onBeforeUnmount(() => {
       left: calc(var(--track-padding) + var(--node-column-width) / 2);
       height: 1px;
       background: linear-gradient(90deg, var(--track-start-colour), var(--track-end-colour));
-      box-shadow: 0 0 8px rgb(51 180 236 / 18%);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--beam) 18%, transparent);
       content: '';
     }
   }
@@ -668,7 +668,7 @@ onBeforeUnmount(() => {
   &--scrollable {
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-color: rgb(51 180 236 / 42%) transparent;
+    scrollbar-color: color-mix(in srgb, var(--beam) 42%, transparent) transparent;
     scrollbar-width: thin;
 
     ol {
@@ -707,9 +707,9 @@ onBeforeUnmount(() => {
   display: grid;
   width: 34px;
   height: 34px;
-  border: 1px solid rgb(189 232 251 / 24%);
+  border: 1px solid color-mix(in srgb, var(--core) 24%, transparent);
   border-radius: 50%;
-  background: rgb(4 6 11 / 76%);
+  background: color-mix(in srgb, var(--black) 76%, transparent);
   box-shadow: 0 0 18px rgb(0 0 0 / 38%);
   cursor: pointer;
   place-items: center;
@@ -730,7 +730,7 @@ onBeforeUnmount(() => {
   &:hover,
   &:focus-visible {
     border-color: color-mix(in srgb, var(--tier-colour) 66%, transparent);
-    background: rgb(8 11 18 / 92%);
+    background: color-mix(in srgb, var(--panel) 92%, transparent);
   }
 
   &:focus-visible {
@@ -798,7 +798,7 @@ onBeforeUnmount(() => {
   &--newest::after {
     position: absolute;
     inset: -6px;
-    border: 1px solid rgb(231 237 243 / 76%);
+    border: 1px solid color-mix(in srgb, var(--ink) 76%, transparent);
     border-radius: 50%;
     content: '';
   }
@@ -811,7 +811,7 @@ onBeforeUnmount(() => {
   display: -webkit-box;
   width: 118px;
   overflow: hidden;
-  color: #7e8b9a;
+  color: var(--mute);
   font-size: 9px;
   line-height: 1.45;
   text-align: center;
@@ -829,9 +829,9 @@ onBeforeUnmount(() => {
   display: grid;
   width: 276px;
   overflow: hidden;
-  border: 1px solid rgb(189 232 251 / 16%);
+  border: 1px solid color-mix(in srgb, var(--core) 16%, transparent);
   border-radius: 10px;
-  background: #080b12;
+  background: var(--panel);
   box-shadow: 0 18px 46px rgb(0 0 0 / 44%);
   opacity: 0;
   pointer-events: none;
@@ -1019,9 +1019,9 @@ onBeforeUnmount(() => {
     min-height: 92px;
     grid-template-columns: 112px minmax(0, 1fr);
     overflow: hidden;
-    border: 1px solid rgb(189 232 251 / 12%);
+    border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
     border-radius: 9px;
-    background: rgb(8 11 18 / 72%);
+    background: color-mix(in srgb, var(--panel) 72%, transparent);
 
     img {
       width: 100%;

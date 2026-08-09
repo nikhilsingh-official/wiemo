@@ -5,7 +5,6 @@ import { createPageBackground, type GeneratedStar } from '~/backgrounds/pageBack
 const background = createPageBackground()
 
 const backgroundStyle = {
-  '--page-background-base': background.baseColor,
   '--page-grid-width': `${background.grid.width}px`,
   '--page-grid-height': `${background.grid.height}px`,
   '--page-grid-angle': `${background.grid.angle}deg`,
@@ -74,7 +73,8 @@ function glowStyle(glow: typeof background.glows[number]) {
   z-index: 0;
   inset: 0;
   overflow: hidden;
-  background: var(--page-background-base);
+  background: var(--black);
+  transition: background-color $transition-fast $transition-ease;
   pointer-events: none;
 }
 
@@ -82,8 +82,8 @@ function glowStyle(glow: typeof background.glows[number]) {
   position: absolute;
   inset: -32%;
   background-image:
-    linear-gradient(rgb(189 232 251 / 100%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(189 232 251 / 100%) 1px, transparent 1px);
+    linear-gradient(var(--core) 1px, transparent 1px),
+    linear-gradient(90deg, var(--core) 1px, transparent 1px);
   background-size: var(--page-grid-width) var(--page-grid-height);
   opacity: var(--page-grid-opacity);
   transform: rotate(var(--page-grid-angle));

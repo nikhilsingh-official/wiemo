@@ -1,11 +1,11 @@
-@use 'variables' as tokens;
+@use 'variables' as *;
 @use 'mixins';
 
 .readout {
   position: absolute;
   z-index: 3;
   color: var(--mute);
-  font-family: tokens.$font-mono;
+  font-family: $font-mono;
   font-size: 11px;
   letter-spacing: 2px;
   line-height: 1.55;
@@ -70,17 +70,17 @@
   justify-content: center;
   padding: 13px 22px;
   border: 1px solid transparent;
-  border-radius: tokens.$radius-small;
-  font-family: tokens.$font-mono;
+  border-radius: $radius-small;
+  font-family: $font-mono;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 2px;
   line-height: 1;
   text-transform: uppercase;
   transition:
-    color tokens.$transition-fast tokens.$transition-ease,
-    background-color tokens.$transition-fast tokens.$transition-ease,
-    border-color tokens.$transition-fast tokens.$transition-ease;
+    color $transition-fast $transition-ease,
+    background-color $transition-fast $transition-ease,
+    border-color $transition-fast $transition-ease;
   cursor: pointer;
 
   &:focus-visible {
@@ -88,13 +88,13 @@
   }
 
   &--primary {
-    color: #1a1204;
+    color: var(--signal-ink);
     background: var(--signal);
     font-weight: 600;
 
     &:hover {
-      color: #1a1204;
-      background: #f7c768;
+      color: var(--signal-ink);
+      background: var(--signal-hover);
     }
   }
 

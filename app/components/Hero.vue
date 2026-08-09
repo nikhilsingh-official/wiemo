@@ -28,6 +28,8 @@ const particleOptions = computed(() => defineParticleOptions({
   pointSize: 2.8,
   particleColor: '#0B80C3',
   backgroundColor: '#000000',
+  backgroundAlpha: 0,
+  renderer: { alpha: true },
   rotationSpeed: 0.025,
 }))
 
@@ -138,9 +140,9 @@ watch(
     background:
       linear-gradient(
         90deg,
-        rgb(0 0 0 / 78%) 0%,
-        rgb(0 0 0 / 58%) 28%,
-        rgb(0 0 0 / 18%) 58%,
+        rgb(var(--hero-overlay-rgb) / 78%) 0%,
+        rgb(var(--hero-overlay-rgb) / 58%) 28%,
+        rgb(var(--hero-overlay-rgb) / 18%) 58%,
         transparent 82%
       );
     content: '';
@@ -187,10 +189,10 @@ watch(
     background:
       linear-gradient(
         180deg,
-        rgb(0 0 0 / 22%) 0%,
-        rgb(0 0 0 / 82%) 22%,
-        rgb(0 0 0 / 74%) 68%,
-        rgb(0 0 0 / 12%) 100%
+        rgb(var(--hero-overlay-rgb) / 22%) 0%,
+        rgb(var(--hero-overlay-rgb) / 82%) 22%,
+        rgb(var(--hero-overlay-rgb) / 74%) 68%,
+        rgb(var(--hero-overlay-rgb) / 12%) 100%
       );
   }
 

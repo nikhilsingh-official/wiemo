@@ -1,3 +1,5 @@
+import { createColorModeInitScript } from './shared/colorMode'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -8,11 +10,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'particle-physics',
-      htmlAttrs: {
-        class: 'dark',
-      },
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+      ],
+      script: [
+        {
+          id: 'color-mode-init',
+          innerHTML: createColorModeInitScript(),
+        },
       ],
     },
   },

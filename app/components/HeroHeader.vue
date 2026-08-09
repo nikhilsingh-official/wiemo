@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
   font-size: 90px;
   font-weight: 700;
   line-height: 0.98;
-  color: white;
+  color: var(--ink);
 }
 
 .change-text {
@@ -132,7 +132,7 @@ onBeforeUnmount(() => {
   font-size: 90px;
   font-weight: 700;
   line-height: 1.02;
-  color: $atlas;
+  color: var(--atlas);
   overflow-wrap: anywhere;
 }
 

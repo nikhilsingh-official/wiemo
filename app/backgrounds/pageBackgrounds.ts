@@ -14,7 +14,6 @@ type MotionVector = {
 type PageBackgroundConfig = {
   name: string
   seed: number
-  baseColor: string
   accentColor: string
   secondaryColor: string
   grid: {
@@ -70,14 +69,13 @@ export const STAR_MOTION = {
 const SITE_BACKGROUND = {
   name: 'Accelerator field',
   seed: 4409,
-  baseColor: '#04060b',
-  accentColor: '#33b4ec',
-  secondaryColor: '#f2b441',
+  accentColor: 'var(--beam)',
+  secondaryColor: 'var(--signal)',
   grid: { width: 52, height: 52, angle: 0, opacity: 0.034 },
   stars: { count: 94, minSize: 1, maxSize: 3, minOpacity: 0.16, maxOpacity: 0.85 },
   glows: [
-    { x: 76, y: 20, size: 42, color: '#0b80c3', opacity: 0.14 },
-    { x: 52, y: 52, size: 22, color: '#f2b441', opacity: 0.055 },
+    { x: 76, y: 20, size: 42, color: 'var(--atlas)', opacity: 0.14 },
+    { x: 52, y: 52, size: 22, color: 'var(--signal)', opacity: 0.055 },
   ],
 } as const satisfies PageBackgroundConfig
 

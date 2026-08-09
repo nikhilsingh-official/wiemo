@@ -67,7 +67,7 @@ const formatDate = (date: Date | string) =>
   padding: 184px var(--gutter) 128px;
   color: var(--ink);
   background:
-    radial-gradient(circle at 50% 0%, rgb(11 128 195 / 12%), transparent 544px),
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--atlas) 12%, transparent), transparent 544px),
     linear-gradient(180deg, var(--black), var(--void) 42%, var(--black));
 
   &__article {
@@ -130,7 +130,7 @@ const formatDate = (date: Date | string) =>
     overflow: hidden;
     width: min(100%, 920px);
     margin: 0 auto 64px;
-    border: 1px solid rgb(189 232 251 / 12%);
+    border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
     border-radius: 4px;
     background: var(--panel-2);
     box-shadow: 0 22px 64px rgb(0 0 0 / 34%);

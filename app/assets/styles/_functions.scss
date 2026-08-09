@@ -1,20 +1,9 @@
 @use 'sass:map';
-@use 'variables' as tokens;
-
-/// Retrieve one of the named colours from the design-language palette.
-@function color($name) {
-  $value: map.get(tokens.$colors, $name);
-
-  @if $value == null {
-    @error 'Unknown colour token: #{$name}.';
-  }
-
-  @return $value;
-}
+@use 'variables' as *;
 
 /// Retrieve a value from the documented 4px spacing scale.
 @function space($step) {
-  $value: map.get(tokens.$spacing, $step);
+  $value: map.get($spacing, $step);
 
   @if $value == null {
     @error 'Unknown spacing step: #{$step}.';

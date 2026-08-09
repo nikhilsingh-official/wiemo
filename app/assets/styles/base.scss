@@ -1,42 +1,61 @@
-@use 'variables' as tokens;
+@use 'variables' as *;
 @use 'typography';
 @use 'layout';
 @use 'components';
 @use 'mixins';
 
 :root {
-  --void: #{tokens.$void};
-  --black: #{tokens.$black};
-  --panel: #{tokens.$panel};
-  --panel-2: #{tokens.$panel-2};
-  --line: #{tokens.$line};
-  --line-soft: #{tokens.$line-soft};
-
-  --atlas: #{tokens.$atlas};
-  --beam: #{tokens.$beam};
-  --core: #{tokens.$core};
-  --deep: #{tokens.$deep};
-  --deepest: #{tokens.$deepest};
-  --signal: #{tokens.$signal};
-
-  --ink: #{tokens.$ink};
-  --body-copy: #{tokens.$body-copy};
-  --mute: #{tokens.$mute};
-  --faint: #{tokens.$faint};
-
-  --display: #{tokens.$font-display};
-  --mono: #{tokens.$font-mono};
-  --body: #{tokens.$font-body};
-
-  --max-width: #{tokens.$content-max-width};
-  --gutter: #{tokens.$gutter};
-  --section-padding: #{tokens.$section-padding};
+  color-scheme: dark;
+  --void: #000000;
+  --black: #04060b;
+  --panel: #080b12;
+  --panel-2: #0b0f18;
+  --line: #151c28;
+  --line-soft: #0f141d;
+  --atlas: #0b80c3;
+  --beam: #33b4ec;
+  --core: #bde8fb;
+  --deep: #0a4e74;
+  --deepest: #062f49;
+  --signal: #f2b441;
+  --signal-hover: #f7c768;
+  --signal-ink: #1a1204;
+  --ink: #e7edf3;
+  --body-copy: #c7d0da;
+  --mute: #7e8b9a;
+  --faint: #47535f;
+  --hero-overlay-rgb: 0 0 0;
+  --gutter: #{$gutter};
+  --section-padding: #{$section-padding};
 
   color: var(--ink);
   background: var(--black);
-  font-family: var(--body);
+  font-family: $font-body;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --void: #ffffff;
+  --black: #f4f7fa;
+  --panel: #ffffff;
+  --panel-2: #eaf0f5;
+  --line: #c7d2dc;
+  --line-soft: #dce4ea;
+  --atlas: #0b80c3;
+  --beam: #086fa8;
+  --core: #075c89;
+  --deep: #4b91b5;
+  --deepest: #d6eaf4;
+  --signal: #a66100;
+  --signal-hover: #834d00;
+  --signal-ink: #ffffff;
+  --ink: #14212b;
+  --body-copy: #34495a;
+  --mute: #5f7180;
+  --faint: #61717d;
+  --hero-overlay-rgb: 244 247 250;
 }
 
 @media (max-width: 1280px) {
@@ -87,8 +106,9 @@ body {
   overflow-x: hidden;
   color: var(--ink);
   background: var(--black);
-  font-family: var(--body);
+  font-family: $font-body;
   line-height: 1.7;
+  transition: color $transition-fast $transition-ease, background-color $transition-fast $transition-ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

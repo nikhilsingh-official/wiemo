@@ -55,9 +55,9 @@ definePageMeta({
   flex: 1 1 0;
   min-width: 0;
   padding: 42px;
-  border: 1px solid rgb(189 232 251 / 12%);
+  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
   border-radius: 18px;
-  background: rgb(8 11 18 / 78%);
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
 
   dt {
     color: var(--mute);
