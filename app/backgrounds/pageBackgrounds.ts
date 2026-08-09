@@ -17,6 +17,11 @@ type Glow = {
   opacity: number
 }
 
+type MotionVector = {
+  x: number
+  y: number
+}
+
 export type PageBackgroundPreset = {
   name: string
   seed: number
@@ -46,8 +51,13 @@ export type GeneratedStar = {
   y: number
   size: number
   opacity: number
+  dimOpacity: number
   color: string
   blur: number
+  drift: MotionVector
+  startOffset: MotionVector
+  minScale: number
+  maxScale: number
   duration: number
   delay: number
 }
@@ -56,6 +66,20 @@ export type GeneratedPageBackground = PageBackgroundPreset & {
   path: string
   starsGenerated: GeneratedStar[]
 }
+
+// Shared motion tuning for every page background. Distribution-specific direction
+// is calculated below, while these values control the overall subtlety and pace.
+export const STAR_MOTION = {
+  minDrift: 1.5,
+  maxDrift: 7,
+  minDuration: 7,
+  maxDuration: 15,
+  minDimRatio: 0.58,
+  maxDimRatio: 0.82,
+  minScale: 0.78,
+  maxScale: 1.16,
+  startOffsetRatio: -0.42,
+} as const
 
 const DEFAULT_PRESET: PageBackgroundPreset = {
   name: 'Deep field',
@@ -204,17 +228,23 @@ export function createPageBackground(path: string): GeneratedPageBackground {
   const starsGenerated = Array.from({ length: preset.stars.count }, (_, index) => {
     const position = createStarPosition(preset.distribution, random, index, preset.stars.count)
     const bright = random() > 0.84
+    const opacity = mix(preset.stars.minOpacity, preset.stars.maxOpacity, bright ? 0.7 + random() * 0.3 : random())
+    const motion = createStarMotion(preset.distribution, position, random)
 
     return {
       id: index,
       x: clamp(position.x, 1, 99),
       y: clamp(position.y, 1, 99),
       size: mix(preset.stars.minSize, preset.stars.maxSize, bright ? 0.72 + random() * 0.28 : random()),
-      opacity: mix(preset.stars.minOpacity, preset.stars.maxOpacity, bright ? 0.7 + random() * 0.3 : random()),
+      opacity,
+      dimOpacity: opacity * mix(STAR_MOTION.minDimRatio, STAR_MOTION.maxDimRatio, random()),
       color: random() > 0.78 ? preset.secondaryColor : preset.accentColor,
       blur: bright ? mix(4, 10, random()) : mix(0, 2.5, random()),
-      duration: mix(4.5, 9, random()),
-      delay: mix(-8, 0, random()),
+      ...motion,
+      minScale: mix(STAR_MOTION.minScale, 0.94, random()),
+      maxScale: mix(1.02, STAR_MOTION.maxScale, bright ? 0.65 + random() * 0.35 : random()),
+      duration: mix(STAR_MOTION.minDuration, STAR_MOTION.maxDuration, random()),
+      delay: mix(-STAR_MOTION.maxDuration, 0, random()),
     }
   })
 
@@ -222,6 +252,51 @@ export function createPageBackground(path: string): GeneratedPageBackground {
     ...preset,
     path,
     starsGenerated,
+  }
+}
+
+function createStarMotion(
+  distribution: StarDistribution,
+  position: { x: number, y: number },
+  random: () => number,
+) {
+  const angle = random() * Math.PI * 2
+  const randomVector = { x: Math.cos(angle), y: Math.sin(angle) }
+  const fromCenter = normalizeVector(position.x - 50, position.y - 50)
+  let direction = randomVector
+
+  switch (distribution) {
+    case 'collision':
+      direction = { x: -fromCenter.x, y: -fromCenter.y }
+      break
+    case 'aperture':
+    case 'orbit':
+      direction = { x: -fromCenter.y, y: fromCenter.x }
+      break
+    case 'beam':
+      direction = normalizeVector(1, (random() - 0.5) * 0.22)
+      break
+    case 'expansion':
+      direction = fromCenter
+      break
+    case 'bridge':
+      direction = normalizeVector(position.x < 50 ? 1 : -1, (random() - 0.5) * 0.16)
+      break
+    case 'spectrum':
+      direction = normalizeVector(random() > 0.5 ? 1 : -1, (random() - 0.5) * 0.12)
+      break
+  }
+
+  const distance = mix(STAR_MOTION.minDrift, STAR_MOTION.maxDrift, random())
+  const driftX = direction.x * distance
+  const driftY = direction.y * distance
+
+  return {
+    drift: { x: driftX, y: driftY },
+    startOffset: {
+      x: driftX * STAR_MOTION.startOffsetRatio,
+      y: driftY * STAR_MOTION.startOffsetRatio,
+    },
   }
 }
 
@@ -305,4 +380,9 @@ function mix(min: number, max: number, amount: number) {
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
+}
+
+function normalizeVector(x: number, y: number) {
+  const length = Math.hypot(x, y) || 1
+  return { x: x / length, y: y / length }
 }

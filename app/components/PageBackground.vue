@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CSSProperties } from 'vue'
-import { createPageBackground } from '~/backgrounds/pageBackgrounds'
+import { createPageBackground, type GeneratedStar } from '~/backgrounds/pageBackgrounds'
 
 const route = useRoute()
 const background = computed(() => createPageBackground(route.path))
@@ -13,18 +13,25 @@ const backgroundStyle = computed(() => ({
   '--page-grid-opacity': String(background.value.grid.opacity),
 }) as CSSProperties)
 
-function starStyle(star: typeof background.value.starsGenerated[number]) {
+function starStyle(star: GeneratedStar) {
   return {
     left: `${star.x}%`,
     top: `${star.y}%`,
     width: `${star.size}px`,
     height: `${star.size}px`,
-    opacity: star.opacity,
     backgroundColor: star.color,
     boxShadow: `0 0 ${star.blur}px ${star.color}`,
     animationDuration: `${star.duration}s`,
     animationDelay: `${star.delay}s`,
-  }
+    '--star-opacity-low': star.dimOpacity,
+    '--star-opacity-high': star.opacity,
+    '--star-drift-x': `${star.drift.x}px`,
+    '--star-drift-y': `${star.drift.y}px`,
+    '--star-start-x': `${star.startOffset.x}px`,
+    '--star-start-y': `${star.startOffset.y}px`,
+    '--star-scale-min': star.minScale,
+    '--star-scale-max': star.maxScale,
+  } as CSSProperties
 }
 
 function glowStyle(glow: typeof background.value.glows[number]) {
@@ -94,16 +101,27 @@ function glowStyle(glow: typeof background.value.glows[number]) {
 .page-background__star {
   position: absolute;
   border-radius: 50%;
-  animation: page-star-breathe ease-in-out infinite alternate;
+  opacity: var(--star-opacity-low);
+  animation: page-star-drift ease-in-out infinite alternate;
+  will-change: transform, opacity;
 }
 
-@keyframes page-star-breathe {
+@keyframes page-star-drift {
   from {
-    transform: scale(0.72);
+    opacity: var(--star-opacity-low);
+    transform: translate3d(var(--star-start-x), var(--star-start-y), 0) scale(var(--star-scale-min));
   }
 
   to {
-    transform: scale(1.18);
+    opacity: var(--star-opacity-high);
+    transform: translate3d(var(--star-drift-x), var(--star-drift-y), 0) scale(var(--star-scale-max));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-background__star {
+    opacity: var(--star-opacity-high);
+    animation: none;
   }
 }
 </style>
