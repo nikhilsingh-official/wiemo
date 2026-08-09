@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { SITE_CONTENT } from '~/content/siteContent'
 import { HERO_STAGE } from '~/hero/stages'
 
 definePageMeta({
@@ -10,13 +9,12 @@ definePageMeta({
 <template>
   <main class="content-section">
     <div class="wrap volunteer-page">
-      <h1>Help make physics feel reachable.</h1>
-      <p class="lede">
-        {{ SITE_CONTENT.initiativeName }} is student-led. This prototype page can later hold volunteer roles, session support needs and contact details.
-      </p>
-      <NuxtLink class="button button--ghost" to="/about">
-        Learn about the mission
-      </NuxtLink>
+      <header class="volunteer-page__header">
+        <p class="volunteer-page__eyebrow">Join the initiative</p>
+        <h1>Love physics?</h1>
+        <h2>Make an impact with WIEMO.</h2>
+      </header>
+      <VolunteerForm />
     </div>
   </main>
 </template>
@@ -25,21 +23,34 @@ definePageMeta({
 .volunteer-page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  max-width: 760px;
-  gap: 20px;
+  gap: 44px;
+  max-width: 1180px;
 
   h1 {
     @include responsive-page-heading;
 
-    max-width: 640px;
-    margin-top: 8px;
     line-height: 0.9;
   }
 
-  .button {
-    width: fit-content;
+  h2 {
+    @include responsive-tertiary-heading;
+
+    margin-top: 14px;
+    color: var(--body-copy);
   }
 }
 
+.volunteer-page__header {
+  max-width: 860px;
+}
+
+.volunteer-page__eyebrow {
+  margin-bottom: 12px;
+  color: var(--beam);
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
 </style>
