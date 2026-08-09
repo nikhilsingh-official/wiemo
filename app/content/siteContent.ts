@@ -77,6 +77,6 @@ export const SITE_CONTENT = {
   ],
   contact: {
     emailLabel: 'nikhil@wiemo.org',
-    emailHref: 'mailto:nikhil@wwiemo.org',
+    emailHref: 'mailto:nikhil@wiemo.org',
   },
 } as const
