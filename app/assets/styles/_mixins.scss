@@ -33,16 +33,36 @@
   outline-offset: 4px;
 }
 
-@mixin responsive-page-heading {
-  font-size: 104px;
+@mixin -responsive-heading($desktop-size, $fluid-size, $mobile-size) {
+  font-size: $desktop-size;
 
   @media (max-width: 1300px) {
-    font-size: 8vw;
+    font-size: $fluid-size;
   }
 
   @media (max-width: 600px) {
-    font-size: 48px;
+    font-size: $mobile-size;
   }
+}
+
+@mixin responsive-page-heading {
+  @include -responsive-heading(104px, 8vw, 48px);
+}
+
+@mixin responsive-secondary-heading {
+  @include -responsive-heading(64px, 4.9vw, 30px);
+}
+
+@mixin responsive-tertiary-heading {
+  @include -responsive-heading(48px, 3.7vw, 23px);
+}
+
+@mixin responsive-quaternary-heading {
+  @include -responsive-heading(36px, 2.8vw, 18px);
+}
+
+@mixin responsive-quinary-heading {
+  @include -responsive-heading(28px, 2.15vw, 14px);
 }
 
 @mixin responsive-card-gap {
