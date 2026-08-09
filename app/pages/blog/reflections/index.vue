@@ -52,6 +52,7 @@ const TRAIL_MIN_STRENGTH = 0.025
 const TRAIL_RISE_RESPONSE = 7.5
 const TRAIL_DECAY_RESPONSE = 2.1
 const ROTATION_FOLLOW_RESPONSE = 10.5
+type TrailDirection = -1 | 1
 
 let animationFrameId = 0
 let scrollAnimationFrameId = 0
@@ -59,6 +60,7 @@ let resizeObserver: ResizeObserver | undefined
 let currentRotation = 0
 let targetRotation = 0
 let displayedTrailStrength = 0
+let displayedTrailDirection: TrailDirection = 1
 let acceleratorPeakRatio = DEFAULT_PEAK_RATIO
 let lastRenderTimestamp = 0
 
@@ -116,6 +118,7 @@ function drawParticleTrail(
   originY: number,
   scale: number,
   trailStrength: number,
+  trailDirection: TrailDirection,
   shimmer: number,
 ) {
   if (trailStrength < TRAIL_MIN_STRENGTH) {
@@ -130,6 +133,18 @@ function drawParticleTrail(
   const radius = BEAM_RADIUS * scale
   const lineWidth = Math.max(2, Math.min(6.5, scale * (2.4 + velocityRatio * 1.05)))
   const shimmerAlpha = 0.9 + shimmer * 0.1
+  const strokeTrailLayer = (length: number, endGap: number) => {
+    ctx.beginPath()
+    ctx.arc(
+      originX,
+      originY,
+      radius,
+      particleAngle + trailDirection * length,
+      particleAngle + trailDirection * endGap,
+      trailDirection > 0
+    )
+    ctx.stroke()
+  }
 
   ctx.save()
   ctx.globalCompositeOperation = 'lighter'
@@ -137,21 +152,15 @@ function drawParticleTrail(
 
   ctx.strokeStyle = `rgb(51 180 236 / ${0.11 * trailAlpha * shimmerAlpha})`
   ctx.lineWidth = lineWidth * 3.8
-  ctx.beginPath()
-  ctx.arc(originX, originY, radius, particleAngle - trailLength, particleAngle - 0.04)
-  ctx.stroke()
+  strokeTrailLayer(trailLength, 0.04)
 
   ctx.strokeStyle = `rgb(51 180 236 / ${0.28 * trailAlpha * shimmerAlpha})`
   ctx.lineWidth = lineWidth * 1.75
-  ctx.beginPath()
-  ctx.arc(originX, originY, radius, particleAngle - trailLength * 0.72, particleAngle - 0.025)
-  ctx.stroke()
+  strokeTrailLayer(trailLength * 0.72, 0.025)
 
   ctx.strokeStyle = `rgb(189 232 251 / ${0.52 * trailAlpha * shimmerAlpha})`
   ctx.lineWidth = lineWidth
-  ctx.beginPath()
-  ctx.arc(originX, originY, radius, particleAngle - trailLength * 0.38, particleAngle - 0.01)
-  ctx.stroke()
+  strokeTrailLayer(trailLength * 0.38, 0.01)
 
   ctx.restore()
 }
@@ -237,7 +246,13 @@ onMounted(() => {
       currentRotation = targetRotation
     }
 
-    const angularVelocity = Math.abs(currentRotation - previousRotation) / deltaSeconds
+    const signedAngularVelocity = (currentRotation - previousRotation) / deltaSeconds
+    const angularVelocity = Math.abs(signedAngularVelocity)
+
+    if (angularVelocity >= TRAIL_MIN_ANGULAR_VELOCITY) {
+      displayedTrailDirection = signedAngularVelocity < 0 ? 1 : -1
+    }
+
     const targetTrailStrength = angularVelocity < TRAIL_MIN_ANGULAR_VELOCITY
       ? 0
       : Math.min(1, angularVelocity / TRAIL_MAX_ANGULAR_VELOCITY)
@@ -272,7 +287,15 @@ onMounted(() => {
       ctx.restore()
     }
 
-    drawParticleTrail(ctx, originX, originY, scale, displayedTrailStrength, shimmer)
+    drawParticleTrail(
+      ctx,
+      originX,
+      originY,
+      scale,
+      displayedTrailStrength,
+      displayedTrailDirection,
+      shimmer
+    )
     drawParticle(ctx, particleX, particleY, scale, pulse)
     animationFrameId = requestAnimationFrame(render)
   }
