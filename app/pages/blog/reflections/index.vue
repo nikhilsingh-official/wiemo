@@ -60,7 +60,7 @@ let resizeObserver: ResizeObserver | undefined
 let currentRotation = 0
 let targetRotation = 0
 let displayedTrailStrength = 0
-let displayedTrailDirection: TrailDirection = 1
+let displayedTrailDirection: TrailDirection = -1
 let acceleratorPeakRatio = DEFAULT_PEAK_RATIO
 let lastRenderTimestamp = 0
 
@@ -250,7 +250,9 @@ onMounted(() => {
     const angularVelocity = Math.abs(signedAngularVelocity)
 
     if (angularVelocity >= TRAIL_MIN_ANGULAR_VELOCITY) {
-      displayedTrailDirection = signedAngularVelocity < 0 ? 1 : -1
+      // The fixed particle appears to travel opposite the rotating track, so its
+      // wake occupies the same angular side as the track's signed rotation.
+      displayedTrailDirection = signedAngularVelocity < 0 ? -1 : 1
     }
 
     const targetTrailStrength = angularVelocity < TRAIL_MIN_ANGULAR_VELOCITY
