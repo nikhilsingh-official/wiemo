@@ -2,16 +2,15 @@
 import type { CSSProperties } from 'vue'
 import { createPageBackground, type GeneratedStar } from '~/backgrounds/pageBackgrounds'
 
-const route = useRoute()
-const background = computed(() => createPageBackground(route.path))
+const background = createPageBackground()
 
-const backgroundStyle = computed(() => ({
-  '--page-background-base': background.value.baseColor,
-  '--page-grid-width': `${background.value.grid.width}px`,
-  '--page-grid-height': `${background.value.grid.height}px`,
-  '--page-grid-angle': `${background.value.grid.angle}deg`,
-  '--page-grid-opacity': String(background.value.grid.opacity),
-}) as CSSProperties)
+const backgroundStyle = {
+  '--page-background-base': background.baseColor,
+  '--page-grid-width': `${background.grid.width}px`,
+  '--page-grid-height': `${background.grid.height}px`,
+  '--page-grid-angle': `${background.grid.angle}deg`,
+  '--page-grid-opacity': String(background.grid.opacity),
+} as CSSProperties
 
 function starStyle(star: GeneratedStar) {
   return {
@@ -34,7 +33,7 @@ function starStyle(star: GeneratedStar) {
   } as CSSProperties
 }
 
-function glowStyle(glow: typeof background.value.glows[number]) {
+function glowStyle(glow: typeof background.glows[number]) {
   return {
     left: `${glow.x}%`,
     top: `${glow.y}%`,
@@ -62,7 +61,7 @@ function glowStyle(glow: typeof background.value.glows[number]) {
     />
     <i
       v-for="star in background.starsGenerated"
-      :key="`${background.path}-${star.id}`"
+      :key="star.id"
       class="page-background__star"
       :style="starStyle(star)"
     />
