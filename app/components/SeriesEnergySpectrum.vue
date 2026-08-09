@@ -483,7 +483,7 @@ onBeforeUnmount(() => {
 
   h2 {
     margin-top: 6px;
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-size: 38px;
   }
 }
 
@@ -497,20 +497,20 @@ onBeforeUnmount(() => {
 .mobile-series header small,
 .mobile-post time {
   font-family: $font-mono;
-  letter-spacing: 0.15em;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
 .energy-spectrum__kicker {
   color: var(--mute);
-  font-size: 0.63rem;
+  font-size: 10px;
 }
 
 .energy-spectrum__guide {
-  max-width: 36ch;
+  max-width: 360px;
   margin-bottom: 2px;
   color: var(--mute);
-  font-size: 0.58rem;
+  font-size: 9px;
   line-height: 1.6;
   text-align: right;
 }
@@ -547,26 +547,26 @@ onBeforeUnmount(() => {
 
 .spectrum-lane__unit {
   color: var(--tier-colour);
-  font-size: 0.76rem;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .spectrum-lane__name {
   color: var(--mute);
-  font-size: 0.56rem;
+  font-size: 9px;
 }
 
 .spectrum-lane__empty {
   display: grid;
   min-height: 122px;
-  grid-template-columns: clamp(124px, 18vw, 206px) minmax(0, 1fr);
+  grid-template-columns: 206px minmax(0, 1fr);
   align-items: center;
   gap: 22px;
   padding: 34px 24px 0 18px;
   color: var(--faint);
   font-family: $font-mono;
-  font-size: 0.54rem;
-  letter-spacing: 0.12em;
+  font-size: 9px;
+  letter-spacing: 1px;
   text-transform: uppercase;
 
   i {
@@ -581,7 +581,7 @@ onBeforeUnmount(() => {
   display: grid;
   min-width: 0;
   height: 252px;
-  grid-template-columns: clamp(124px, 18vw, 206px) minmax(0, 1fr);
+  grid-template-columns: 206px minmax(0, 1fr);
   gap: 22px;
   padding: 0 24px 0 18px;
   transition: opacity 160ms ease;
@@ -599,7 +599,7 @@ onBeforeUnmount(() => {
     display: -webkit-box;
     overflow: hidden;
     color: var(--ink);
-    font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+    font-size: 18px;
     line-height: 1.1;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -610,7 +610,7 @@ onBeforeUnmount(() => {
     margin-top: 7px;
     overflow: hidden;
     color: var(--mute);
-    font-size: 0.67rem;
+    font-size: 11px;
     line-height: 1.45;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -620,7 +620,7 @@ onBeforeUnmount(() => {
     display: inline-block;
     margin-top: 7px;
     color: var(--mute);
-    font-size: 0.52rem;
+    font-size: 8px;
 
     &:hover,
     &:focus-visible {
@@ -812,7 +812,7 @@ onBeforeUnmount(() => {
   width: 118px;
   overflow: hidden;
   color: #7e8b9a;
-  font-size: 0.55rem;
+  font-size: 9px;
   line-height: 1.45;
   text-align: center;
   transform: translateX(-50%);
@@ -863,13 +863,13 @@ onBeforeUnmount(() => {
 
   time {
     color: var(--tier-colour);
-    font-size: 0.52rem;
+    font-size: 8px;
   }
 
   strong {
     color: var(--ink);
     font-family: $font-display;
-    font-size: 0.9rem;
+    font-size: 14px;
     font-weight: 500;
     line-height: 1.18;
   }
@@ -878,10 +878,42 @@ onBeforeUnmount(() => {
     overflow: hidden;
     color: var(--mute);
     font-family: $font-body;
-    font-size: 0.64rem;
+    font-size: 10px;
     line-height: 1.45;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 1260px) {
+  .energy-spectrum__header h2 {
+    font-size: 3vw;
+  }
+}
+
+@media (max-width: 1140px) {
+  .series-level,
+  .spectrum-lane__empty {
+    grid-template-columns: 18vw minmax(0, 1fr);
+  }
+
+}
+
+@media (max-width: 1200px) {
+  .series-level__identity h3 {
+    font-size: 1.5vw;
+  }
+}
+
+@media (max-width: 960px) {
+  .series-level__identity h3 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 850px) {
+  .energy-spectrum__header h2 {
+    font-size: 26px;
   }
 }
 
@@ -907,7 +939,7 @@ onBeforeUnmount(() => {
 
   .series-node__label {
     width: 96px;
-    font-size: 0.5rem;
+    font-size: 8px;
   }
 
   .series-node__card {
@@ -953,23 +985,23 @@ onBeforeUnmount(() => {
 
       span {
         color: var(--tier-colour);
-        font-size: 0.7rem;
+        font-size: 11px;
         font-weight: 700;
       }
 
       small {
         color: var(--mute);
-        font-size: 0.54rem;
+        font-size: 9px;
       }
 
       h3 {
-        font-size: 1.35rem;
+        font-size: 22px;
       }
 
       > p {
-        max-width: 58ch;
+        max-width: 580px;
         color: var(--mute);
-        font-size: 0.78rem;
+        font-size: 12px;
         line-height: 1.55;
       }
     }
@@ -1008,13 +1040,13 @@ onBeforeUnmount(() => {
 
     time {
       color: var(--mute);
-      font-size: 0.52rem;
+      font-size: 8px;
     }
 
     strong {
       color: var(--ink);
       font-family: $font-display;
-      font-size: 0.96rem;
+      font-size: 15px;
       font-weight: 500;
       line-height: 1.22;
     }

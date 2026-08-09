@@ -143,7 +143,7 @@ const scaleStyle = {
 .energy-strip {
   width: 100%;
   min-width: 0;
-  padding-block: clamp(28px, 4vw, 44px);
+  padding-block: 44px;
   border-top: 1px solid rgb(189 232 251 / 14%);
 
   &:last-child {
@@ -156,12 +156,12 @@ const scaleStyle = {
   align-items: end;
   justify-content: space-between;
   gap: 24px;
-  padding-inline: clamp(4px, 1vw, 12px);
+  padding-inline: 12px;
 
   h2 {
     margin-top: 7px;
     color: var(--ink);
-    font-size: clamp(1.55rem, 3vw, 2.45rem);
+    font-size: 39px;
     line-height: 1;
   }
 }
@@ -172,13 +172,13 @@ const scaleStyle = {
 .energy-state__part,
 .energy-strip__scale {
   font-family: $font-mono;
-  letter-spacing: 0.1em;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .energy-strip__kicker {
   color: var(--mute);
-  font-size: 0.66rem;
+  font-size: 11px;
 }
 
 .energy-strip__actions {
@@ -190,18 +190,18 @@ const scaleStyle = {
 
 .energy-strip__complexity {
   color: var(--mute);
-  font-size: 0.66rem;
+  font-size: 11px;
 
   strong {
     color: var(--core);
-    font-size: 0.86rem;
+    font-size: 14px;
     font-weight: 600;
   }
 }
 
 .energy-strip__all {
   color: var(--beam);
-  font-size: 0.68rem;
+  font-size: 11px;
   text-decoration: none;
 
   span {
@@ -332,13 +332,13 @@ const scaleStyle = {
 
 .energy-state__part {
   color: var(--energy-colour);
-  font-size: 0.62rem;
+  font-size: 10px;
 }
 
 .energy-state__title {
-  max-width: 17ch;
+  max-width: 240px;
   color: var(--body-copy);
-  font-size: 0.88rem;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
   transition: color $transition-fast $transition-ease;
@@ -351,9 +351,34 @@ const scaleStyle = {
   justify-content: end;
   gap: 10px;
   margin-top: 12px;
-  padding-inline: clamp(4px, 1vw, 12px);
+  padding-inline: 12px;
   color: var(--mute);
-  font-size: 0.56rem;
+  font-size: 9px;
+}
+
+@media (max-width: 1200px) {
+  .energy-strip__header,
+  .energy-strip__scale {
+    padding-inline: 1vw;
+  }
+}
+
+@media (max-width: 1100px) {
+  .energy-strip {
+    padding-block: 4vw;
+  }
+}
+
+@media (max-width: 1300px) {
+  .energy-strip__header h2 {
+    font-size: 3vw;
+  }
+}
+
+@media (max-width: 830px) {
+  .energy-strip__header h2 {
+    font-size: 25px;
+  }
 }
 
 .energy-strip__scale-line {
@@ -361,6 +386,10 @@ const scaleStyle = {
 }
 
 @media (max-width: 700px) {
+  .energy-strip {
+    padding-block: 28px;
+  }
+
   .energy-strip__header {
     align-items: start;
     flex-direction: column;
@@ -377,8 +406,28 @@ const scaleStyle = {
   }
 
   .energy-strip__viewport {
-    margin-right: calc(clamp(20px, 5vw, 32px) * -1);
-    padding-right: clamp(20px, 5vw, 32px);
+    margin-right: -32px;
+    padding-right: 32px;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .energy-strip__viewport {
+    margin-right: -5vw;
+    padding-right: 5vw;
+  }
+}
+
+@media (max-width: 400px) {
+  .energy-strip__header,
+  .energy-strip__scale {
+    padding-inline: 4px;
+  }
+
+  .energy-strip__viewport {
+    margin-right: -20px;
+    padding-right: 20px;
   }
 }
 
