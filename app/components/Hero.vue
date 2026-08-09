@@ -2,20 +2,18 @@
 import { computed, ref, watch } from 'vue'
 import { defineParticleOptions } from '~/hero/three/particleOptions'
 import { defineTextOptions } from '~/hero/text-typing/textOptions'
-import type { HeroStage } from '~/hero/stages'
+import { HERO_STAGE, type HeroStage } from '~/hero/stages'
 import type { MorphEvent } from '~/hero/three/types'
 
 const MORPH_DURATION = 1.8
 const HOLD_DURATION = 1.1
 const PARTICLE_COUNT = 72_000
+const FALLBACK_HERO_STAGE = HERO_STAGE.collision
 
 const route = useRoute()
 const activeHeroStages = computed<readonly HeroStage[]>(() => {
   const stages = route.meta.heroStages
-  if (!stages?.length) {
-    throw new Error(`Route "${route.path}" must define heroStages page metadata.`)
-  }
-  return stages
+  return stages?.length ? stages : [FALLBACK_HERO_STAGE]
 })
 const particleOptions = computed(() => defineParticleOptions({
   modelUrls: activeHeroStages.value.map(
@@ -110,6 +108,7 @@ watch(
       :options="particleOptions"
       @morph-progress="trackMorph"
     />
+    <HeroImpactMetrics />
     <HeroMorphIndicator
       class="hero__morph-readout"
       aria-label="Particle model transition progress"

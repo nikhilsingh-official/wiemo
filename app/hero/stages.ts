@@ -50,6 +50,16 @@ export const HERO_STAGE = {
     label: 'Speech',
     headline: 'ideas',
   },
+  reflections: {
+    modelFilename: 'Speech.glb',
+    label: 'Reflections',
+    headline: 'ideas',
+  },
+  series: {
+    modelFilename: 'Hourglass.glb',
+    label: 'Series',
+    headline: 'learning',
+  },
   timeline: {
     modelFilename: 'Hourglass.glb',
     label: 'Hourglass',

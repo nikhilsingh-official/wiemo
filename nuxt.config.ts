@@ -27,5 +27,15 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/content'],
+  modules: ['@nuxt/content', 'nuxt-studio'],
+
+  studio: {
+    route: '/_studio',
+    repository: {
+      provider: 'github',
+      owner: 'nikhilsingh-official',
+      repo: 'wiemo',
+      branch: process.env.STUDIO_BRANCH_NAME ?? 'cms/nuxt-studio',
+    },
+  },
 })
