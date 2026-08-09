@@ -110,14 +110,15 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 .hero-header__heading {
   margin: 0;
-  max-width: min(12ch, 72vw);
+  width: 60vw;
+  max-width: 1075px;
   line-height: 0.98;
 }
 
 .anchor-text {
   display: block;
   font-family: $font-display;
-  font-size: clamp(3rem, 5vw, 5.6rem);
+  font-size: 90px;
   font-weight: 700;
   line-height: 0.98;
   color: white;
@@ -125,10 +126,10 @@ onBeforeUnmount(() => {
 
 .change-text {
   display: block;
-  min-height: 1.06em;
-  margin-top: 0.04em;
+  min-height: 95px;
+  margin-top: 4px;
   font-family: $font-display;
-  font-size: clamp(3rem, 5vw, 5.6rem);
+  font-size: 90px;
   font-weight: 700;
   line-height: 1.02;
   color: $atlas;
@@ -137,9 +138,31 @@ onBeforeUnmount(() => {
 
 .hero-header__cursor {
   display: inline-block;
-  margin-left: 0.08em;
+  margin-left: 7px;
   font-weight: 400;
   animation: cursor-blink 760ms steps(1, end) infinite;
+}
+
+@media (max-width: 1800px) {
+  .anchor-text,
+  .change-text {
+    font-size: 5vw;
+  }
+
+  .change-text {
+    min-height: 5.3vw;
+  }
+}
+
+@media (max-width: 960px) {
+  .anchor-text,
+  .change-text {
+    font-size: 48px;
+  }
+
+  .change-text {
+    min-height: 51px;
+  }
 }
 
 .hero-header__announcement {
@@ -167,12 +190,39 @@ onBeforeUnmount(() => {
 
 @media (max-width: $breakpoint-small) {
   .hero-header__heading {
-    max-width: min(11ch, 82vw);
+    width: 82vw;
+    max-width: none;
   }
 
   .anchor-text,
   .change-text {
-    font-size: clamp(2.6rem, 12vw, 4rem);
+    font-size: 64px;
+  }
+
+  .change-text {
+    min-height: 68px;
+  }
+}
+
+@media (max-width: 530px) {
+  .anchor-text,
+  .change-text {
+    font-size: 12vw;
+  }
+
+  .change-text {
+    min-height: 12.7vw;
+  }
+}
+
+@media (max-width: 350px) {
+  .anchor-text,
+  .change-text {
+    font-size: 42px;
+  }
+
+  .change-text {
+    min-height: 45px;
   }
 }
 </style>

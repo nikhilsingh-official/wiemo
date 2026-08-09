@@ -121,7 +121,7 @@ const formatDate = (date: Date | string) =>
   position: relative;
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 20px);
+  gap: 20px;
   min-height: 56px;
   overflow: visible;
   padding: 8px;
@@ -160,7 +160,7 @@ const formatDate = (date: Date | string) =>
   min-height: 44px;
   align-items: center;
   justify-content: center;
-  padding-inline: clamp(12px, 1.3vw, 20px);
+  padding-inline: 20px;
   border-radius: 14px;
   transition:
     background-color $transition-fast $transition-ease,
@@ -178,7 +178,7 @@ const formatDate = (date: Date | string) =>
 
 .navbar__brand-mark {
   display: block;
-  width: clamp(112px, 11vw, 160px);
+  width: 160px;
   height: auto;
   max-height: 30px;
 }
@@ -191,7 +191,7 @@ const formatDate = (date: Date | string) =>
   min-height: inherit;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(4px, 0.5vw, 8px);
+  gap: 8px;
   padding: 0;
   border-radius: inherit;
   list-style: none;
@@ -220,13 +220,13 @@ const formatDate = (date: Date | string) =>
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  padding-inline: clamp(12px, 1.25vw, 20px);
+  padding-inline: 20px;
   border-radius: 14px;
   color: var(--body-copy);
   font-family: $font-mono;
-  font-size: clamp(0.62rem, 0.72vw, 0.72rem);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.09em;
+  letter-spacing: 1px;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
@@ -307,15 +307,15 @@ const formatDate = (date: Date | string) =>
   span {
     color: var(--ink);
     font-family: $font-display;
-    font-size: 0.98rem;
+    font-size: 16px;
     line-height: 1.16;
   }
 
   time {
     color: var(--mute);
     font-family: $font-mono;
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    letter-spacing: 1px;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -324,6 +324,62 @@ const formatDate = (date: Date | string) =>
   &:focus-visible {
     color: var(--core);
     background: rgb(51 180 236 / 9%);
+  }
+}
+
+@media (max-width: 1660px) {
+  .navbar {
+    gap: 1.2vw;
+  }
+
+  .navbar__list {
+    gap: 0.5vw;
+  }
+
+  .navbar__link {
+    padding-inline: 1.25vw;
+    font-size: 0.72vw;
+  }
+}
+
+@media (max-width: 1540px) {
+  .navbar__brand {
+    padding-inline: 1.3vw;
+  }
+}
+
+@media (max-width: 1450px) {
+  .navbar__brand-mark {
+    width: 11vw;
+  }
+}
+
+@media (max-width: 1390px) {
+  .navbar__link {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 1010px) {
+  .navbar__brand-mark {
+    width: 112px;
+  }
+}
+
+@media (max-width: 960px) {
+  .navbar__brand,
+  .navbar__link {
+    padding-inline: 12px;
+  }
+}
+
+@media (max-width: 840px) {
+  .navbar {
+    gap: 10px;
+  }
+
+  .navbar__list {
+    gap: 4px;
   }
 }
 

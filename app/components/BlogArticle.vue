@@ -64,10 +64,10 @@ const formatDate = (date: Date | string) =>
 <style scoped lang="scss">
 .blog-post {
   min-height: 100vh;
-  padding: calc(112px + clamp(34px, 7vw, 72px)) var(--gutter) clamp(72px, 10vw, 128px);
+  padding: 184px var(--gutter) 128px;
   color: var(--ink);
   background:
-    radial-gradient(circle at 50% 0%, rgb(11 128 195 / 12%), transparent 34rem),
+    radial-gradient(circle at 50% 0%, rgb(11 128 195 / 12%), transparent 544px),
     linear-gradient(180deg, var(--black), var(--void) 42%, var(--black));
 
   &__article {
@@ -77,11 +77,11 @@ const formatDate = (date: Date | string) =>
 
   &__back {
     display: inline-flex;
-    margin-bottom: clamp(34px, 6vw, 72px);
+    margin-bottom: 72px;
     color: var(--beam);
     font-family: $font-mono;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    letter-spacing: 1px;
     text-decoration: none;
     text-transform: uppercase;
 
@@ -93,12 +93,12 @@ const formatDate = (date: Date | string) =>
   &__header {
     max-width: 760px;
     margin-inline: auto;
-    margin-bottom: clamp(28px, 5vw, 46px);
+    margin-bottom: 46px;
 
     h1 {
       color: var(--ink);
       font-family: $font-display;
-      font-size: clamp(2.7rem, 7vw, 5.7rem);
+      font-size: 91px;
       font-weight: 500;
       letter-spacing: 0;
       line-height: 0.98;
@@ -106,11 +106,11 @@ const formatDate = (date: Date | string) =>
   }
 
   &__subheading {
-    max-width: 48ch;
+    max-width: 700px;
     margin-top: 18px;
     color: var(--core);
     font-family: $font-body;
-    font-size: clamp(1.12rem, 2vw, 1.42rem);
+    font-size: 23px;
     line-height: 1.42;
   }
 
@@ -121,15 +121,15 @@ const formatDate = (date: Date | string) =>
     margin-top: 24px;
     color: var(--mute);
     font-family: $font-mono;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
+    font-size: 11px;
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
 
   &__figure {
     overflow: hidden;
     width: min(100%, 920px);
-    margin: 0 auto clamp(34px, 6vw, 64px);
+    margin: 0 auto 64px;
     border: 1px solid rgb(189 232 251 / 12%);
     border-radius: 4px;
     background: var(--panel-2);
@@ -148,7 +148,7 @@ const formatDate = (date: Date | string) =>
       padding: 10px 0 12px;
       margin-inline: auto;
       color: var(--mute);
-      font-size: 0.82rem;
+      font-size: 13px;
       line-height: 1.4;
     }
   }
@@ -158,7 +158,7 @@ const formatDate = (date: Date | string) =>
     margin-inline: auto;
     color: var(--body-copy);
     font-family: $font-body;
-    font-size: clamp(1.12rem, 2vw, 1.28rem);
+    font-size: 20px;
     line-height: 1.78;
   }
 }
@@ -166,13 +166,13 @@ const formatDate = (date: Date | string) =>
 .blog-post__content {
   :deep(p) {
     max-width: none;
-    margin-block: 1.2em;
+    margin-block: 24px;
     color: inherit;
   }
 
   :deep(h2),
   :deep(h3) {
-    margin-top: 2em;
+    margin-top: 40px;
     color: var(--ink);
     font-family: $font-display;
     letter-spacing: 0;
@@ -190,7 +190,7 @@ const formatDate = (date: Date | string) =>
   }
 
   :deep(blockquote) {
-    margin-block: 1.6em;
+    margin-block: 32px;
     padding-left: 20px;
     border-left: 3px solid var(--beam);
     color: var(--core);
@@ -200,15 +200,92 @@ const formatDate = (date: Date | string) =>
   :deep(ul),
   :deep(ol) {
     display: grid;
-    gap: 0.45em;
-    padding-left: 1.3em;
-    margin-block: 1.2em;
+    gap: 9px;
+    padding-left: 26px;
+    margin-block: 24px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .blog-post__header h1 {
+    font-size: 7vw;
+  }
+}
+
+@media (max-width: 1200px) {
+  .blog-post__back {
+    margin-bottom: 6vw;
+  }
+}
+
+@media (max-width: 1150px) {
+  .blog-post__subheading {
+    font-size: 2vw;
+  }
+}
+
+@media (max-width: 1070px) {
+  .blog-post__figure {
+    margin-bottom: 6vw;
+  }
+}
+
+@media (max-width: 1280px) {
+  .blog-post {
+    padding-bottom: 10vw;
+  }
+}
+
+@media (max-width: 1024px) {
+  .blog-post {
+    padding-top: calc(112px + 7vw);
+  }
+
+  .blog-post__content {
+    font-size: 2vw;
+  }
+}
+
+@media (max-width: 720px) {
+  .blog-post {
+    padding-bottom: 72px;
+  }
+}
+
+@media (max-width: 920px) {
+  .blog-post__header {
+    margin-bottom: 5vw;
+  }
+}
+
+@media (max-width: 896px) {
+  .blog-post__subheading,
+  .blog-post__content {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 620px) {
+  .blog-post__header h1 {
+    font-size: 43px;
+  }
+}
+
+@media (max-width: 570px) {
+  .blog-post__back,
+  .blog-post__figure {
+    margin-bottom: 34px;
+  }
+
+  .blog-post__header {
+    margin-bottom: 28px;
   }
 }
 
 @media (max-width: 680px) {
   .blog-post {
     padding-top: 112px;
+    padding-bottom: 72px;
   }
 }
 </style>
