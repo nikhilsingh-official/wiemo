@@ -5,7 +5,11 @@ definePageMeta({
   heroStages: [HERO_STAGE.series],
 })
 
-const { data: posts } = await useAsyncData('series-posts', () =>
+const {
+  data: posts,
+  error: postsError,
+  status: postsStatus,
+} = await useAsyncData('series-posts', () =>
   queryCollection('series')
     .where('draft', '=', false)
     .order('date', 'ASC')
@@ -46,8 +50,7 @@ const seriesList = computed(() => {
       date: post.date,
       thumbnail: post.thumbnail,
       thumbnailAlt: post.thumbnailAlt,
-      // `excerpt` is reserved by Nuxt Content, so the schema exposes its parsed alias.
-      excerpt: post.postExcerpt,
+      excerpt: post.postExcerpt ?? post.excerpt ?? post.description,
     })),
   }))
 })
@@ -62,7 +65,6 @@ useSeoMeta({
   <main class="content-section blog-page">
     <div class="wrap">
       <header class="blog-page__header">
-        <p class="eyebrow">Blog / Series</p>
         <h1>Energy spectrum</h1>
         <p class="lede">
           Follow learning paths across a spectrum of ideas. Series become more challenging
@@ -75,6 +77,8 @@ useSeoMeta({
         :series-list="seriesList"
       />
 
+      <p v-else-if="postsStatus === 'pending'">Loading series...</p>
+      <p v-else-if="postsError">Unable to load series.</p>
       <p v-else>No series found.</p>
     </div>
   </main>
@@ -86,8 +90,20 @@ useSeoMeta({
 
   &__header {
     max-width: 800px;
-    margin-bottom: clamp(44px, 7vw, 80px);
+    margin-bottom: 80px;
   }
 
+}
+
+@media (max-width: 1140px) {
+  .blog-page__header {
+    margin-bottom: 7vw;
+  }
+}
+
+@media (max-width: 630px) {
+  .blog-page__header {
+    margin-bottom: 44px;
+  }
 }
 </style>

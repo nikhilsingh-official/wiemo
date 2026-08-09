@@ -1,25 +1,25 @@
 ---
 title: Asking Testable Questions
-subheading: A starter inquiry lab post about turning student curiosity into something the group can actually investigate.
-excerpt: Students often arrive with big questions, so the first move is helping them reshape wonder into a testable classroom-scale experiment.
-postExcerpt: Students often arrive with big questions, so the first move is helping them reshape wonder into a testable classroom-scale experiment.
 author: WIEMO Program Team
+complexityRating: "4"
 date: 2026-07-26
-thumbnail: /images/blog/student-lab.jpg
-thumbnailAlt: A student working with an electricity experiment in a school lab.
+description: Students often arrive with big questions. The first move is helping them reshape wonder into a testable classroom-scale experiment without flattening the curiosity that made the question interesting.
+draft: false
+energyTier: kev
+featured: false
+imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
+imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
+postExcerpt: Students often arrive with big questions, so the first move is helping them reshape wonder into a testable classroom-scale experiment.
+seriesDescription: Classroom routines that turn curiosity into observable, testable investigations.
+seriesPart: "4"
+seriesSlug: student-inquiry-labs
+seriesTitle: Student Inquiry Labs
+subheading: A starter inquiry lab post about turning student curiosity into something the group can actually investigate.
 tags:
   - Inquiry labs
   - STEM learning
-featured: false
-draft: false
-imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
-imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
-seriesSlug: student-inquiry-labs
-seriesTitle: Student Inquiry Labs
-seriesDescription: Classroom routines that turn curiosity into observable, testable investigations.
-energyTier: kev
-seriesPart: 4
-complexityRating: 4
+thumbnail: /images/blog/student-lab.jpg
+thumbnailAlt: A student working with an electricity experiment in a school lab.
 ---
 
 Students often arrive with big questions. The first move is helping them reshape wonder into a testable classroom-scale experiment without flattening the curiosity that made the question interesting.

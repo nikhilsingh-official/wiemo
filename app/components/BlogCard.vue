@@ -3,7 +3,8 @@ type BlogCardPost = {
   path: string
   title: string
   subheading: string
-  excerpt: string
+  description?: string
+  excerpt?: string
   author?: string
   date: Date | string
   thumbnail: string
@@ -11,10 +12,12 @@ type BlogCardPost = {
   tags?: string[]
 }
 
-defineProps<{
+const props = defineProps<{
   post: BlogCardPost
   featured?: boolean
 }>()
+
+const excerpt = computed(() => props.post.excerpt ?? props.post.description ?? '')
 
 const formatDate = (date: Date | string) =>
   new Intl.DateTimeFormat('en', {
@@ -46,7 +49,7 @@ const formatDate = (date: Date | string) =>
 
         <h2>{{ post.title }}</h2>
         <p class="blog-card__subheading">{{ post.subheading }}</p>
-        <p>{{ post.excerpt }}</p>
+        <p>{{ excerpt }}</p>
 
         <ul
           v-if="post.tags?.length"
@@ -107,7 +110,7 @@ const formatDate = (date: Date | string) =>
   &__body {
     display: grid;
     gap: 12px;
-    padding: clamp(20px, 3vw, 30px);
+    padding: 30px;
   }
 
   &__meta {
@@ -116,15 +119,15 @@ const formatDate = (date: Date | string) =>
     gap: 10px 16px;
     color: var(--mute);
     font-family: $font-mono;
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
+    font-size: 11px;
+    letter-spacing: 2px;
     text-transform: uppercase;
   }
 
   h2 {
-    max-width: 13ch;
+    max-width: 500px;
     color: var(--ink);
-    font-size: clamp(1.45rem, 4vw, 2.4rem);
+    font-size: 38px;
     line-height: 0.98;
   }
 
@@ -135,7 +138,7 @@ const formatDate = (date: Date | string) =>
 
   &__subheading {
     color: var(--core);
-    font-size: 1.02rem;
+    font-size: 16px;
   }
 
   &__tags {
@@ -152,8 +155,8 @@ const formatDate = (date: Date | string) =>
       border-radius: 999px;
       color: var(--beam);
       font-family: $font-mono;
-      font-size: 0.64rem;
-      letter-spacing: 0.12em;
+      font-size: 10px;
+      letter-spacing: 1px;
       text-transform: uppercase;
     }
   }
@@ -173,6 +176,18 @@ const formatDate = (date: Date | string) =>
   }
 }
 
+@media (max-width: 1000px) {
+  .blog-card__body {
+    padding: 3vw;
+  }
+}
+
+@media (max-width: 950px) {
+  .blog-card h2 {
+    font-size: 4vw;
+  }
+}
+
 @media (max-width: 760px) {
   .blog-card--featured .blog-card__link {
     grid-template-columns: 1fr;
@@ -180,6 +195,18 @@ const formatDate = (date: Date | string) =>
 
   .blog-card--featured .blog-card__media {
     min-height: 260px;
+  }
+}
+
+@media (max-width: 670px) {
+  .blog-card__body {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 575px) {
+  .blog-card h2 {
+    font-size: 23px;
   }
 }
 </style>
