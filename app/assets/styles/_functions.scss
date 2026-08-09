@@ -1,15 +1,5 @@
 @use 'sass:map';
-@use 'sass:math';
 @use 'variables' as tokens;
-
-/// Convert a pixel value to rem while keeping the 16px document baseline explicit.
-@function rem($value, $base: 16px) {
-  @if math.unit($value) != 'px' {
-    @error 'rem() expects a pixel value.';
-  }
-
-  @return math.div($value, $base) * 1rem;
-}
 
 /// Retrieve one of the named colours from the design-language palette.
 @function color($name) {

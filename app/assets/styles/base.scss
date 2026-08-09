@@ -39,6 +39,30 @@
   text-rendering: optimizeLegibility;
 }
 
+@media (max-width: 1280px) {
+  :root {
+    --gutter: 5vw;
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --gutter: 20px;
+  }
+}
+
+@media (max-width: 1330px) {
+  :root {
+    --section-padding: 9vw;
+  }
+}
+
+@media (max-width: 620px) {
+  :root {
+    --section-padding: 56px;
+  }
+}
+
 *,
 *::before,
 *::after {
