@@ -6,7 +6,6 @@ import { SITE_CONTENT } from '~/content/siteContent'
   <footer class="site-footer">
     <div class="wrap site-footer__inner">
       <div>
-        <p class="eyebrow">Contact</p>
         <p>{{ SITE_CONTENT.initiativeName }}</p>
       </div>
 
@@ -19,8 +18,8 @@ import { SITE_CONTENT } from '~/content/siteContent'
 
 <style scoped lang="scss">
 .site-footer {
-  border-top: 1px solid var(--line-soft);
-  background: var(--void);
+  border-top: 1px solid $line-soft;
+  background: $void;
 }
 
 .site-footer__inner {
@@ -36,8 +35,8 @@ import { SITE_CONTENT } from '~/content/siteContent'
 .site-footer__contact {
   color: var(--beam);
   font-family: $font-mono;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 </style>

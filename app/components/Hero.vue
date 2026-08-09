@@ -15,6 +15,7 @@ const activeHeroStages = computed<readonly HeroStage[]>(() => {
   const stages = route.meta.heroStages
   return stages?.length ? stages : [FALLBACK_HERO_STAGE]
 })
+
 const particleOptions = computed(() => defineParticleOptions({
   modelUrls: activeHeroStages.value.map(
     (stage) => `/models/${stage.modelFilename}`,
@@ -166,7 +167,19 @@ watch(
 }
 
 .hero__morph-readout {
-  width: clamp(150px, 14vw, 210px);
+  width: 210px;
+}
+
+@media (max-width: 1500px) {
+  .hero__morph-readout {
+    width: 14vw;
+  }
+}
+
+@media (max-width: 1070px) {
+  .hero__morph-readout {
+    width: 150px;
+  }
 }
 
 @media (max-width: $breakpoint-small) {

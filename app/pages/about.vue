@@ -11,7 +11,6 @@ definePageMeta({
   <main class="content-section">
     <div class="wrap about-page">
       <header>
-        <p class="eyebrow">About us</p>
         <h1>{{ SITE_CONTENT.initiativeName }}</h1>
         <p class="lede">{{ SITE_CONTENT.shortDescription }}</p>
       </header>
@@ -30,23 +29,50 @@ definePageMeta({
 
 <style scoped lang="scss">
 .about-page {
-  display: grid;
-  gap: clamp(32px, 6vw, 72px);
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
 
   h1 {
-    max-width: 11ch;
+    @include responsive-page-heading;
+
+    max-width: 700px;
     margin-top: 8px;
-    font-size: clamp(3rem, 8vw, 6.5rem);
     line-height: 0.9;
   }
 }
 
 .about-page__mission {
-  display: grid;
-  max-width: 78ch;
+  display: flex;
+  flex-direction: column;
+  max-width: 780px;
   gap: 22px;
   color: var(--body-copy);
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-size: 20px;
   line-height: 1.85;
+}
+
+@media (max-width: 1250px) {
+  .about-page__mission {
+    font-size: 1.6vw;
+  }
+}
+
+@media (max-width: 1200px) {
+  .about-page {
+    gap: 6vw;
+  }
+}
+
+@media (max-width: 1050px) {
+  .about-page__mission {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 530px) {
+  .about-page {
+    gap: 32px;
+  }
 }
 </style>

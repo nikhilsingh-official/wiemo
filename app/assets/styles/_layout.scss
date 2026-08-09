@@ -6,7 +6,7 @@
 }
 
 .content-section {
-  padding-block: tokens.$section-padding;
+  padding-block: var(--section-padding);
   border-bottom: 1px solid var(--line-soft);
 }
 
@@ -18,23 +18,28 @@
   margin-bottom: 14px;
 }
 
-.section-number {
-  color: var(--atlas);
-  font-family: tokens.$font-mono;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-}
-
 .lede {
-  max-width: 60ch;
+  max-width: 600px;
   margin-top: 6px;
   color: #cdd6e0;
-  font-size: clamp(1.02rem, 1.6vw, 1.18rem);
+  font-size: 19px;
+}
+
+@media (max-width: 1180px) {
+  .lede {
+    font-size: 1.6vw;
+  }
+}
+
+@media (max-width: 1020px) {
+  .lede {
+    font-size: 16px;
+  }
 }
 
 .stack {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
