@@ -29,7 +29,7 @@ defineProps<{
 <style scoped lang="scss">
 .hero__morph-key {
   display: inline-block;
-  width: 4.8em;
+  width: 54px;
   color: var(--faint);
 }
 

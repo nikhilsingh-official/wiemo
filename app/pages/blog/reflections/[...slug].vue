@@ -17,7 +17,7 @@ if (!post.value) {
 
 useSeoMeta({
   title: () => post.value?.title ?? 'Reflection',
-  description: () => post.value?.excerpt ?? '',
+  description: () => post.value?.excerpt ?? post.value?.description ?? '',
   ogImage: () => post.value?.thumbnail ?? '',
 })
 </script>

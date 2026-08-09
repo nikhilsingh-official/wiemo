@@ -38,14 +38,14 @@ $colors: (
 );
 
 // Type roles
-$font-display: 'Space Grotesk', system-ui, sans-serif;
-$font-mono: 'JetBrains Mono', ui-monospace, monospace;
-$font-body: 'Inter', system-ui, sans-serif;
+$font-display: 'General Sans', system-ui, sans-serif;
+$font-mono: 'Monaspace Neon', ui-monospace, monospace;
+$font-body: 'Lexend', system-ui, sans-serif;
 
 // Layout and rhythm
 $content-max-width: 1080px;
-$gutter: clamp(20px, 5vw, 64px);
-$section-padding: clamp(56px, 9vw, 120px);
+$gutter: 64px;
+$section-padding: 120px;
 
 $spacing: (
   1: 4px,

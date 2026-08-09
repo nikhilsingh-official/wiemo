@@ -5,31 +5,59 @@ definePageMeta({
   heroStages: [HERO_STAGE.series],
 })
 
-const { data: posts } = await useAsyncData('series-posts', () =>
+const {
+  data: posts,
+  error: postsError,
+  status: postsStatus,
+} = await useAsyncData('series-posts', () =>
   queryCollection('series')
     .where('draft', '=', false)
-    .order('date', 'DESC')
+    .order('date', 'ASC')
     .all()
 )
 
 const seriesList = computed(() => {
-  const seriesBySlug = new Map<string, { slug: string, title: string, count: number }>()
+  type SeriesPost = NonNullable<typeof posts.value>[number]
+  const seriesBySlug = new Map<string, {
+    slug: string
+    title: string
+    description?: string
+    energyTier: SeriesPost['energyTier']
+    posts: SeriesPost[]
+  }>()
 
   for (const post of posts.value ?? []) {
     const existing = seriesBySlug.get(post.seriesSlug)
     if (existing) {
-      existing.count += 1
+      existing.posts.push(post)
       continue
     }
 
     seriesBySlug.set(post.seriesSlug, {
       slug: post.seriesSlug,
       title: post.seriesTitle,
-      count: 1,
+      description: post.seriesDescription,
+      energyTier: post.energyTier,
+      posts: [post],
     })
   }
 
-  return Array.from(seriesBySlug.values())
+  return Array.from(seriesBySlug.values()).map(series => ({
+    ...series,
+    posts: series.posts.map(post => ({
+      path: post.path,
+      title: post.title,
+      date: post.date,
+      thumbnail: post.thumbnail,
+      thumbnailAlt: post.thumbnailAlt,
+      excerpt: post.postExcerpt ?? post.excerpt ?? post.description,
+    })),
+  }))
+})
+
+useSeoMeta({
+  title: 'Series energy spectrum',
+  description: 'Explore WIEMO learning series across five particle-physics-inspired energy tiers.',
 })
 </script>
 
@@ -37,29 +65,20 @@ const seriesList = computed(() => {
   <main class="content-section blog-page">
     <div class="wrap">
       <header class="blog-page__header">
-        <p class="eyebrow">Blog</p>
-        <h1>Series</h1>
+        <h1>Energy spectrum</h1>
         <p class="lede">
-          Connected learning paths and recurring notes from WIEMO sessions.
+          Follow learning paths across a spectrum of ideas. Series become more challenging
+          as you move down; within each series, newer posts glow brighter from left to right.
         </p>
       </header>
 
-      <section
+      <SeriesEnergySpectrum
         v-if="seriesList.length"
-        class="series-grid"
-        aria-label="Blog series"
-      >
-        <NuxtLink
-          v-for="series in seriesList"
-          :key="series.slug"
-          class="series-card"
-          :to="`/blog/series/${series.slug}`"
-        >
-          <h2>{{ series.title }}</h2>
-          <p>{{ series.count }} {{ series.count === 1 ? 'post' : 'posts' }}</p>
-        </NuxtLink>
-      </section>
+        :series-list="seriesList"
+      />
 
+      <p v-else-if="postsStatus === 'pending'">Loading series...</p>
+      <p v-else-if="postsError">Unable to load series.</p>
       <p v-else>No series found.</p>
     </div>
   </main>
@@ -70,45 +89,21 @@ const seriesList = computed(() => {
   min-height: 100vh;
 
   &__header {
-    max-width: 720px;
-    margin-bottom: clamp(28px, 5vw, 56px);
+    max-width: 800px;
+    margin-bottom: 80px;
+  }
+
+}
+
+@media (max-width: 1140px) {
+  .blog-page__header {
+    margin-bottom: 7vw;
   }
 }
 
-.series-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(18px, 3vw, 28px);
-}
-
-.series-card {
-  display: grid;
-  gap: 12px;
-  min-height: 220px;
-  align-content: end;
-  padding: clamp(24px, 4vw, 42px);
-  border: 1px solid rgb(189 232 251 / 12%);
-  border-radius: 8px;
-  color: inherit;
-  background: linear-gradient(145deg, rgb(8 11 18 / 86%), rgb(4 6 11 / 96%));
-  text-decoration: none;
-
-  h2 {
-    color: var(--core);
-  }
-
-  p {
-    color: var(--mute);
-    font-family: $font-mono;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-}
-
-@media (max-width: 760px) {
-  .series-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 630px) {
+  .blog-page__header {
+    margin-bottom: 44px;
   }
 }
 </style>

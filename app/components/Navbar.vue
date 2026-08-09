@@ -1,7 +1,43 @@
 <script setup lang="ts">
-import { NAVBAR_BLOG_CATEGORIES, NAVBAR_BLOG_POSTS, NAVBAR_ITEMS } from '~/navbar/items'
+import { NAVBAR_BLOG_CATEGORIES, NAVBAR_ITEMS } from '~/navbar/items'
 
 const route = useRoute()
+
+type NavbarBlogPost = {
+  title: string
+  to: string
+  date: Date | string
+}
+
+const toNavbarBlogPost = (post: { title: string, path: string, date: Date | string }): NavbarBlogPost => ({
+  title: post.title,
+  to: post.path,
+  date: post.date,
+})
+
+const { data: queriedBlogPosts } = await useAsyncData('navbar-blog-posts', async () => {
+  const [reflections, series] = await Promise.all([
+    queryCollection('reflections')
+      .select('title', 'path', 'date')
+      .where('draft', '=', false)
+      .order('date', 'DESC')
+      .limit(3)
+      .all(),
+    queryCollection('series')
+      .select('title', 'path', 'date')
+      .where('draft', '=', false)
+      .order('date', 'DESC')
+      .limit(3)
+      .all(),
+  ])
+
+  return [...reflections, ...series]
+    .map(toNavbarBlogPost)
+    .sort((postA, postB) => new Date(postB.date).getTime() - new Date(postA.date).getTime())
+    .slice(0, 3)
+})
+
+const navbarBlogPosts = computed(() => queriedBlogPosts.value ?? [])
 
 const formatDate = (date: Date | string) =>
   new Intl.DateTimeFormat('en', {
@@ -42,7 +78,7 @@ const formatDate = (date: Date | string) =>
           </NuxtLink>
 
           <div
-            v-if="NAVBAR_BLOG_POSTS.length"
+            v-if="navbarBlogPosts.length"
             class="navbar__dropdown"
             aria-label="Blog posts"
           >
@@ -56,7 +92,7 @@ const formatDate = (date: Date | string) =>
             </NuxtLink>
 
             <NuxtLink
-              v-for="post in NAVBAR_BLOG_POSTS"
+              v-for="post in navbarBlogPosts"
               :key="post.to"
               class="navbar__dropdown-link"
               :to="post.to"
@@ -85,18 +121,16 @@ const formatDate = (date: Date | string) =>
   position: relative;
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 20px);
+  gap: 20px;
   min-height: 56px;
   overflow: visible;
   padding: 8px;
   isolation: isolate;
-  background: transparent;
-  border: 1px solid rgb(189 232 251 / 14%);
-  box-shadow:
-    0 18px 48px rgb(0 0 0 / 38%),
-    inset 0 1px 0 rgb(255 255 255 / 7%);
-  backdrop-filter: blur(18px) saturate(145%);
-  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  background: rgb(8 11 18 / 10%);
+  border: 1px solid rgb(189 232 251 / 10%);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 34%);
+  backdrop-filter: blur(28px) saturate(165%) contrast(112%);
+  -webkit-backdrop-filter: blur(28px) saturate(165%) contrast(112%);
   scrollbar-width: none;
 
   &::before {
@@ -107,12 +141,12 @@ const formatDate = (date: Date | string) =>
     background:
       linear-gradient(
         115deg,
-        rgb(189 232 251 / 8%),
-        rgb(8 11 18 / 48%) 32%,
-        rgb(11 15 24 / 62%)
+        rgb(8 11 18 / 20%),
+        rgb(8 11 18 / 34%) 42%,
+        rgb(8 11 18 / 18%)
       );
     content: '';
-    opacity: 0.75;
+    opacity: 1;
   }
 
   &::-webkit-scrollbar {
@@ -126,7 +160,7 @@ const formatDate = (date: Date | string) =>
   min-height: 44px;
   align-items: center;
   justify-content: center;
-  padding-inline: clamp(12px, 1.3vw, 20px);
+  padding-inline: 20px;
   border-radius: 14px;
   transition:
     background-color $transition-fast $transition-ease,
@@ -144,7 +178,7 @@ const formatDate = (date: Date | string) =>
 
 .navbar__brand-mark {
   display: block;
-  width: clamp(112px, 11vw, 160px);
+  width: 160px;
   height: auto;
   max-height: 30px;
 }
@@ -157,7 +191,7 @@ const formatDate = (date: Date | string) =>
   min-height: inherit;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(4px, 0.5vw, 8px);
+  gap: 8px;
   padding: 0;
   border-radius: inherit;
   list-style: none;
@@ -186,13 +220,13 @@ const formatDate = (date: Date | string) =>
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  padding-inline: clamp(12px, 1.25vw, 20px);
+  padding-inline: 20px;
   border-radius: 14px;
   color: var(--body-copy);
   font-family: $font-mono;
-  font-size: clamp(0.62rem, 0.72vw, 0.72rem);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.09em;
+  letter-spacing: 1px;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
@@ -273,15 +307,15 @@ const formatDate = (date: Date | string) =>
   span {
     color: var(--ink);
     font-family: $font-display;
-    font-size: 0.98rem;
+    font-size: 16px;
     line-height: 1.16;
   }
 
   time {
     color: var(--mute);
     font-family: $font-mono;
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    letter-spacing: 1px;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -293,13 +327,69 @@ const formatDate = (date: Date | string) =>
   }
 }
 
+@media (max-width: 1660px) {
+  .navbar {
+    gap: 1.2vw;
+  }
+
+  .navbar__list {
+    gap: 0.5vw;
+  }
+
+  .navbar__link {
+    padding-inline: 1.25vw;
+    font-size: 0.72vw;
+  }
+}
+
+@media (max-width: 1540px) {
+  .navbar__brand {
+    padding-inline: 1.3vw;
+  }
+}
+
+@media (max-width: 1450px) {
+  .navbar__brand-mark {
+    width: 11vw;
+  }
+}
+
+@media (max-width: 1390px) {
+  .navbar__link {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 1010px) {
+  .navbar__brand-mark {
+    width: 112px;
+  }
+}
+
+@media (max-width: 960px) {
+  .navbar__brand,
+  .navbar__link {
+    padding-inline: 12px;
+  }
+}
+
+@media (max-width: 840px) {
+  .navbar {
+    gap: 10px;
+  }
+
+  .navbar__list {
+    gap: 4px;
+  }
+}
+
 .navbar__dropdown-link--category {
   border-bottom: 1px solid rgb(189 232 251 / 10%);
 }
 
 @supports not (backdrop-filter: blur(1px)) {
   .navbar::before {
-    background: rgb(8 11 18 / 94%);
+    background: rgb(8 11 18 / 88%);
   }
 }
 

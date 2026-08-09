@@ -6,7 +6,7 @@ const { data: posts } = await useAsyncData(`series-${seriesSlug.value}-posts`, (
   queryCollection('series')
     .where('draft', '=', false)
     .where('seriesSlug', '=', seriesSlug.value)
-    .order('date', 'DESC')
+    .order('seriesPart', 'ASC')
     .all()
 )
 
@@ -18,10 +18,12 @@ if (!posts.value?.length) {
 }
 
 const seriesTitle = computed(() => posts.value?.[0]?.seriesTitle ?? 'Series')
+const seriesDescription = computed(() => posts.value?.[0]?.seriesDescription)
+const complexityRating = computed(() => posts.value?.[0]?.complexityRating)
 
 useSeoMeta({
   title: () => seriesTitle.value,
-  description: () => `Posts in ${seriesTitle.value}.`,
+  description: () => seriesDescription.value ?? `Posts in ${seriesTitle.value}.`,
 })
 </script>
 
@@ -36,8 +38,16 @@ useSeoMeta({
       </NuxtLink>
 
       <header class="series-page__header">
-        <p class="eyebrow">Series</p>
         <h1>{{ seriesTitle }}</h1>
+        <p v-if="seriesDescription" class="series-page__description">
+          {{ seriesDescription }}
+        </p>
+        <p
+          v-if="complexityRating"
+          class="series-page__complexity"
+        >
+          Complexity {{ complexityRating }}/10
+        </p>
       </header>
 
       <section
@@ -58,34 +68,101 @@ useSeoMeta({
 <style scoped lang="scss">
 .series-page {
   min-height: 100vh;
-  padding-top: calc(112px + clamp(34px, 7vw, 72px));
+  padding-top: 184px;
 
   &__back {
     display: inline-flex;
     margin-bottom: 32px;
     color: var(--beam);
     font-family: $font-mono;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    letter-spacing: 1px;
     text-decoration: none;
     text-transform: uppercase;
   }
 
   &__header {
     max-width: 720px;
-    margin-bottom: clamp(28px, 5vw, 56px);
+    margin-bottom: 56px;
+  }
+
+  &__complexity {
+    margin-top: 18px;
+    color: var(--beam);
+    font-family: $font-mono;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    max-width: 620px;
+    margin-top: 16px;
+    color: var(--body-copy);
+    line-height: 1.65;
   }
 
   &__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(18px, 3vw, 28px);
+    --post-gap: 28px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--post-gap);
+
+    > * {
+      flex: 1 1 320px;
+      min-width: 0;
+      max-width: 462px;
+    }
+  }
+}
+
+@media (max-width: 1020px) {
+  .series-page {
+    padding-top: calc(112px + 7vw);
+  }
+}
+
+@media (max-width: 1120px) {
+  .series-page__header {
+    margin-bottom: 5vw;
+  }
+}
+
+@media (max-width: 930px) {
+  .series-page__grid {
+    --post-gap: 3vw;
   }
 }
 
 @media (max-width: 760px) {
   .series-page__grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+
+    > * {
+      flex-basis: auto;
+      max-width: none;
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .series-page__header {
+    margin-bottom: 28px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .series-page__grid {
+    --post-gap: 18px;
+  }
+}
+
+@media (max-width: 490px) {
+  .series-page {
+    padding-top: 146px;
   }
 }
 </style>

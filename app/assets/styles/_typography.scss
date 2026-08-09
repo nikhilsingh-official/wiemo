@@ -1,42 +1,66 @@
 @use 'variables' as tokens;
 
 @font-face {
-  font-family: 'Space Grotesk';
-  src: url('/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+  font-family: 'General Sans';
+  src: url('/fonts/General_Sans/GeneralSans-Regular.woff2') format('woff2');
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf') format('truetype');
+  font-family: 'General Sans';
+  src: url('/fonts/General_Sans/GeneralSans-Medium.woff2') format('woff2');
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrains_Mono/JetBrainsMono-Italic-VariableFont_wght.ttf') format('truetype');
-  font-style: italic;
-  font-weight: 100 800;
+  font-family: 'General Sans';
+  src: url('/fonts/General_Sans/GeneralSans-Semibold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-family: 'General Sans';
+  src: url('/fonts/General_Sans/GeneralSans-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Lexend';
+  src: url('/fonts/Lexend/Lexend-Variable.woff2') format('woff2');
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
-  font-style: italic;
-  font-weight: 100 900;
+  font-family: 'Monaspace Neon';
+  src: url('/fonts/Monaspace_Neon/MonaspaceNeon-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Monaspace Neon';
+  src: url('/fonts/Monaspace_Neon/MonaspaceNeon-Semibold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Monaspace Neon';
+  src: url('/fonts/Monaspace_Neon/MonaspaceNeon-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
   font-display: swap;
 }
 
@@ -46,26 +70,26 @@ h3 {
   color: var(--ink);
   font-family: tokens.$font-display;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -1px;
   line-height: 1.08;
 }
 
 h1 {
-  font-size: clamp(2.6rem, 7vw, 5.4rem);
-  letter-spacing: -0.03em;
+  font-size: 86px;
+  letter-spacing: -2px;
   line-height: 0.98;
 }
 
 h2 {
-  font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+  font-size: 40px;
 }
 
 h3 {
-  font-size: 1.16rem;
+  font-size: 19px;
 }
 
 p {
-  max-width: 64ch;
+  max-width: 640px;
   color: var(--body-copy);
 }
 
@@ -75,13 +99,37 @@ strong {
 }
 
 code {
-  padding: 0.1em 0.4em;
+  padding: 2px 6px;
   color: var(--core);
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 4px;
   font-family: tokens.$font-mono;
-  font-size: 0.86em;
+  font-size: 14px;
+}
+
+@media (max-width: 1230px) {
+  h1 {
+    font-size: 7vw;
+  }
+}
+
+@media (max-width: 1110px) {
+  h2 {
+    font-size: 3.6vw;
+  }
+}
+
+@media (max-width: 750px) {
+  h2 {
+    font-size: 27px;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 42px;
+  }
 }
 
 a {

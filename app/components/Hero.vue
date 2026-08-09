@@ -15,6 +15,7 @@ const activeHeroStages = computed<readonly HeroStage[]>(() => {
   const stages = route.meta.heroStages
   return stages?.length ? stages : [FALLBACK_HERO_STAGE]
 })
+
 const particleOptions = computed(() => defineParticleOptions({
   modelUrls: activeHeroStages.value.map(
     (stage) => `/models/${stage.modelFilename}`,
@@ -129,6 +130,22 @@ watch(
   overflow: hidden;
   background: var(--void);
   border-bottom: 1px solid var(--line);
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        90deg,
+        rgb(0 0 0 / 78%) 0%,
+        rgb(0 0 0 / 58%) 28%,
+        rgb(0 0 0 / 18%) 58%,
+        transparent 82%
+      );
+    content: '';
+    pointer-events: none;
+  }
 }
 
 .hero__canvas {
@@ -146,10 +163,40 @@ watch(
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .hero__morph-readout {
-  width: clamp(150px, 14vw, 210px);
+  width: 210px;
+}
+
+@media (max-width: 1500px) {
+  .hero__morph-readout {
+    width: 14vw;
+  }
+}
+
+@media (max-width: 1070px) {
+  .hero__morph-readout {
+    width: 150px;
+  }
+}
+
+@media (max-width: $breakpoint-small) {
+  .hero::before {
+    background:
+      linear-gradient(
+        180deg,
+        rgb(0 0 0 / 22%) 0%,
+        rgb(0 0 0 / 82%) 22%,
+        rgb(0 0 0 / 74%) 68%,
+        rgb(0 0 0 / 12%) 100%
+      );
+  }
+
+  .hero__text {
+    right: var(--gutter);
+    left: var(--gutter);
+  }
 }
 </style>

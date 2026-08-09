@@ -39,8 +39,8 @@ import { SITE_CONTENT } from '~/content/siteContent'
   margin-bottom: 12px;
   color: var(--mute);
   font-family: $font-mono;
-  font-size: 0.64rem;
-  letter-spacing: 0.18em;
+  font-size: 10px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
@@ -59,8 +59,8 @@ import { SITE_CONTENT } from '~/content/siteContent'
   dt {
     color: var(--faint);
     font-family: $font-mono;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
+    font-size: 10px;
+    letter-spacing: 1px;
     line-height: 1.35;
     text-transform: uppercase;
   }
@@ -68,9 +68,15 @@ import { SITE_CONTENT } from '~/content/siteContent'
   dd {
     color: var(--core);
     font-family: $font-display;
-    font-size: clamp(1.55rem, 3vw, 2.45rem);
+    font-size: 39px;
     font-weight: 700;
     line-height: 1;
+  }
+}
+
+@media (max-width: 1300px) {
+  .hero-impact__metric dd {
+    font-size: 3vw;
   }
 }
 

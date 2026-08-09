@@ -12,7 +12,6 @@ definePageMeta({
     <section class="content-section home-intro">
       <div class="wrap home-intro__grid">
         <div>
-          <p class="eyebrow">Our mission</p>
           <h1>{{ SITE_CONTENT.strapline }}</h1>
         </div>
         <div class="home-intro__copy">
@@ -29,7 +28,6 @@ definePageMeta({
     <section class="content-section">
       <div class="wrap">
         <div class="section-heading">
-          <span class="section-number">01</span>
           <h2>Current impact</h2>
         </div>
         <p class="lede">{{ SITE_CONTENT.goal }}</p>
@@ -51,7 +49,6 @@ definePageMeta({
     <section class="content-section">
       <div class="wrap">
         <div class="section-heading">
-          <span class="section-number">02</span>
           <h2>Partners</h2>
         </div>
         <p class="lede">
@@ -106,52 +103,59 @@ definePageMeta({
 
 <style scoped lang="scss">
 .home-intro__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
-  gap: clamp(28px, 6vw, 72px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 72px;
   align-items: start;
 
   h1 {
-    max-width: 11ch;
-    font-size: clamp(3rem, 8vw, 6.5rem);
+    max-width: 55vw;
+    font-size: 5vw;
     line-height: 0.9;
   }
 }
 
 .home-intro__copy {
-  display: grid;
+  display: flex;
+  flex: 1 1 520px;
+  flex-direction: column;
   gap: 20px;
   color: var(--body-copy);
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-size: 18px;
   line-height: 1.85;
 }
 
 .impact-grid,
 .partner-grid,
 .page-preview-grid {
-  display: grid;
-  gap: clamp(16px, 3vw, 24px);
-  margin-top: clamp(24px, 4vw, 44px);
+  @include responsive-card-gap;
+
+  display: flex;
+  gap: var(--card-gap);
+  margin-top: 44px;
 }
 
 .impact-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
 }
 
 .impact-card,
 .page-preview {
-  padding: clamp(22px, 3vw, 34px);
+  padding: 34px;
   border: 1px solid rgb(189 232 251 / 12%);
   border-radius: 18px;
   background: linear-gradient(145deg, rgb(8 11 18 / 78%), rgb(4 6 11 / 92%));
 }
 
 .impact-card {
+  flex: 1 1 0;
+  min-width: 0;
+
   dt {
     color: var(--mute);
     font-family: $font-mono;
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
+    font-size: 11px;
+    letter-spacing: 2px;
     text-transform: uppercase;
   }
 
@@ -159,7 +163,7 @@ definePageMeta({
     margin-top: 12px;
     color: var(--core);
     font-family: $font-display;
-    font-size: clamp(2.6rem, 7vw, 5.6rem);
+    font-size: 90px;
     font-weight: 700;
     line-height: 1;
   }
@@ -171,13 +175,16 @@ definePageMeta({
 }
 
 .partner-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
 }
 
 .partner-card {
-  display: grid;
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
   min-height: 150px;
-  place-items: center;
   padding: 24px;
   border: 1px solid rgb(189 232 251 / 12%);
   border-radius: 18px;
@@ -191,16 +198,18 @@ definePageMeta({
 }
 
 .page-preview-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
 }
 
 .page-preview {
+  flex: 1 1 0;
+  min-width: 0;
   color: inherit;
   text-decoration: none;
 
   h2 {
     color: var(--core);
-    font-size: clamp(1.25rem, 2vw, 1.8rem);
+    font-size: 29px;
   }
 
   p {
@@ -215,7 +224,7 @@ definePageMeta({
 
   p {
     font-family: $font-display;
-    font-size: clamp(2rem, 5vw, 4.6rem);
+    font-size: 74px;
     font-weight: 700;
     line-height: 1;
   }
@@ -224,8 +233,8 @@ definePageMeta({
     margin-top: 20px;
     color: var(--mute);
     font-family: $font-mono;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    letter-spacing: 1px;
     text-transform: uppercase;
 
     span {
@@ -236,12 +245,106 @@ definePageMeta({
   }
 }
 
+@media (max-width: 1480px) {
+  .testimonial p {
+    font-size: 5vw;
+  }
+}
+
+@media (max-width: 1450px) {
+  .page-preview h2 {
+    font-size: 2vw;
+  }
+}
+
+@media (max-width: 1280px) {
+  .impact-card dd {
+    font-size: 7vw;
+  }
+}
+
+@media (max-width: 1200px) {
+  .home-intro__grid {
+    gap: 6vw;
+  }
+
+  .home-intro__copy {
+    font-size: 1.5vw;
+  }
+}
+
+@media (max-width: 1130px) {
+  .impact-card,
+  .page-preview {
+    padding: 3vw;
+  }
+}
+
+@media (max-width: 1100px) {
+  .impact-grid,
+  .partner-grid,
+  .page-preview-grid {
+    margin-top: 4vw;
+  }
+}
+
+@media (max-width: 1060px) {
+  .home-intro__copy {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .page-preview h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 730px) {
+  .impact-card,
+  .page-preview {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 620px) {
+  .impact-card dd {
+    font-size: 42px;
+  }
+
+  .testimonial p {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .impact-grid,
+  .partner-grid,
+  .page-preview-grid {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 470px) {
+  .home-intro__grid {
+    gap: 28px;
+  }
+}
+
 @media (max-width: 920px) {
   .home-intro__grid,
   .impact-grid,
   .partner-grid,
   .page-preview-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .home-intro__grid > *,
+  .home-intro__copy,
+  .impact-card,
+  .partner-card,
+  .page-preview {
+    flex-basis: auto;
   }
 }
 </style>

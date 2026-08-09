@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "NUXT_BUILD_DIR=.nuxt-typecheck nuxt typecheck"
   },
   "dependencies": {
     "@nuxt/content": "3.15.2",

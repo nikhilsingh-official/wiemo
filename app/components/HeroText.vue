@@ -16,7 +16,6 @@ withDefaults(
 
 <template>
   <div>
-    <h3 class="hero__eyebrow">{{ SITE_CONTENT.initiativeName }}</h3>
     <HeroHeader
       class="hero__header"
       :text="headlineText"
@@ -33,41 +32,32 @@ withDefaults(
 </template>
 
 <style scoped lang="scss">
-.hero__eyebrow {
-  font-family: "JetBrains Mono", sans-serif;
-  max-width: 42rem;
-  font-size: clamp(0.72rem, 1.05vw, 1.05rem);
-  color: var(--faint);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .hero__copy {
-  max-width: 44rem;
-  margin: 1rem 0 0;
+  max-width: 704px;
+  margin: 20px 0 0;
   color: var(--body-copy);
   line-height: 1.7;
 }
 
 .hero__CTA {
   display: flex;
-  gap: 0.85rem;
+  gap: 14px;
   align-items: center;
-  margin-top: 1.4rem;
-  padding-top: 0.2rem;
+  margin-top: 22px;
+  padding-top: 3px;
 }
 
 .hero__CTA__bright,
 .hero__CTA__dim {
   position: relative;
   min-height: 44px;
-  padding: 0.75rem 1.25rem;
+  padding: 12px 20px;
   border: 1px solid transparent;
   border-radius: 7.5px;
   font-family: $font-mono;
-  font-size: 0.74rem;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 1px;
   line-height: 1;
   text-transform: uppercase;
   cursor: pointer;

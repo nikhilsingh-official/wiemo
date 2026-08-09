@@ -17,12 +17,12 @@ export const SITE_CONTENT = {
     {
       label: 'Schools and student centres',
       value: '3',
-      note: 'Expected to grow before launch',
+      note: 'Goal: 10 by the end of 2026',
     },
     {
       label: 'Sessions delivered',
       value: '5',
-      note: 'Current prototype figure',
+      note: 'Goal: 20 sessions by the end of 2026',
     },
   ],
   partners: [
@@ -71,12 +71,12 @@ export const SITE_CONTENT = {
     },
     {
       title: 'Blog',
-      to: '/blog',
+      to: '/blog/reflections',
       copy: 'Field notes, workshop updates and particle-physics learning stories for the Studio CMS prototype.',
     },
   ],
   contact: {
-    emailLabel: 'Email coming soon',
-    emailHref: '',
+    emailLabel: 'nikhil@wiemo.org',
+    emailHref: 'mailto:nikhil@wiemo.org',
   },
 } as const
