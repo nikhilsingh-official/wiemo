@@ -4,7 +4,7 @@ author: WIEMO Program Team
 complexityRating: "4"
 date: 2026-07-26
 description: Students often arrive with big questions. The first move is helping them reshape wonder into a testable classroom-scale experiment without flattening the curiosity that made the question interesting.
-draft: false
+draft: true
 energyTier: kev
 featured: false
 imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"

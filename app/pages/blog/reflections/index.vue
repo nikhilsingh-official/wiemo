@@ -384,7 +384,7 @@ onUnmounted(() => {
       <header class="blog-page__header">
         <h1>Reflections</h1>
         <p class="lede">
-          Notes, ideas, and observations from the work behind WIEMO.
+          First-hand accounts of the sessions, questions and experiences that shape WIEMO.
         </p>
       </header>
 

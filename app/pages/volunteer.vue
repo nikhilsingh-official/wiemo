@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { SITE_CONTENT } from '~/content/siteContent'
 import { HERO_STAGE } from '~/hero/stages'
 
 definePageMeta({
   heroStages: [HERO_STAGE.volunteer],
 })
+
+useHead({ title: 'Volunteer with Us — WIEMO' })
 </script>
 
 <template>
@@ -11,8 +14,12 @@ definePageMeta({
     <div class="wrap volunteer-page">
       <header class="volunteer-page__header">
         <p class="volunteer-page__eyebrow">Join the initiative</p>
-        <h1>Love physics?</h1>
-        <h2>Make an impact with WIEMO.</h2>
+        <h1>Do you love physics?</h1>
+        <h2>Do you want to make an impact? Volunteer at WIEMO.</h2>
+        <p class="volunteer-page__contact">
+          Questions? Email
+          <a :href="SITE_CONTENT.contact.emailHref">{{ SITE_CONTENT.contact.emailLabel }}</a>.
+        </p>
       </header>
       <VolunteerForm />
     </div>
@@ -52,5 +59,11 @@ definePageMeta({
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+.volunteer-page__contact {
+  margin-top: 20px;
+  color: var(--mute);
+  font-size: 14px;
 }
 </style>

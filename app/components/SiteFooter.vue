@@ -9,9 +9,9 @@ import { SITE_CONTENT } from '~/content/siteContent'
         <p>{{ SITE_CONTENT.initiativeName }}</p>
       </div>
 
-      <p class="site-footer__contact">
+      <a class="site-footer__contact" :href="SITE_CONTENT.contact.emailHref">
         {{ SITE_CONTENT.contact.emailLabel }}
-      </p>
+      </a>
     </div>
   </footer>
 </template>

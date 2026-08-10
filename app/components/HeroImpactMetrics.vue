@@ -5,7 +5,7 @@ import { SITE_CONTENT } from '~/content/siteContent'
 
 <template>
   <aside class="hero-impact" aria-label="Current impact">
-    <p class="hero-impact__label">Prototype impact</p>
+    <p class="hero-impact__label">Current impact</p>
     <dl class="hero-impact__grid">
       <div
         v-for="metric in SITE_CONTENT.impactMetrics"

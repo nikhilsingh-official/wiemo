@@ -11,7 +11,7 @@ tags:
   - Detector thinking
   - Systems
 featured: false
-draft: false
+draft: true
 imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public domain"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Hubble_Ultra_Deep_Field_part_d.jpg
 seriesSlug: detector-thinking

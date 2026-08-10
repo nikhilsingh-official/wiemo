@@ -11,7 +11,7 @@ tags:
   - Particle stories
   - Measurement
 featured: false
-draft: false
+draft: true
 imageCredit: "Image: Gepsimos / Wikimedia Commons, CC0"
 imageSourceUrl: https://commons.wikimedia.org/wiki/File:Student_Lab.jpg
 seriesSlug: field-notes-from-cms

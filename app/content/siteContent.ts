@@ -3,6 +3,8 @@ export const SITE_CONTENT = {
   strapline: 'Dedicated to the quest of physics for all.',
   shortDescription:
     'We are a student-led initiative bringing physics education to students in rural and underprivileged communities. Led by CERN Masterclass alumni with a passion for physics, we introduce students to the curiosity, excitement and possibilities of the subject, particularly particle physics.',
+  vision:
+    'To teach every child about the wonders of the fundamental questions of reality through the lens of physics.',
   goal: 'We aim to have an impact on one thousand students by the end of 2026.',
   mission: [
     'WIEMO aims to give students greater exposure to physics, particularly particle physics, and to the questions that shape our understanding of the universe. Our work was inspired by the experiences of our members at the CERN Masterclass, where they had the opportunity to explore particle physics at the highest level. Recognising that access to such opportunities is often shaped by a student’s background, location and available resources, we aim to make engaging and high-quality physics education more accessible to students in rural and underserved communities.',
@@ -11,18 +13,18 @@ export const SITE_CONTENT = {
   impactMetrics: [
     {
       label: 'Students impacted',
-      value: '300',
+      value: '351',
       note: 'Goal: 1,000 students by the end of 2026',
     },
     {
       label: 'Schools and student centres',
       value: '3',
-      note: 'Goal: 10 by the end of 2026',
+      note: 'Three partner communities across Bengaluru',
     },
     {
       label: 'Sessions delivered',
-      value: '5',
-      note: 'Goal: 20 sessions by the end of 2026',
+      value: '7',
+      note: 'Seven sessions delivered since July 2025',
     },
   ],
   partners: [
@@ -51,32 +53,128 @@ export const SITE_CONTENT = {
     quote:
       'You fostered an atmosphere of curiosity, encouraging questions and inspiring young minds to think beyond textbooks and venture into the wonders of the universe.',
     attribution: 'Kristu Jayanti Principal',
-    note: 'Prototype testimonial; permission still needs to be confirmed.',
+    permissionConfirmed: false,
   },
   pagePreviews: [
     {
       title: 'About WIEMO',
       to: '/about',
-      copy: 'Read the mission behind the initiative and why access to physics education should not depend on background, location or resources.',
+      copy: 'Meet the students behind WIEMO and follow the story from a CERN Masterclass to classrooms across Bengaluru.',
     },
     {
-      title: 'Total Impact',
-      to: '/total-impact',
-      copy: 'Track the current prototype numbers for students reached, centres visited and sessions delivered.',
+      title: 'Collaborate with us',
+      to: '/collaborate',
+      copy: 'Schools, NGOs, educators and community organisations can partner with us to bring physics to more students.',
     },
     {
       title: 'Gallery',
       to: '/gallery',
-      copy: 'Teaching photos will live here once photo permissions are confirmed.',
+      copy: 'See moments from outreach sessions with our partner schools and student centres.',
     },
     {
-      title: 'Blog',
+      title: 'Volunteer with us',
+      to: '/volunteer',
+      copy: 'Help WIEMO teach, communicate and build the tools that make our outreach possible.',
+    },
+    {
+      title: 'Our timeline',
+      to: '/timeline',
+      copy: 'Follow WIEMO from its first pilot session to seven sessions reaching 351 students.',
+    },
+    {
+      title: 'Reflections',
       to: '/blog/reflections',
-      copy: 'Field notes, workshop updates and particle-physics learning stories for the Studio CMS prototype.',
+      copy: 'Read first-hand reflections from the sessions, questions and experiences that shape WIEMO.',
     },
   ],
+  homeTeachingImages: [
+    {
+      src: '/images/gallery/makkala-006.jpg',
+      alt: 'A WIEMO facilitator speaking with students seated in a circle',
+      caption: 'Makkala Jagriti · Jul 2026',
+    },
+    {
+      src: '/images/gallery/parikrma-002.jpg',
+      alt: 'A WIEMO facilitator presenting an illustration of Saturn to students',
+      caption: 'Parikrma Humanity Foundation',
+    },
+  ],
+  about: {
+    whoWeAre: [
+      'What is Everything Made Of, or WIEMO, is a student-led initiative bringing engaging physics education to students in rural and underserved communities.',
+      'Led by students with a passion for physics, including CERN Masterclass alumni, we introduce young learners to the ideas, questions and discoveries that make physics fascinating, particularly particle physics.',
+    ],
+    story: [
+      {
+        text: 'The idea for WIEMO began in 2024, when I had the opportunity to attend a CERN Masterclass.',
+      },
+      {
+        text: 'For the first time, I was able to explore particle physics beyond the classroom and engage with questions that had fascinated me for years. What is everything made of? How do scientists study particles that cannot be seen? How much of the universe do we still not understand?',
+      },
+      {
+        text: 'When I returned, I realised how uncommon that opportunity had been, and how much it had changed the way I saw physics. I also began thinking about the many students who may never receive the chance to encounter the subject in this way. For them, particle physics might remain something distant and inaccessible, not because they lack curiosity, but because they have never been given the opportunity to explore it.',
+      },
+      {
+        text: 'I wanted to help bridge that gap.',
+        highlighted: true,
+      },
+      {
+        text: 'In 2025, I began WIEMO with a single pilot session, where I introduced students to some of the basic ideas I had encountered through the CERN Masterclass. I did not want the session to feel like another lecture. I wanted students to ask questions, imagine themselves as scientists, and experience the excitement of trying to understand the universe.',
+      },
+      {
+        text: 'That first session showed me how powerful simple exposure could be. A subject that initially seemed unfamiliar quickly became something students were curious about. Their questions, excitement and willingness to engage made me realise that WIEMO could become more than a single session.',
+      },
+      {
+        text: 'Since then, I have been joined by Reyansh and Nikhil, whose ideas, effort and commitment have helped WIEMO grow far beyond the original pilot session.',
+      },
+      {
+        text: 'Reyansh has become an essential part of the initiative. He brings not only a strong understanding of difficult ideas, but also the ability to explain them with clarity, patience and energy. His ability to communicate in three languages has been especially important in helping us reach students from different backgrounds. He does much more than translate our sessions. He adapts examples, explanations and questions so that students can genuinely connect with what they are learning. His intelligence, confidence and presence in the classroom have helped make WIEMO more accessible, engaging and inclusive.',
+      },
+      {
+        text: 'Nikhil has played an equally important role in building the technical side of WIEMO. He helped design and develop our website, giving the initiative a platform through which we can share our work, document our progress and connect with schools and organisations. He also supports the technology behind the project, helping us turn ideas into something functional, organised and sustainable. His work has allowed WIEMO to grow not only inside classrooms, but also as a wider initiative with a clear identity and presence.',
+      },
+      {
+        text: 'What began as something I started alone has now become something we are building together. Each of us brings a different strength to the initiative, whether through teaching, communication, technology or planning. WIEMO is no longer simply my project. It is our shared effort, shaped by the people who contribute to it and by every student who asks a question during our sessions.',
+      },
+    ],
+    topics: [
+      'Atoms and the structure of matter',
+      'The Big Bang theory',
+      'Fundamental particles',
+      'The Standard Model',
+      'Particle accelerators and CERN',
+      'The Higgs boson',
+    ],
+    teachingApproach:
+      'We use analogies, activities and discussions to teach these complex concepts to students from 6th to 12th grade.',
+    team: [
+      {
+        name: 'Agastya Kartikeyan',
+        role: 'Founder',
+        bio: 'Agastya began WIEMO after a 2024 CERN Masterclass changed the way he saw physics. He led the first pilot session in 2025 and continues to shape the initiative’s teaching, planning and partnerships.',
+      },
+      {
+        name: 'Reyansh',
+        role: 'Lead — Outreach',
+        bio: 'Reyansh explains difficult ideas with clarity, patience and energy. His ability to communicate in three languages helps WIEMO adapt its examples, explanations and questions for students from different backgrounds.',
+      },
+      {
+        name: 'Nikhil Singh',
+        role: 'Lead — Technology',
+        bio: 'Nikhil builds the technology behind WIEMO, including the website that documents its progress and connects the team with schools and organisations. His work helps turn ideas into something functional, organised and sustainable.',
+      },
+    ],
+  },
+  collaboration: {
+    intro:
+      'WIEMO works with schools, NGOs, educators and community organisations to bring engaging physics education to students in rural and underserved communities.',
+    partnership:
+      'Our partners help us reach students, host sessions and adapt our programmes to the needs of each community. Together, we can give more students the opportunity to explore physics, ask questions and discover the possibilities of science.',
+    invitation:
+      'Interested in working with us? Get in touch through our form or via our contact details.',
+  },
   contact: {
-    emailLabel: 'nikhil@wiemo.org',
-    emailHref: 'mailto:nikhil@wiemo.org',
+    emailLabel: 'agastya@weimo.org',
+    emailHref: 'mailto:agastya@weimo.org',
   },
 } as const

@@ -4,7 +4,7 @@ description: Radioactive decay can look like a collection of symbols to memorize
 author: WIEMO Program Team
 complexityRating: 6
 date: 2026-06-16
-draft: false
+draft: true
 energyTier: mev
 featured: false
 imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public domain"

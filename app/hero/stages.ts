@@ -70,6 +70,11 @@ export const HERO_STAGE = {
     label: 'Handshake',
     headline: 'collaboration',
   },
+  collaborate: {
+    modelFilename: 'Handshake.glb',
+    label: 'Partnership',
+    headline: 'possibility',
+  },
   totalImpact: {
     modelFilename: 'EarthContinents.glb',
     label: 'Total impact',

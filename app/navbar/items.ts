@@ -6,11 +6,11 @@ export const NAVBAR_ITEMS = [
   { label: 'Blog', to: '/blog/reflections' },
   { label: 'Timeline', to: '/timeline' },
   { label: 'Volunteer', to: '/volunteer' },
+  { label: 'Collaborate', to: '/collaborate' },
   { label: 'Total Impact', to: '/total-impact' },
 ] as const
 
 /** Primary blog category pages. */
 export const NAVBAR_BLOG_CATEGORIES = [
   { title: 'Reflections', to: '/blog/reflections' },
-  { title: 'Series', to: '/blog/series' },
 ] as const

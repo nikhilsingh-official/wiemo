@@ -11,7 +11,7 @@ tags:
   - Nuclear physics
   - Probability
 featured: false
-draft: false
+draft: true
 imageCredit: "Image: PxHere, CC0 Public Domain"
 imageSourceUrl: https://pxhere.com/en/photo/927849
 seriesSlug: nuclear-scale

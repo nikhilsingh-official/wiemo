@@ -4,7 +4,7 @@ author: WIEMO Program Team
 complexityRating: "9"
 date: 2026-07-09
 description: Trigger logic gives students a concrete way to discuss speed, selectivity, missed events, and why more data is not always more useful. This is intentionally the densest filler post in the new series set.
-draft: false
+draft: true
 energyTier: tev
 featured: false
 imageCredit: "Image: NASA, ESA, S. Beckwith (STScI) and the HUDF Team / Public domain"

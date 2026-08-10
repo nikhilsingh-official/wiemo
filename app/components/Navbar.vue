@@ -21,22 +21,14 @@ const toNavbarBlogPost = (post: { title: string, path: string, date: Date | stri
 })
 
 const { data: queriedBlogPosts } = await useAsyncData('navbar-blog-posts', async () => {
-  const [reflections, series] = await Promise.all([
-    queryCollection('reflections')
-      .select('title', 'path', 'date')
-      .where('draft', '=', false)
-      .order('date', 'DESC')
-      .limit(3)
-      .all(),
-    queryCollection('series')
-      .select('title', 'path', 'date')
-      .where('draft', '=', false)
-      .order('date', 'DESC')
-      .limit(3)
-      .all(),
-  ])
+  const reflections = await queryCollection('reflections')
+    .select('title', 'path', 'date')
+    .where('draft', '=', false)
+    .order('date', 'DESC')
+    .limit(3)
+    .all()
 
-  return [...reflections, ...series]
+  return reflections
     .map(toNavbarBlogPost)
     .sort((postA, postB) => new Date(postB.date).getTime() - new Date(postA.date).getTime())
     .slice(0, 3)

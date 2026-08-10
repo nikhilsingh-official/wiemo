@@ -15,6 +15,18 @@ definePageMeta({
           <h1>{{ SITE_CONTENT.strapline }}</h1>
         </div>
         <div class="home-intro__copy">
+          <p class="home-intro__eyebrow">Our vision</p>
+          <p>{{ SITE_CONTENT.vision }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="wrap home-mission">
+        <div class="section-heading">
+          <h2>Our mission</h2>
+        </div>
+        <div class="home-mission__copy">
           <p
             v-for="paragraph in SITE_CONTENT.mission"
             :key="paragraph"
@@ -52,7 +64,7 @@ definePageMeta({
           <h2>Partners</h2>
         </div>
         <p class="lede">
-          Prototype partner section using the logos and links listed in the source document.
+          Schools and organisations helping WIEMO bring engaging physics education to more students.
         </p>
 
         <div class="partner-grid">
@@ -74,26 +86,39 @@ definePageMeta({
     </section>
 
     <section class="content-section">
-      <div class="wrap page-preview-grid">
-        <NuxtLink
-          v-for="preview in SITE_CONTENT.pagePreviews"
-          :key="preview.to"
-          class="page-preview"
-          :to="preview.to"
-        >
-          <h2>{{ preview.title }}</h2>
-          <p>{{ preview.copy }}</p>
-        </NuxtLink>
+      <div class="wrap">
+        <div class="home-teaching-grid">
+          <figure v-for="image in SITE_CONTENT.homeTeachingImages" :key="image.src">
+            <img
+              :src="image.src"
+              :alt="image.alt"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>{{ image.caption }}</figcaption>
+          </figure>
+        </div>
+
+        <div class="page-preview-grid">
+          <NuxtLink
+            v-for="preview in SITE_CONTENT.pagePreviews"
+            :key="preview.to"
+            class="page-preview"
+            :to="preview.to"
+          >
+            <h2>{{ preview.title }}</h2>
+            <p>{{ preview.copy }}</p>
+          </NuxtLink>
+        </div>
       </div>
     </section>
 
-    <section class="content-section">
+    <section v-if="SITE_CONTENT.testimonial.permissionConfirmed" class="content-section">
       <div class="wrap">
         <blockquote class="testimonial">
           <p>“{{ SITE_CONTENT.testimonial.quote }}”</p>
           <footer>
             — {{ SITE_CONTENT.testimonial.attribution }}
-            <span>{{ SITE_CONTENT.testimonial.note }}</span>
           </footer>
         </blockquote>
       </div>
@@ -125,9 +150,36 @@ definePageMeta({
   line-height: 1.85;
 }
 
+.home-intro__eyebrow {
+  color: var(--beam);
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.home-mission {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr);
+  gap: 72px;
+  align-items: start;
+}
+
+.home-mission__copy {
+  display: grid;
+  gap: 22px;
+
+  p {
+    max-width: 780px;
+    color: var(--body-copy);
+    font-size: 18px;
+    line-height: 1.85;
+  }
+}
+
 .impact-grid,
-.partner-grid,
-.page-preview-grid {
+.partner-grid {
   @include responsive-card-gap;
 
   display: flex;
@@ -202,12 +254,41 @@ definePageMeta({
 }
 
 .page-preview-grid {
-  align-items: stretch;
+  @include responsive-card-gap;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--card-gap);
+  margin-top: 44px;
+}
+
+.home-teaching-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+
+  figure { min-width: 0; }
+
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid color-mix(in srgb, var(--atlas) 34%, var(--line));
+    filter: saturate(0.9) contrast(1.02);
+  }
+
+  figcaption {
+    margin-top: 9px;
+    color: var(--faint);
+    font-family: $font-mono;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
 }
 
 .page-preview {
-  flex: 1 1 0;
-  min-width: 0;
   color: inherit;
   text-decoration: none;
 
@@ -337,17 +418,19 @@ definePageMeta({
 
 @media (max-width: 920px) {
   .home-intro__grid,
+  .home-mission,
   .impact-grid,
-  .partner-grid,
-  .page-preview-grid {
+  .partner-grid {
     flex-direction: column;
   }
+
+  .page-preview-grid { grid-template-columns: 1fr; }
+  .home-teaching-grid { grid-template-columns: 1fr; }
 
   .home-intro__grid > *,
   .home-intro__copy,
   .impact-card,
-  .partner-card,
-  .page-preview {
+  .partner-card {
     flex-basis: auto;
   }
 }

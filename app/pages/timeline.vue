@@ -15,39 +15,46 @@ type Milestone = {
 
 const milestones: Milestone[] = [
   {
-    date: '2022',
-    kicker: 'Ion source',
-    title: 'The first spark',
-    description: 'A small group of physicists and educators sketch a programme that makes particle physics tangible for young learners.',
-    stat: '01 idea',
+    date: '12 Jul 2025',
+    kicker: 'Milestone 01',
+    title: 'Where It Began',
+    description: 'WIEMO’s first pilot session introduced 180 students at Kristu Jayanti CMI Public School to the fundamental question: What is everything made of?',
+    stat: '180 students',
   },
   {
-    date: '2023',
-    kicker: 'Linear accelerator',
-    title: 'First classroom beam',
-    description: 'The first hands-on sessions turn invisible particles into tracks, questions and experiments students can own.',
-    stat: '04 sessions',
+    date: '22 Jul 2026',
+    kicker: 'Milestone 02',
+    title: 'Our First Bilingual Session',
+    description: 'At Makkala Jagriti, we brought particle physics to students in both Kannada and English, making unfamiliar ideas easier to explore and understand.',
+    stat: 'Kannada + English',
   },
   {
-    date: '2024',
-    kicker: 'Proton synchrotron',
-    title: 'The network gains energy',
-    description: 'Teachers and volunteers join the chain, bringing repeatable workshops to a growing set of partner schools.',
-    stat: '06 partners',
+    date: '29 Jul 2026',
+    kicker: 'Milestone 03',
+    title: 'Partnering with Parikrma',
+    description: 'Our first session with Parikrma introduced Grade 9 students to the particles, questions and discoveries that shape our understanding of the universe.',
+    stat: 'Grade 9',
   },
   {
-    date: '2025',
-    kicker: 'Super proton synchrotron',
-    title: 'Momentum at scale',
-    description: 'A shared curriculum and facilitator toolkit let the programme reach more classrooms without losing its curiosity-first approach.',
-    stat: '420 students',
+    date: '30 Jul 2026',
+    kicker: 'Milestone 04',
+    title: 'Two Classrooms, One Day',
+    description: 'We conducted sessions for 66 students across Grades 8 and 10, adapting the programme to suit different ages and levels of understanding.',
+    stat: '66 students',
   },
   {
-    date: '2026',
-    kicker: 'Large hadron collider',
-    title: 'A thousand collisions',
-    description: 'The next milestone is one thousand students meeting fundamental physics through direct observation and experiment.',
-    stat: '1,000 goal',
+    date: '5 Aug 2026',
+    kicker: 'Milestone 05',
+    title: 'Reaching Younger Learners',
+    description: 'WIEMO continued its work with Parikrma by bringing an interactive introduction to particle physics to 30 Grade 7 students.',
+    stat: '30 students',
+  },
+  {
+    date: 'Aug 2026',
+    kicker: 'Milestone 06',
+    title: 'Over 350 Students Reached',
+    description: 'With our latest session, WIEMO crossed its first major milestone, reaching 351 students across seven sessions.',
+    stat: '351 students',
   },
 ]
 
@@ -99,11 +106,11 @@ onUnmounted(stopTimer)
     <section class="timeline-page__inner">
       <header class="timeline-header">
         <div>
-          <p class="eyebrow">Our timeline · 2022—2026</p>
+          <p class="eyebrow">Our timeline · 2025—2026</p>
           <h1>One idea,<br><em>accelerated.</em></h1>
         </div>
         <div class="timeline-header__copy">
-          <p>Follow the particle through each stage of our story. Every milestone adds energy to what comes next.</p>
+          <p>Follow WIEMO from its first pilot session to more than 350 students reached across Bengaluru.</p>
           <button class="playback" type="button" @click="togglePlayback">
             <span aria-hidden="true">{{ isPlaying ? 'Ⅱ' : '▶' }}</span>
             {{ isPlaying ? 'Pause particle' : 'Resume particle' }}
@@ -219,7 +226,7 @@ onUnmounted(stopTimer)
 .beamline {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   margin-top: 104px;
 }
 
@@ -273,7 +280,7 @@ onUnmounted(stopTimer)
     margin-top: 16px;
     color: var(--body-copy);
     font-family: $font-display;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 1;
   }
 

@@ -30,12 +30,10 @@ const form = reactive<VolunteerFormData>({
 const showSubmissionNotice = ref(false)
 const locationListId = useId()
 
-const reasonWordCount = computed(() => {
-  const words = form.reason.trim().match(/\S+/g)
-  return words?.length ?? 0
-})
-
-const reasonIsOverLimit = computed(() => reasonWordCount.value > REASON_WORD_LIMIT)
+const { wordCount: reasonWordCount, isOverLimit: reasonIsOverLimit } = useWordLimit(
+  () => form.reason,
+  REASON_WORD_LIMIT,
+)
 
 function handleSubmit() {
   if (reasonIsOverLimit.value) {
@@ -194,14 +192,7 @@ watch(form, () => {
 
 <style scoped lang="scss">
 .volunteer-form {
-  display: grid;
-  gap: 34px;
-  width: 100%;
-  padding: 36px;
-  border: 1px solid var(--line);
-  border-radius: $radius-large;
-  background: color-mix(in srgb, var(--panel) 88%, transparent);
-  box-shadow: 0 24px 80px rgb(0 0 0 / 20%);
+  @include form-shell;
 }
 
 .volunteer-form__intro {
@@ -244,54 +235,7 @@ watch(form, () => {
 }
 
 .field {
-  display: grid;
-  gap: 9px;
-  color: var(--body-copy);
-  font-size: 14px;
-
-  > span:first-child,
-  .field__counter {
-    font-weight: 500;
-  }
-
-  input,
-  textarea {
-    width: 100%;
-    border: 1px solid var(--line);
-    border-radius: $radius-small;
-    outline: none;
-    color: var(--ink);
-    background: var(--panel-2);
-    transition:
-      border-color $transition-fast $transition-ease,
-      box-shadow $transition-fast $transition-ease,
-      background-color $transition-fast $transition-ease;
-
-    &:hover {
-      border-color: var(--deep);
-    }
-
-    &:focus {
-      border-color: var(--beam);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--beam) 16%, transparent);
-    }
-  }
-
-  input {
-    min-height: 48px;
-    padding: 11px 13px;
-  }
-
-  textarea {
-    min-height: 168px;
-    padding: 13px;
-    line-height: 1.65;
-    resize: vertical;
-  }
-
-  &--wide {
-    grid-column: 1 / -1;
-  }
+  @include form-field;
 }
 
 .role-picker {
