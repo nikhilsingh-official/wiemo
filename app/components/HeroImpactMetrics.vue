@@ -85,4 +85,33 @@ import { SITE_CONTENT } from '~/content/siteContent'
     display: none;
   }
 }
+
+// The panel floats over the hero copy from the bottom edge, so a short viewport
+// walks it up into the paragraph and then onto the CTA buttons — covering a
+// button makes it unclickable, since the panel paints above it. It gets more
+// compact first, and only steps aside when even that would still collide.
+@media (max-height: 820px) {
+  .hero-impact {
+    bottom: calc(var(--gutter) + 62px);
+    padding: 12px;
+  }
+
+  .hero-impact__label {
+    margin-bottom: 8px;
+  }
+
+  .hero-impact__metric {
+    padding-top: 8px;
+
+    dd {
+      font-size: 28px;
+    }
+  }
+}
+
+@media (max-height: 700px) {
+  .hero-impact {
+    display: none;
+  }
+}
 </style>

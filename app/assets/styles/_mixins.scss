@@ -119,7 +119,9 @@
 }
 
 @mixin responsive-quaternary-heading {
-  @include -responsive-heading(36px, 2.8vw, 18px);
+  // The mobile floor has to stay clear of body copy (15–18px), or the heading
+  // stops reading as one.
+  @include -responsive-heading(36px, 2.8vw, 24px);
 }
 
 @mixin responsive-quinary-heading {

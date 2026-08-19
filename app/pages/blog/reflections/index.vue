@@ -470,6 +470,11 @@ onUnmounted(() => {
 }
 
 .reflection-journey {
+  // The ring is deliberately wider than the screen, so the section has to clip
+  // it or the whole page scrolls sideways. `clip` rather than `hidden`: it
+  // contains the spill without becoming a scroll container, which would break
+  // the sticky stage inside and cut the card off at the top.
+  overflow-x: clip;
   min-height: calc(var(--reflection-steps) * 100vh);
 
   &__sticky {
@@ -528,8 +533,14 @@ onUnmounted(() => {
     }
   }
 
+  // A block box clamped by max-height still reports its full auto height to its
+  // children, so the card's inner layers never learned they had less room and
+  // simply overflowed into the clip. Making the card a single-row grid resolves
+  // the row against the clamped height, which is what the rows below divide up.
   &__card-shell :deep(.blog-card) {
+    display: grid;
     max-height: 100%;
+    grid-template-rows: minmax(0, 1fr);
     border-radius: 16px;
     background: linear-gradient(
       145deg,
@@ -539,8 +550,16 @@ onUnmounted(() => {
     box-shadow: 0 18px 54px rgb(0 0 0 / 32%);
   }
 
+  // Two rows: the text takes exactly what it needs, the photo takes the rest
+  // and shrinks under pressure. That replaces five hand-tuned media-band
+  // heights with one rule that adapts to whatever the beamline leaves.
+  &__card-shell :deep(.blog-card__link) {
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
   &__card-shell :deep(.blog-card__media) {
-    min-height: 136px;
+    min-height: 0;
   }
 
   &__card-shell :deep(.blog-card__body) {
@@ -554,8 +573,10 @@ onUnmounted(() => {
   }
 
   &__card-shell :deep(.blog-card h2) {
+    // Tracks the viewport between the two ends of its range, but never below
+    // the size that keeps the card title ahead of the copy beneath it.
     max-width: none;
-    font-size: 22px;
+    font-size: clamp(20px, 1.8vw, 22px);
     line-height: 1.08;
   }
 
@@ -563,8 +584,23 @@ onUnmounted(() => {
     line-height: 1.45;
   }
 
+  // The beamline boxes this card to roughly 240–440px, but a full blog card is
+  // ~520px tall, so the excerpt and tags were being clipped away at every
+  // viewport rather than shown. Dropping them here keeps the card to what the
+  // space can actually hold; the full text is on the post itself.
+  &__card-shell :deep(.blog-card__body > p:not(.blog-card__subheading)),
+  &__card-shell :deep(.blog-card__tags) {
+    display: none;
+  }
+
+  // Ends on an ellipsis at a line boundary instead of being sliced mid-word
+  // by the card's own clip.
   &__card-shell :deep(.blog-card__subheading) {
-    font-size: 13px;
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 14px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 
   &__steps {
@@ -607,12 +643,6 @@ onUnmounted(() => {
   }
 }
 
-@media (max-width: 1200px) {
-  .reflection-journey__card-shell :deep(.blog-card h2) {
-    font-size: 1.8vw;
-  }
-}
-
 @media (max-width: 1160px) {
   .blog-page__header {
     margin-bottom: 2.4vw;
@@ -630,20 +660,11 @@ onUnmounted(() => {
     --accelerator-card-gap: 68px;
   }
 
-  .reflection-journey__card-shell :deep(.blog-card__media) {
-    min-height: 14vw;
-  }
 }
 
 @media (max-width: 930px) {
   .reflection-journey__steps {
     bottom: 3vw;
-  }
-}
-
-@media (max-width: 900px) {
-  .reflection-journey__card-shell :deep(.blog-card h2) {
-    font-size: 16px;
   }
 }
 
@@ -701,9 +722,6 @@ onUnmounted(() => {
     width: min(310px, calc(100vw - 32px));
   }
 
-  .reflection-journey__card-shell :deep(.blog-card__media) {
-    min-height: 104px;
-  }
 
   .reflection-journey__card-shell :deep(.blog-card__body) {
     padding: 13px;
@@ -747,9 +765,6 @@ onUnmounted(() => {
     --accelerator-card-gap: 54px;
   }
 
-  .reflection-journey__card-shell :deep(.blog-card__media) {
-    min-height: 104px;
-  }
 }
 
 @media (max-height: 760px) {
@@ -757,9 +772,6 @@ onUnmounted(() => {
     --accelerator-card-gap: 32px;
   }
 
-  .reflection-journey__card-shell :deep(.blog-card__media) {
-    min-height: 76px;
-  }
 
   .reflection-journey__card-shell :deep(.blog-card__body) {
     gap: 5px;

@@ -458,6 +458,45 @@ const formatDate = (date: Date | string) =>
   .navbar__brand-mark {
     width: 112px;
   }
+
+  // Eight mono labels stop fitting here. The list becomes the scroller rather
+  // than the whole bar, so the brand and the theme toggle stay put and the
+  // bar's own background never scrolls out from under its contents.
+  .navbar__list {
+    min-width: 0;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // A scrolling list clips its own children, so the dropdown leaves the flow
+  // and anchors to the viewport instead of to the link that opens it.
+  .navbar__item--dropdown {
+    position: static;
+  }
+
+  .navbar__dropdown {
+    position: fixed;
+    top: 92px;
+    right: 16px;
+    left: auto;
+    width: min(360px, calc(100vw - 32px));
+    transform: translateY(-4px);
+  }
+
+  .navbar__item--dropdown {
+    &:hover,
+    &:focus-within {
+      .navbar__dropdown {
+        transform: translateY(0);
+      }
+    }
+  }
 }
 
 @media (max-width: 960px) {
@@ -490,8 +529,6 @@ const formatDate = (date: Date | string) =>
 @media (max-width: $breakpoint-small) {
   .navbar {
     gap: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
   }
 
   .navbar__brand {
@@ -502,34 +539,15 @@ const formatDate = (date: Date | string) =>
     width: 104px;
   }
 
-  .navbar__list {
-    justify-content: flex-start;
-  }
-
   .navbar__link {
     padding-inline: 12px;
   }
 
-  .navbar__item--dropdown {
-    position: static;
-  }
-
+  // Too narrow for a floating panel — the dropdown spans the screen instead.
   .navbar__dropdown {
-    position: fixed;
-    top: 92px;
     right: 16px;
     left: 16px;
     width: auto;
-    transform: translateY(-4px);
-  }
-
-  .navbar__item--dropdown {
-    &:hover,
-    &:focus-within {
-      .navbar__dropdown {
-        transform: translateY(0);
-      }
-    }
   }
 }
 </style>

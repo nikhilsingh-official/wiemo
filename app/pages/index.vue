@@ -134,8 +134,10 @@ definePageMeta({
   align-items: start;
 
   h1 {
+    // Fluid across the desktop range but floored, so the strapline stays the
+    // largest thing on the page instead of collapsing to body-copy size.
     max-width: 55vw;
-    font-size: 5vw;
+    font-size: clamp(36px, 5vw, 96px);
     line-height: 0.9;
   }
 }
@@ -418,10 +420,21 @@ definePageMeta({
 
 @media (max-width: 920px) {
   .home-intro__grid,
-  .home-mission,
   .impact-grid,
   .partner-grid {
     flex-direction: column;
+  }
+
+  // A grid ignores flex-direction, so this column has to be collapsed by
+  // rewriting the template — otherwise the 180px heading track survives to
+  // the narrowest screens and squeezes the copy until its words overflow.
+  .home-mission {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .home-intro__grid h1 {
+    max-width: none;
   }
 
   .page-preview-grid { grid-template-columns: 1fr; }

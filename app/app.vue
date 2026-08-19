@@ -46,4 +46,22 @@ const showHero = computed(() => Boolean(route.meta.heroStages?.length))
   border-radius: 20px;
   z-index: 100;
 }
+
+// A 10vw margin either side costs a phone a fifth of its width, which is space
+// the nav links need far more than the layout needs breathing room.
+@media (max-width: 1010px) {
+  .navbar__main {
+    left: 50%;
+    width: calc(100% - 32px);
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 620px) {
+  .navbar__main {
+    top: 12px;
+    width: calc(100% - 20px);
+    border-radius: 16px;
+  }
+}
 </style>
