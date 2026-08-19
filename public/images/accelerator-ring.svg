@@ -14,10 +14,10 @@
   Palette (Cherenkov-dark tokens):
     void #000000 · black #04060b · panel #080b12 · panel-2 #0b0f18
     atlas #0b80c3 · beam #33b4ec · core #bde8fb
-    deep #0a4e74 · deepest #062f49 · signal #f2b441
+    deep #0a4e74 · deepest #062f49 · signal #6fd3ff
 
-  Sensor housings use $signal. To keep amber reserved for CTAs,
-  swap every #f2b441 inside #sensor-housings for #bde8fb.
+  Sensor housings use $signal — the brightest point of the blue ramp.
+  The palette is blue and black only; keep any new fill on that ramp.
 
   Editable groups: #ticks #dipoles #magnets #energised-sections
                    #sensor-housings #interaction-points #service-lines
@@ -205,70 +205,70 @@
 
   <g id="sensor-housings">
     <g transform="translate(-450.12,-137.96) rotate(287.04)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(-27.89,-470.58) rotate(356.61)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(-159.41,-439.96) rotate(340.08)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(-197.85,423.38) rotate(205.05)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(-293.42,235.78) rotate(231.22)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(309.75,-352.37) rotate(41.32)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(272.33,382.64) rotate(144.56)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(31.72,-467.62) rotate(3.88)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(-115.73,355.74) rotate(198.02)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
     </g>
     <g transform="translate(332.35,-169.34) rotate(63.00)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
-      <rect x="6" y="-1.6" width="3.2" height="3.2" fill="#f2b441" opacity="0.65"/>
-      <rect x="-9.2" y="-1.6" width="3.2" height="3.2" fill="#f2b441" opacity="0.65"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
+      <rect x="6" y="-1.6" width="3.2" height="3.2" fill="#6fd3ff" opacity="0.65"/>
+      <rect x="-9.2" y="-1.6" width="3.2" height="3.2" fill="#6fd3ff" opacity="0.65"/>
     </g>
     <g transform="translate(175.11,329.34) rotate(152.00)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
-      <rect x="6" y="-1.6" width="3.2" height="3.2" fill="#f2b441" opacity="0.65"/>
-      <rect x="-9.2" y="-1.6" width="3.2" height="3.2" fill="#f2b441" opacity="0.65"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
+      <rect x="6" y="-1.6" width="3.2" height="3.2" fill="#6fd3ff" opacity="0.65"/>
+      <rect x="-9.2" y="-1.6" width="3.2" height="3.2" fill="#6fd3ff" opacity="0.65"/>
     </g>
     <g transform="translate(-366.15,71.17) rotate(259.00)">
-      <rect x="-5" y="-5" width="10" height="10" fill="#f2b441" opacity="0.14" filter="url(#soft)"/>
-      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#f2b441" opacity="0.9"/>
-      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#f2b441" stroke-width="0.6" opacity="0.35"/>
-      <rect x="6" y="-1.6" width="3.2" height="3.2" fill="#f2b441" opacity="0.65"/>
-      <rect x="-9.2" y="-1.6" width="3.2" height="3.2" fill="#f2b441" opacity="0.65"/>
+      <rect x="-5" y="-5" width="10" height="10" fill="#6fd3ff" opacity="0.14" filter="url(#soft)"/>
+      <rect x="-2.1" y="-2.1" width="4.2" height="4.2" fill="#6fd3ff" opacity="0.9"/>
+      <rect x="-4.4" y="-4.4" width="8.8" height="8.8" fill="none" stroke="#6fd3ff" stroke-width="0.6" opacity="0.35"/>
+      <rect x="6" y="-1.6" width="3.2" height="3.2" fill="#6fd3ff" opacity="0.65"/>
+      <rect x="-9.2" y="-1.6" width="3.2" height="3.2" fill="#6fd3ff" opacity="0.65"/>
     </g>
   </g>
 

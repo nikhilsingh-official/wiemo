@@ -11,24 +11,29 @@ const backgroundStyle = {
   '--page-grid-opacity': String(background.grid.opacity),
 } as CSSProperties
 
+// Every star is inlined into the SSR HTML of every page, so full float precision
+// costs real bytes for sub-pixel differences nobody can see. Two decimals on
+// lengths and three on ratios keeps the field identical and the markup half the size.
+const round = (value: number, decimals = 2) => Number(value.toFixed(decimals))
+
 function starStyle(star: GeneratedStar) {
   return {
-    left: `${star.x}%`,
-    top: `${star.y}%`,
-    width: `${star.size}px`,
-    height: `${star.size}px`,
-    backgroundColor: star.color,
-    boxShadow: `0 0 ${star.blur}px ${star.color}`,
-    animationDuration: `${star.duration}s`,
-    animationDelay: `${star.delay}s`,
-    '--star-opacity-low': star.dimOpacity,
-    '--star-opacity-high': star.opacity,
-    '--star-drift-x': `${star.drift.x}px`,
-    '--star-drift-y': `${star.drift.y}px`,
-    '--star-start-x': `${star.startOffset.x}px`,
-    '--star-start-y': `${star.startOffset.y}px`,
-    '--star-scale-min': star.minScale,
-    '--star-scale-max': star.maxScale,
+    left: `${round(star.x)}%`,
+    top: `${round(star.y)}%`,
+    // Height comes from aspect-ratio, and both the fill and the glow read `color`.
+    width: `${round(star.size)}px`,
+    color: star.color,
+    animationDuration: `${round(star.duration)}s`,
+    animationDelay: `${round(star.delay)}s`,
+    '--star-blur': `${round(star.blur)}px`,
+    '--star-opacity-low': round(star.dimOpacity, 3),
+    '--star-opacity-high': round(star.opacity, 3),
+    '--star-drift-x': `${round(star.drift.x)}px`,
+    '--star-drift-y': `${round(star.drift.y)}px`,
+    '--star-start-x': `${round(star.startOffset.x)}px`,
+    '--star-start-y': `${round(star.startOffset.y)}px`,
+    '--star-scale-min': round(star.minScale, 3),
+    '--star-scale-max': round(star.maxScale, 3),
   } as CSSProperties
 }
 
@@ -99,7 +104,10 @@ function glowStyle(glow: typeof background.glows[number]) {
 
 .page-background__star {
   position: absolute;
+  aspect-ratio: 1;
   border-radius: 50%;
+  background: currentcolor;
+  box-shadow: 0 0 var(--star-blur) currentcolor;
   opacity: var(--star-opacity-low);
   animation: page-star-drift ease-in-out infinite alternate;
   will-change: transform, opacity;

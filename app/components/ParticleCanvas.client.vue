@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { ParticleExperience } from '~/hero/three/ParticleExperience'
+import type { ParticleExperience } from '~/hero/three/ParticleExperience'
 import { defineParticleOptions } from '~/hero/three/particleOptions'
 import type { MorphEvent, ParticleOptions, ParticleOptionsInput, ParticleShape } from '~/hero/three/types'
 
@@ -24,6 +24,25 @@ let experience: ParticleExperience | undefined
 let activeOptions: ParticleOptions = defineParticleOptions(props.options)
 let creationId = 0
 let modelLoadId = 0
+
+type ParticleExperienceModule = typeof import('~/hero/three/ParticleExperience')
+let experienceModule: Promise<ParticleExperienceModule> | undefined
+
+/**
+ * Three.js is ~677 kB, and nothing on the page needs it before hydration.
+ * Importing it on demand keeps it out of the entry chunk so the rest of the
+ * site becomes interactive while the hero is still being set up.
+ */
+function loadExperienceModule(): Promise<ParticleExperienceModule> {
+  experienceModule ??= import('~/hero/three/ParticleExperience')
+  return experienceModule
+}
+
+/** Defers work until the browser has finished what first paint depends on. */
+function whenIdle(run: () => void): void {
+  if (typeof requestIdleCallback === 'function') requestIdleCallback(run, { timeout: 2500 })
+  else setTimeout(run, 300)
+}
 
 function isCurrentModelLoad(
   targetExperience: ParticleExperience,
@@ -82,6 +101,11 @@ async function createExperience(options: ParticleOptions): Promise<void> {
   const currentCreationId = ++creationId
   modelLoadId += 1
   const initialModelLoadId = modelLoadId
+
+  const { ParticleExperience } = await loadExperienceModule()
+  // A newer creation may have started while three.js was in flight; that one
+  // owns the canvas and is responsible for disposing whatever came before.
+  if (currentCreationId !== creationId || !canvas.value) return
   experience?.dispose()
 
   const nextExperience = new ParticleExperience(canvas.value, options, {
@@ -110,16 +134,22 @@ async function createExperience(options: ParticleOptions): Promise<void> {
     const remainingUrls = options.modelUrls.slice(1)
     const remainingNames = options.modelNames.slice(1)
     if (remainingUrls.length > 0) {
+      // Claimed now so any later load supersedes this one even while it waits.
       const currentModelLoadId = ++modelLoadId
-      void loadRemainingInitialModels(
-        nextExperience,
-        firstShape,
-        remainingUrls,
-        remainingNames,
-        options,
-        currentCreationId,
-        currentModelLoadId,
-      )
+      // The opening shape is already on screen, and the later stages are several
+      // MB. Holding them until the browser is idle keeps them from competing
+      // with the fonts, CSS and images that first paint actually needs.
+      whenIdle(() => {
+        void loadRemainingInitialModels(
+          nextExperience,
+          firstShape,
+          remainingUrls,
+          remainingNames,
+          options,
+          currentCreationId,
+          currentModelLoadId,
+        )
+      })
     }
   } catch (error) {
     if (!isCurrentModelLoad(nextExperience, currentCreationId, initialModelLoadId)) return

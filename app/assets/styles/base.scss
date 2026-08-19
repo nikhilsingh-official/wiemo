@@ -17,9 +17,10 @@
   --core: #bde8fb;
   --deep: #0a4e74;
   --deepest: #062f49;
-  --signal: #f2b441;
-  --signal-hover: #f7c768;
-  --signal-ink: #1a1204;
+  // Brightest point of the blue ramp — the accent that outranks --beam.
+  --signal: #6fd3ff;
+  --signal-hover: #a3e5ff;
+  --signal-ink: #041420;
   --ink: #e7edf3;
   --body-copy: #c7d0da;
   --mute: #7e8b9a;
@@ -48,8 +49,8 @@
   --core: #075c89;
   --deep: #4b91b5;
   --deepest: #d6eaf4;
-  --signal: #a66100;
-  --signal-hover: #834d00;
+  --signal: #0b63c4;
+  --signal-hover: #084b98;
   --signal-ink: #ffffff;
   --ink: #14212b;
   --body-copy: #34495a;

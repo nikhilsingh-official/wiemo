@@ -13,4 +13,5 @@ export const NAVBAR_ITEMS = [
 /** Primary blog category pages. */
 export const NAVBAR_BLOG_CATEGORIES = [
   { title: 'Reflections', to: '/blog/reflections' },
+  { title: 'Series', to: '/blog/series' },
 ] as const

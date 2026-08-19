@@ -484,13 +484,20 @@ onUnmounted(() => {
     isolation: isolate;
   }
 
+  // The card hangs one gap above the particle, but its box starts at the top of
+  // the sticky area rather than growing upward without a bound — otherwise a
+  // short viewport pushes it over the page heading.
   &__card-shell {
     position: absolute;
     z-index: 2;
-    top: var(--accelerator-peak-y);
+    top: 0;
     left: 50%;
+    display: flex;
     width: min(360px, calc(100vw - 40px));
-    transform: translate(-50%, calc(-100% - var(--accelerator-card-gap)));
+    height: calc(var(--accelerator-peak-y) - var(--accelerator-card-gap));
+    align-items: flex-end;
+    padding-top: 14px;
+    transform: translateX(-50%);
   }
 
   &__particle-marker {
@@ -522,6 +529,7 @@ onUnmounted(() => {
   }
 
   &__card-shell :deep(.blog-card) {
+    max-height: 100%;
     border-radius: 16px;
     background: linear-gradient(
       145deg,
@@ -729,6 +737,37 @@ onUnmounted(() => {
 @media (max-width: 460px) {
   .reflection-journey__steps {
     bottom: 14px;
+  }
+}
+
+// Short viewports are what squeeze the card against the heading, so the gap and
+// the media band give way with height rather than width.
+@media (max-height: 900px) {
+  .reflection-journey__sticky {
+    --accelerator-card-gap: 54px;
+  }
+
+  .reflection-journey__card-shell :deep(.blog-card__media) {
+    min-height: 104px;
+  }
+}
+
+@media (max-height: 760px) {
+  .reflection-journey__sticky {
+    --accelerator-card-gap: 32px;
+  }
+
+  .reflection-journey__card-shell :deep(.blog-card__media) {
+    min-height: 76px;
+  }
+
+  .reflection-journey__card-shell :deep(.blog-card__body) {
+    gap: 5px;
+    padding: 13px;
+  }
+
+  .reflection-journey__card-shell :deep(.blog-card h2) {
+    font-size: 19px;
   }
 }
 </style>

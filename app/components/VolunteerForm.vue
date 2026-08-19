@@ -343,8 +343,11 @@ watch(form, () => {
   justify-self: end;
 }
 
+// A blue-only palette has no danger hue, so the over-limit counter
+// escalates through brightness and weight instead.
 .field__counter--error {
-  color: var(--signal);
+  color: var(--core);
+  font-weight: 600;
 }
 
 .volunteer-form__footer {

@@ -1,152 +1,149 @@
 <script setup lang="ts">
 import { HERO_STAGE } from '~/hero/stages'
+import { TIMELINE_MILESTONES, TIMELINE_SPAN } from '~/content/timeline'
+import {
+  useTimelinePlayer,
+  type TimelineSpeed,
+  type TimelineView,
+} from '~/composables/useTimelinePlayer'
+import TimelineBeamline from '~/components/timeline/TimelineBeamline.vue'
+import TimelineControls from '~/components/timeline/TimelineControls.vue'
+import TimelineList from '~/components/timeline/TimelineList.vue'
+import TimelineReadout from '~/components/timeline/TimelineReadout.vue'
 
 definePageMeta({
   heroStages: [HERO_STAGE.timeline],
 })
 
-type Milestone = {
-  date: string
-  kicker: string
-  title: string
-  description: string
-  stat: string
-}
+useHead({ title: 'Timeline — WIEMO' })
 
-const milestones: Milestone[] = [
-  {
-    date: '12 Jul 2025',
-    kicker: 'Milestone 01',
-    title: 'Where It Began',
-    description: 'WIEMO’s first pilot session introduced 180 students at Kristu Jayanti CMI Public School to the fundamental question: What is everything made of?',
-    stat: '180 students',
-  },
-  {
-    date: '22 Jul 2026',
-    kicker: 'Milestone 02',
-    title: 'Our First Bilingual Session',
-    description: 'At Makkala Jagriti, we brought particle physics to students in both Kannada and English, making unfamiliar ideas easier to explore and understand.',
-    stat: 'Kannada + English',
-  },
-  {
-    date: '29 Jul 2026',
-    kicker: 'Milestone 03',
-    title: 'Partnering with Parikrma',
-    description: 'Our first session with Parikrma introduced Grade 9 students to the particles, questions and discoveries that shape our understanding of the universe.',
-    stat: 'Grade 9',
-  },
-  {
-    date: '30 Jul 2026',
-    kicker: 'Milestone 04',
-    title: 'Two Classrooms, One Day',
-    description: 'We conducted sessions for 66 students across Grades 8 and 10, adapting the programme to suit different ages and levels of understanding.',
-    stat: '66 students',
-  },
-  {
-    date: '5 Aug 2026',
-    kicker: 'Milestone 05',
-    title: 'Reaching Younger Learners',
-    description: 'WIEMO continued its work with Parikrma by bringing an interactive introduction to particle physics to 30 Grade 7 students.',
-    stat: '30 students',
-  },
-  {
-    date: 'Aug 2026',
-    kicker: 'Milestone 06',
-    title: 'Over 350 Students Reached',
-    description: 'With our latest session, WIEMO crossed its first major milestone, reaching 351 students across seven sessions.',
-    stat: '351 students',
-  },
-]
+const route = useRoute()
+const router = useRouter()
 
-const activeIndex = ref(0)
-const isPlaying = ref(true)
-let timer: ReturnType<typeof setInterval> | undefined
+const MILESTONE_QUERY = 'm'
+const total = TIMELINE_MILESTONES.length
 
-const activeMilestone = computed(() => milestones[activeIndex.value] ?? milestones[0]!)
-const progress = computed(() => `${(activeIndex.value / (milestones.length - 1)) * 100}%`)
-const progressStyle = computed(() => ({ '--timeline-progress': progress.value }))
+/** A shared link names its milestone, so it opens there instead of autoplaying. */
+const linkedIndex = TIMELINE_MILESTONES.findIndex(
+  milestone => milestone.id === route.query[MILESTONE_QUERY],
+)
 
-function stopTimer() {
-  if (timer) clearInterval(timer)
-  timer = undefined
-}
-
-function startTimer() {
-  stopTimer()
-  if (!isPlaying.value) return
-  timer = setInterval(() => {
-    activeIndex.value = (activeIndex.value + 1) % milestones.length
-  }, 2800)
-}
-
-function selectMilestone(index: number) {
-  activeIndex.value = index
-  startTimer()
-}
-
-function togglePlayback() {
-  isPlaying.value = !isPlaying.value
-  if (isPlaying.value) startTimer()
-  else stopTimer()
-}
-
-onMounted(() => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    isPlaying.value = false
-    return
-  }
-  startTimer()
+const player = useTimelinePlayer(total, {
+  initialIndex: Math.max(linkedIndex, 0),
+  autoplay: linkedIndex < 0,
 })
 
-onUnmounted(stopTimer)
+const view = ref<TimelineView>('beamline')
+
+const activeIndex = player.index
+const activeMilestone = computed(() => TIMELINE_MILESTONES[activeIndex.value] ?? TIMELINE_MILESTONES[0]!)
+const previousMilestone = computed(() => TIMELINE_MILESTONES[activeIndex.value - 1])
+const nextMilestone = computed(() => TIMELINE_MILESTONES[activeIndex.value + 1])
+
+// Keep the address bar describing what is on screen so any milestone is shareable.
+watch(activeIndex, (index) => {
+  const id = TIMELINE_MILESTONES[index]?.id
+  if (!id || route.query[MILESTONE_QUERY] === id) return
+
+  void router.replace({ query: { ...route.query, [MILESTONE_QUERY]: id } })
+})
+
+const setSpeed = (speed: TimelineSpeed) => {
+  player.speed.value = speed
+}
+
+const openOnBeamline = (index: number) => {
+  player.select(index)
+  view.value = 'beamline'
+}
 </script>
 
 <template>
-  <main class="timeline-page" :style="progressStyle">
-    <section class="timeline-page__inner">
+  <main class="timeline-page">
+    <div class="timeline-page__inner">
       <header class="timeline-header">
-        <div>
-          <p class="eyebrow">Our timeline · 2025—2026</p>
+        <div class="timeline-header__lead">
+          <p class="timeline-header__eyebrow">
+            Our timeline
+            <span aria-hidden="true">&middot;</span>
+            {{ TIMELINE_SPAN.from }} &ndash; {{ TIMELINE_SPAN.to }}
+          </p>
           <h1>One idea,<br><em>accelerated.</em></h1>
         </div>
+
         <div class="timeline-header__copy">
-          <p>Follow WIEMO from its first pilot session to more than 350 students reached across Bengaluru.</p>
-          <button class="playback" type="button" @click="togglePlayback">
-            <span aria-hidden="true">{{ isPlaying ? 'Ⅱ' : '▶' }}</span>
-            {{ isPlaying ? 'Pause particle' : 'Resume particle' }}
-          </button>
+          <p>
+            Follow WIEMO from its first pilot session to more than 350 students reached
+            across Bengaluru. Play it through, or step to any milestone yourself.
+          </p>
+          <dl class="timeline-header__summary">
+            <div>
+              <dt>Milestones</dt>
+              <dd>{{ String(total).padStart(2, '0') }}</dd>
+            </div>
+            <div>
+              <dt>Span</dt>
+              <dd>{{ TIMELINE_SPAN.from }} &ndash; {{ TIMELINE_SPAN.to }}</dd>
+            </div>
+          </dl>
         </div>
       </header>
 
-      <div class="beamline" aria-label="Timeline milestones">
-        <div class="beamline__rail" aria-hidden="true">
-          <span class="beamline__energy" />
-          <span class="particle" />
-        </div>
-        <button
-          v-for="(milestone, index) in milestones"
-          :key="milestone.date"
-          type="button"
-          :class="['beamline__station', { 'is-active': activeIndex === index, 'is-passed': activeIndex > index }]"
-          :aria-pressed="activeIndex === index"
-          @click="selectMilestone(index)"
-        >
-          <span class="beamline__ring" aria-hidden="true"><i /></span>
-          <strong>{{ milestone.date }}</strong>
-          <small>{{ milestone.kicker }}</small>
-        </button>
-      </div>
+      <section class="timeline-console" aria-label="Milestone browser">
+        <TimelineControls
+          :index="activeIndex"
+          :total="total"
+          :is-playing="player.isPlaying.value"
+          :is-at-start="player.isAtStart.value"
+          :is-at-end="player.isAtEnd.value"
+          :progress="player.progress.value"
+          :speed="player.speed.value"
+          :view="view"
+          @previous="player.previous"
+          @next="player.next"
+          @toggle="player.toggle"
+          @update:speed="setSpeed"
+          @update:view="view = $event"
+        />
 
-      <article class="milestone-readout" aria-live="polite">
-        <div class="milestone-readout__index">0{{ activeIndex + 1 }} / 0{{ milestones.length }}</div>
-        <div>
-          <p class="eyebrow">{{ activeMilestone.kicker }}</p>
-          <h2>{{ activeMilestone.title }}</h2>
-        </div>
-        <p>{{ activeMilestone.description }}</p>
-        <strong>{{ activeMilestone.stat }}</strong>
-      </article>
-    </section>
+        <p class="visually-hidden" aria-live="polite">
+          Milestone {{ activeIndex + 1 }} of {{ total }}: {{ activeMilestone.title }}
+        </p>
+
+        <template v-if="view === 'beamline'">
+          <TimelineBeamline
+            :milestones="TIMELINE_MILESTONES"
+            :active-index="activeIndex"
+            :progress="player.progress.value"
+            :is-playing="player.isPlaying.value"
+            @select="player.select"
+            @hold="player.hold"
+            @release="player.release"
+          />
+
+          <TimelineReadout
+            :milestone="activeMilestone"
+            :index="activeIndex"
+            :total="total"
+            :previous="previousMilestone"
+            :next="nextMilestone"
+            @previous="player.previous"
+            @next="player.next"
+          />
+
+          <p class="timeline-console__hint">
+            Tip: with a milestone focused, use the arrow keys to step through the beamline.
+          </p>
+        </template>
+
+        <TimelineList
+          v-else
+          :milestones="TIMELINE_MILESTONES"
+          :active-index="activeIndex"
+          @focus="openOnBeamline"
+        />
+      </section>
+    </div>
   </main>
 </template>
 
@@ -164,15 +161,6 @@ onUnmounted(stopTimer)
   padding-block: 104px 144px;
 }
 
-.eyebrow {
-  color: var(--beam);
-  font-family: $font-mono;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 .timeline-header {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
@@ -182,7 +170,7 @@ onUnmounted(stopTimer)
   h1 {
     margin-top: 18px;
     font-family: $font-display;
-    font-size: clamp(62px, 7.4vw, 122px);
+    font-size: clamp(58px, 7.2vw, 118px);
     font-weight: 600;
     letter-spacing: -0.07em;
     line-height: 0.82;
@@ -194,193 +182,69 @@ onUnmounted(stopTimer)
   }
 }
 
+.timeline-header__eyebrow {
+  color: var(--beam);
+  font-family: $font-mono;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
 .timeline-header__copy {
   display: grid;
   gap: 24px;
-  max-width: 450px;
+  max-width: 460px;
   color: var(--body-copy);
-  font-size: 17px;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
-.playback {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border: 1px solid color-mix(in srgb, var(--beam) 30%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--atlas) 9%, transparent);
-  color: var(--core);
-  font-family: $font-mono;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
+.timeline-header__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
 
-  span {
-    color: var(--signal);
-  }
-}
-
-.beamline {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  margin-top: 104px;
-}
-
-.beamline__rail {
-  position: absolute;
-  top: 29px;
-  right: 10%;
-  left: 10%;
-  height: 2px;
-  background: var(--line);
-}
-
-.beamline__energy {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--timeline-progress);
-  background: var(--beam);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--beam) 72%, transparent);
-  transition: width 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.particle {
-  position: absolute;
-  z-index: 4;
-  top: 50%;
-  left: var(--timeline-progress);
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--panel);
-  border-radius: 50%;
-  background: var(--signal);
-  box-shadow:
-    0 0 0 6px color-mix(in srgb, var(--signal) 10%, transparent),
-    0 0 24px 6px color-mix(in srgb, var(--signal) 70%, transparent);
-  transform: translate(-50%, -50%);
-  transition: left 900ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.beamline__station {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  justify-items: center;
-  background: transparent;
-  color: var(--faint);
-  cursor: pointer;
-  text-align: center;
-  transition: color $transition-fast $transition-ease;
-
-  strong {
-    margin-top: 16px;
-    color: var(--body-copy);
-    font-family: $font-display;
-    font-size: 18px;
-    line-height: 1;
-  }
-
-  small {
-    max-width: 150px;
-    margin-top: 8px;
+  dt {
+    color: var(--faint);
     font-family: $font-mono;
     font-size: 9px;
-    letter-spacing: 0.08em;
-    line-height: 1.4;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
-  &.is-active,
-  &.is-passed {
-    color: var(--beam);
-  }
-
-  &.is-active strong {
+  dd {
+    margin-top: 6px;
     color: var(--core);
-  }
-}
-
-.beamline__ring {
-  display: grid;
-  width: 60px;
-  height: 60px;
-  border: 1px solid currentcolor;
-  border-radius: 50%;
-  background: var(--black);
-  box-shadow: inset 0 0 0 8px var(--black);
-  place-items: center;
-
-  i {
-    width: 18px;
-    height: 18px;
-    border: 1px solid currentcolor;
-    border-radius: 50%;
-  }
-}
-
-.beamline__station.is-active .beamline__ring {
-  border-color: var(--signal);
-  box-shadow:
-    inset 0 0 0 8px var(--black),
-    0 0 22px color-mix(in srgb, var(--signal) 30%, transparent);
-  color: var(--signal);
-  transform: scale(1.12);
-}
-
-.milestone-readout {
-  display: grid;
-  grid-template-columns: 80px minmax(240px, 1fr) minmax(280px, 1.1fr) auto;
-  gap: 44px;
-  align-items: center;
-  min-height: 210px;
-  margin-top: 72px;
-  padding: 34px 42px;
-  border: 1px solid color-mix(in srgb, var(--core) 12%, transparent);
-  border-radius: 18px;
-  background: linear-gradient(
-    120deg,
-    color-mix(in srgb, var(--panel-2) 92%, transparent),
-    color-mix(in srgb, var(--panel) 70%, transparent)
-  );
-  box-shadow: 0 30px 90px rgb(0 0 0 / 32%);
-
-  h2 {
-    margin-top: 8px;
     font-family: $font-display;
-    font-size: clamp(32px, 3.2vw, 50px);
-    letter-spacing: -0.045em;
-    line-height: 0.98;
-  }
-
-  > p {
-    color: var(--body-copy);
-    font-size: 15px;
-    line-height: 1.75;
-  }
-
-  > strong {
-    color: var(--signal);
-    font-family: $font-mono;
-    font-size: 15px;
-    white-space: nowrap;
+    font-size: 18px;
+    line-height: 1.1;
   }
 }
 
-.milestone-readout__index {
+.timeline-console {
+  display: grid;
+  gap: 68px;
+  margin-top: 84px;
+}
+
+.timeline-console__hint {
   color: var(--faint);
   font-family: $font-mono;
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  letter-spacing: 0.1em;
 }
 
 @media (max-width: 1000px) {
   .timeline-header {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+
+  .timeline-console {
+    gap: 48px;
   }
 }
 
@@ -390,52 +254,8 @@ onUnmounted(stopTimer)
     padding-block: 72px 120px;
   }
 
-  .beamline {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin-top: 64px;
-    padding-left: 8px;
-  }
-
-  .beamline__rail {
-    top: 29px;
-    right: auto;
-    bottom: 29px;
-    left: 37px;
-    width: 2px;
-    height: auto;
-  }
-
-  .beamline__energy {
-    width: 2px;
-    height: var(--timeline-progress);
-    transition-property: height;
-  }
-
-  .particle {
-    top: var(--timeline-progress);
-    left: 50%;
-    transition-property: top;
-  }
-
-  .beamline__station {
-    grid-template-columns: 60px 70px 1fr;
-    gap: 16px;
-    align-items: center;
-    justify-items: start;
-    text-align: left;
-
-    strong,
-    small {
-      margin: 0;
-    }
-  }
-
-  .milestone-readout {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    margin-top: 50px;
-    padding: 28px;
+  .timeline-console {
+    margin-top: 56px;
   }
 }
 </style>
