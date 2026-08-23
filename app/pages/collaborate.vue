@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
 
+const description = 'Schools, NGOs and educators can collaborate with WIEMO to bring engaging particle physics sessions to students and communities.'
+
 useSeoMeta({
   title: 'Collaborate',
-  description: 'Schools, NGOs and educators can collaborate with WIEMO to bring engaging particle physics sessions to students and communities.',
+  description,
+  ogTitle: 'WIEMO | Collaborate',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Collaborate',
+  twitterDescription: description,
 })
 </script>
 

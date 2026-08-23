@@ -3,9 +3,15 @@ import GalleryLightbox from '~/components/gallery/GalleryLightbox.vue'
 import GallerySessionLog from '~/components/gallery/GallerySessionLog.vue'
 import { GALLERY_FRAMES, GALLERY_SESSIONS } from '~/content/gallery'
 
+const description = 'Explore photographs from WIEMO physics outreach visits with schools and student centres across Bengaluru.'
+
 useSeoMeta({
   title: 'Gallery',
-  description: 'Explore photographs from WIEMO physics outreach visits with schools and student centres across Bengaluru.',
+  description,
+  ogTitle: 'WIEMO | Gallery',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Gallery',
+  twitterDescription: description,
 })
 
 const activeFrameId = ref<number | null>(null)

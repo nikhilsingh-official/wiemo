@@ -18,7 +18,11 @@ if (!post.value) {
 useSeoMeta({
   title: () => post.value?.title ?? 'Reflection',
   description: () => post.value?.excerpt ?? post.value?.description ?? '',
-  ogImage: () => post.value?.thumbnail ?? '',
+  ogTitle: () => `WIEMO | ${post.value?.title ?? 'Reflection'}`,
+  ogDescription: () => post.value?.excerpt ?? post.value?.description ?? '',
+  ogType: 'article',
+  twitterTitle: () => `WIEMO | ${post.value?.title ?? 'Reflection'}`,
+  twitterDescription: () => post.value?.excerpt ?? post.value?.description ?? '',
 })
 </script>
 

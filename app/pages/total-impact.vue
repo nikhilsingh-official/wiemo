@@ -2,9 +2,15 @@
 import { SITE_CONTENT } from '~/content/siteContent'
 import { WIEMO_IMPACT } from '~/content/impact'
 
+const description = `See WIEMO’s progress toward reaching ${WIEMO_IMPACT.studentGoal.toLocaleString('en')} students through accessible particle physics education by the end of ${WIEMO_IMPACT.studentGoalYear}.`
+
 useSeoMeta({
   title: 'Total Impact',
-  description: `See WIEMO’s progress toward reaching ${WIEMO_IMPACT.studentGoal.toLocaleString('en')} students through accessible particle physics education by the end of ${WIEMO_IMPACT.studentGoalYear}.`,
+  description,
+  ogTitle: 'WIEMO | Total Impact',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Total Impact',
+  twitterDescription: description,
 })
 </script>
 

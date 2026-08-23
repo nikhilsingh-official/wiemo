@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
 
+const description = 'Learn how WIEMO grew from a CERN Masterclass experience into a student-led initiative making particle physics accessible across Bengaluru.'
+
 useSeoMeta({
   title: 'About Us',
-  description: 'Learn how WIEMO grew from a CERN Masterclass experience into a student-led initiative making particle physics accessible across Bengaluru.',
+  description,
+  ogTitle: 'WIEMO | About Us',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | About Us',
+  twitterDescription: description,
 })
 </script>
 

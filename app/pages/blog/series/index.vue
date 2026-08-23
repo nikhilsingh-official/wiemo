@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const description = 'Explore WIEMO learning series across five particle-physics-inspired energy tiers.'
+
 const {
   data: posts,
   error: postsError,
@@ -51,7 +53,11 @@ const seriesList = computed(() => {
 
 useSeoMeta({
   title: 'Learning Series',
-  description: 'Explore WIEMO learning series across five particle-physics-inspired energy tiers.',
+  description,
+  ogTitle: 'WIEMO | Learning Series',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Learning Series',
+  twitterDescription: description,
 })
 </script>
 

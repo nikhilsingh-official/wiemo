@@ -3,15 +3,31 @@ import { SITE_URL } from '~~/shared/site'
 
 const route = useRoute()
 const isHomePage = computed(() => route.path === '/')
+const canonicalUrl = computed(() => `${SITE_URL}${route.path === '/' ? '/' : route.path.replace(/\/$/, '')}`)
 
 useHead({
   titleTemplate: 'WIEMO | %s',
   link: [
     {
       rel: 'canonical',
-      href: computed(() => `${SITE_URL}${route.path === '/' ? '/' : route.path.replace(/\/$/, '')}`),
+      href: canonicalUrl,
     },
   ],
+})
+
+useSeoMeta({
+  ogSiteName: 'WIEMO',
+  ogType: 'website',
+  ogLocale: 'en_IN',
+  ogUrl: canonicalUrl,
+  ogImage: `${SITE_URL}/social-preview.png`,
+  ogImageType: 'image/png',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: 'WIEMO — What Is Everything Made Of?',
+  twitterCard: 'summary_large_image',
+  twitterImage: `${SITE_URL}/social-preview.png`,
+  twitterImageAlt: 'WIEMO — What Is Everything Made Of?',
 })
 </script>
 <template>

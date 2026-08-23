@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SITE_URL } from '~~/shared/site'
 import { SITE_CONTENT } from '~/content/siteContent'
 import { HOME_HERO_STAGES } from '~/hero/stages'
 
@@ -6,9 +7,53 @@ definePageMeta({
   heroStages: HOME_HERO_STAGES,
 })
 
+const description = 'WIEMO is a student-led initiative bringing accessible particle physics education to students in rural and underserved communities across Bengaluru.'
+
 useSeoMeta({
   title: 'What Is Everything Made Of?',
-  description: 'WIEMO is a student-led initiative bringing accessible particle physics education to students in rural and underserved communities across Bengaluru.',
+  description,
+  ogTitle: 'WIEMO | What Is Everything Made Of?',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | What Is Everything Made Of?',
+  twitterDescription: description,
+})
+
+useHead({
+  script: [
+    {
+      key: 'wiemo-structured-data',
+      type: 'application/ld+json',
+      textContent: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            '@id': `${SITE_URL}/#website`,
+            url: `${SITE_URL}/`,
+            name: 'WIEMO',
+            alternateName: ['What Is Everything Made Of?', SITE_CONTENT.initiativeName, 'wiemo.org'],
+            publisher: { '@id': `${SITE_URL}/#organization` },
+          },
+          {
+            '@type': 'Organization',
+            '@id': `${SITE_URL}/#organization`,
+            name: 'WIEMO',
+            alternateName: SITE_CONTENT.initiativeName,
+            url: `${SITE_URL}/`,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${SITE_URL}/icon-512.png`,
+              width: 512,
+              height: 512,
+            },
+            image: `${SITE_URL}/social-preview.png`,
+            email: SITE_CONTENT.contact.emailLabel,
+            description,
+          },
+        ],
+      }),
+    },
+  ],
 })
 </script>
 

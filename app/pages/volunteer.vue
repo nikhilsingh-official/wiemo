@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
 
+const description = 'Volunteer with WIEMO to teach physics, build educational resources or help share accessible particle physics with more students.'
+
 useSeoMeta({
   title: 'Volunteer',
-  description: 'Volunteer with WIEMO to teach physics, build educational resources or help share accessible particle physics with more students.',
+  description,
+  ogTitle: 'WIEMO | Volunteer',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Volunteer',
+  twitterDescription: description,
 })
 </script>
 

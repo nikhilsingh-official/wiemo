@@ -24,6 +24,10 @@ const complexityRating = computed(() => posts.value?.[0]?.complexityRating)
 useSeoMeta({
   title: () => seriesTitle.value,
   description: () => seriesDescription.value ?? `Posts in ${seriesTitle.value}.`,
+  ogTitle: () => `WIEMO | ${seriesTitle.value}`,
+  ogDescription: () => seriesDescription.value ?? `Posts in ${seriesTitle.value}.`,
+  twitterTitle: () => `WIEMO | ${seriesTitle.value}`,
+  twitterDescription: () => seriesDescription.value ?? `Posts in ${seriesTitle.value}.`,
 })
 </script>
 

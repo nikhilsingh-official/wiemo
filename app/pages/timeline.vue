@@ -11,9 +11,15 @@ import TimelineList from '~/components/timeline/TimelineList.vue'
 import TimelineReadout from '~/components/timeline/TimelineReadout.vue'
 import { WIEMO_IMPACT } from '~/content/impact'
 
+const description = `Follow WIEMO’s journey from its first particle physics pilot session to ${WIEMO_IMPACT.sessionsDelivered} sessions reaching ${WIEMO_IMPACT.studentsReached} students across Bengaluru.`
+
 useSeoMeta({
   title: 'Timeline',
-  description: `Follow WIEMO’s journey from its first particle physics pilot session to ${WIEMO_IMPACT.sessionsDelivered} sessions reaching ${WIEMO_IMPACT.studentsReached} students across Bengaluru.`,
+  description,
+  ogTitle: 'WIEMO | Timeline',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Timeline',
+  twitterDescription: description,
 })
 
 const route = useRoute()

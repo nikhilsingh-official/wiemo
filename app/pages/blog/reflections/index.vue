@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { COLOR_MODE_ATTRIBUTE } from '~~/shared/colorMode'
 
+const description = 'Read first-hand WIEMO reflections on teaching particle physics, working with students and turning curiosity into accessible science education.'
+
 useSeoMeta({
   title: 'Reflections',
-  description: 'Read first-hand WIEMO reflections on teaching particle physics, working with students and turning curiosity into accessible science education.',
+  description,
+  ogTitle: 'WIEMO | Reflections',
+  ogDescription: description,
+  twitterTitle: 'WIEMO | Reflections',
+  twitterDescription: description,
 })
 
 const {

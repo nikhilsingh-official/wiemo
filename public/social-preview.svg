@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">WIEMO — What Is Everything Made Of?</title>
+  <desc id="description">WIEMO particle physics education social preview</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#10375a"/>
+      <stop offset="0.55" stop-color="#071a2b"/>
+      <stop offset="1" stop-color="#020a12"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="none" stroke="#33b4ec" stroke-opacity="0.12" stroke-width="2">
+    <ellipse cx="1040" cy="80" rx="250" ry="90" transform="rotate(28 1040 80)"/>
+    <ellipse cx="1040" cy="80" rx="250" ry="90" transform="rotate(88 1040 80)"/>
+    <ellipse cx="1040" cy="80" rx="250" ry="90" transform="rotate(148 1040 80)"/>
+    <ellipse cx="130" cy="570" rx="210" ry="72" transform="rotate(18 130 570)"/>
+    <ellipse cx="130" cy="570" rx="210" ry="72" transform="rotate(78 130 570)"/>
+    <ellipse cx="130" cy="570" rx="210" ry="72" transform="rotate(138 130 570)"/>
+  </g>
+  <image href="logos/wiemo_full.svg" x="150" y="145" width="900" height="311"/>
+</svg>
