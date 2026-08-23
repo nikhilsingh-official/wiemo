@@ -2,16 +2,7 @@
 import { SITE_URL } from '~~/shared/site'
 
 const route = useRoute()
-const hasPageHero = computed(() => Boolean(route.meta.heroStages?.length))
 const isHomePage = computed(() => route.path === '/')
-
-// PROTOTYPE: compare the existing inner-page hero with a no-hero variant.
-// Remove this query-param branch once the client chooses a direction.
-const isNoHeroVariant = computed(() => route.query.variant === 'no-hero')
-const showHero = computed(() => hasPageHero.value && (isHomePage.value || !isNoHeroVariant.value))
-const showHeroPrototypeSwitcher = computed(() => (
-  import.meta.dev && hasPageHero.value && !isHomePage.value
-))
 
 useHead({
   titleTemplate: 'WIEMO | %s',
@@ -29,10 +20,9 @@ useHead({
     <div class="site-shell__content">
       <NuxtRouteAnnouncer />
       <Navbar class="navbar__main" />
-      <LazyHero v-if="showHero" />
+      <LazyHero v-if="isHomePage" />
       <NuxtPage />
       <SiteFooter />
-      <HeroVisibilityPrototype v-if="showHeroPrototypeSwitcher" />
     </div>
   </div>
 </template>

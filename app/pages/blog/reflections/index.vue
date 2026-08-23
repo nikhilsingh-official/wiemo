@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { COLOR_MODE_ATTRIBUTE } from '~~/shared/colorMode'
-import { HERO_STAGE } from '~/hero/stages'
-
-definePageMeta({ heroStages: [HERO_STAGE.reflections] })
 
 useSeoMeta({
   title: 'Reflections',

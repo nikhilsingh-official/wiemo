@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { HERO_STAGE } from '~/hero/stages'
 import { TIMELINE_MILESTONES, TIMELINE_SPAN } from '~/content/timeline'
 import {
   useTimelinePlayer,
@@ -11,8 +10,6 @@ import TimelineControls from '~/components/timeline/TimelineControls.vue'
 import TimelineList from '~/components/timeline/TimelineList.vue'
 import TimelineReadout from '~/components/timeline/TimelineReadout.vue'
 import { WIEMO_IMPACT } from '~/content/impact'
-
-definePageMeta({ heroStages: [HERO_STAGE.timeline] })
 
 useSeoMeta({
   title: 'Timeline',
@@ -73,11 +70,12 @@ const openOnBeamline = (index: number) => {
       <header class="timeline-header">
         <div class="timeline-header__lead">
           <p class="timeline-header__eyebrow">
-            Our timeline
+            WIEMO journey
             <span aria-hidden="true">&middot;</span>
             {{ TIMELINE_SPAN.from }} &ndash; {{ TIMELINE_SPAN.to }}
           </p>
-          <h1>One idea,<br><em>accelerated.</em></h1>
+          <h1>Timeline</h1>
+          <h2>One idea,<br><em>accelerated.</em></h2>
         </div>
 
         <div class="timeline-header__copy">
@@ -179,10 +177,19 @@ const openOnBeamline = (index: number) => {
   h1 {
     margin-top: 18px;
     font-family: $font-display;
-    font-size: clamp(58px, 7.2vw, 118px);
+    font-size: clamp(44px, 5.2vw, 82px);
+    font-weight: 600;
+    letter-spacing: -0.055em;
+    line-height: 0.9;
+  }
+
+  h2 {
+    margin-top: 14px;
+    font-family: $font-display;
+    font-size: clamp(42px, 5.4vw, 82px);
     font-weight: 600;
     letter-spacing: -0.07em;
-    line-height: 0.82;
+    line-height: 0.86;
   }
 
   em {
@@ -268,6 +275,7 @@ const openOnBeamline = (index: number) => {
     gap: 36px;
   }
 
-  .timeline-header h1 { font-size: 52px; line-height: 0.9; }
+  .timeline-header h1 { font-size: 46px; }
+  .timeline-header h2 { font-size: 42px; line-height: 0.9; }
 }
 </style>

@@ -22,8 +22,9 @@ const emit = defineEmits<{
   <section class="gallery-log" aria-labelledby="gallery-title">
     <header class="wrap gallery-log__header">
       <p class="gallery-log__eyebrow">Field archive / documented visits</p>
+      <h1 id="gallery-title">Gallery</h1>
       <div class="gallery-log__headline">
-        <h1 id="gallery-title">{{ frameCount }} frames.<br>{{ sessionCount }} documented visits.</h1>
+        <h2>{{ frameCount }} frames.<br>{{ sessionCount }} documented visits.</h2>
         <div class="gallery-log__readout" aria-label="Gallery summary">
           <p><strong>{{ String(frameCount).padStart(3, '0') }}</strong> frames</p>
           <p><strong>{{ String(sessionCount).padStart(3, '0') }}</strong> visits</p>
@@ -83,6 +84,12 @@ const emit = defineEmits<{
 
 .gallery-log__header {
   padding-bottom: 88px;
+
+  > h1 {
+    margin-top: 18px;
+    font-size: clamp(52px, 7vw, 94px);
+    line-height: 0.92;
+  }
 }
 
 .gallery-log__eyebrow,
@@ -102,8 +109,8 @@ const emit = defineEmits<{
   margin-top: 24px;
 }
 
-.gallery-log__headline h1 {
-  font-size: clamp(48px, 7vw, 92px);
+.gallery-log__headline h2 {
+  font-size: clamp(34px, 4.5vw, 64px);
   line-height: 0.92;
 }
 
@@ -229,7 +236,7 @@ const emit = defineEmits<{
   .gallery-log__sessions { gap: 76px; }
   .gallery-log__grid { grid-template-columns: 1fr; gap: 24px; }
 
-  .gallery-log__headline h1 { font-size: 42px; }
+  .gallery-log__headline h2 { font-size: 36px; }
 
   .gallery-log__readout {
     grid-template-columns: repeat(2, minmax(0, 1fr));

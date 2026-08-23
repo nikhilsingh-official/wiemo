@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { HERO_STAGE } from '~/hero/stages'
 import GalleryLightbox from '~/components/gallery/GalleryLightbox.vue'
 import GallerySessionLog from '~/components/gallery/GallerySessionLog.vue'
 import { GALLERY_FRAMES, GALLERY_SESSIONS } from '~/content/gallery'
-
-definePageMeta({ heroStages: [HERO_STAGE.gallery] })
 
 useSeoMeta({
   title: 'Gallery',

@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
-import { HERO_STAGE } from '~/hero/stages'
-
-definePageMeta({ heroStages: [HERO_STAGE.about] })
 
 useSeoMeta({
   title: 'About Us',
@@ -15,7 +12,8 @@ useSeoMeta({
     <section class="content-section">
       <div class="wrap about-intro">
         <p class="eyebrow">Who we are</p>
-        <h1>{{ SITE_CONTENT.initiativeName }}</h1>
+        <h1>About Us</h1>
+        <p class="about-intro__name">{{ SITE_CONTENT.initiativeName }}</p>
         <div class="about-intro__copy">
           <p v-for="paragraph in SITE_CONTENT.about.whoWeAre" :key="paragraph">
             {{ paragraph }}
@@ -112,7 +110,8 @@ useSeoMeta({
   align-items: end;
 
   > .eyebrow,
-  > h1 {
+  > h1,
+  > .about-intro__name {
     grid-column: 1 / -1;
   }
 
@@ -121,6 +120,14 @@ useSeoMeta({
     font-size: clamp(52px, 7vw, 94px);
     line-height: 0.9;
   }
+}
+
+.about-intro__name {
+  max-width: 760px;
+  color: var(--body-copy);
+  font-family: $font-display;
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.1;
 }
 
 .about-intro__copy,

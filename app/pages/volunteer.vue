@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
-import { HERO_STAGE } from '~/hero/stages'
-
-definePageMeta({ heroStages: [HERO_STAGE.volunteer] })
 
 useSeoMeta({
   title: 'Volunteer',
@@ -15,8 +12,8 @@ useSeoMeta({
     <div class="wrap volunteer-page">
       <header class="volunteer-page__header">
         <p class="volunteer-page__eyebrow">Join the initiative</p>
-        <h1>Do you love physics?</h1>
-        <h2>Do you want to make an impact? Volunteer at WIEMO.</h2>
+        <h1>Volunteer With Us</h1>
+        <h2>Do you love physics? Do you want to make an impact?</h2>
         <p class="volunteer-page__contact">
           Questions? Email
           <a :href="SITE_CONTENT.contact.emailHref">{{ SITE_CONTENT.contact.emailLabel }}</a>.

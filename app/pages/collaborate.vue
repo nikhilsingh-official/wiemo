@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
-import { HERO_STAGE } from '~/hero/stages'
-
-definePageMeta({ heroStages: [HERO_STAGE.collaborate] })
 
 useSeoMeta({
   title: 'Collaborate',
@@ -15,7 +12,7 @@ useSeoMeta({
     <div class="wrap collaboration-page">
       <aside class="collaboration-page__intro">
         <p class="collaboration-page__eyebrow">For organisations</p>
-        <h1>Collaborate with us.</h1>
+        <h1>Collaborate With Us</h1>
         <div class="collaboration-page__copy">
           <p>{{ SITE_CONTENT.collaboration.intro }}</p>
           <p>{{ SITE_CONTENT.collaboration.partnership }}</p>

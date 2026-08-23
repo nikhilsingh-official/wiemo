@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
 import { WIEMO_IMPACT } from '~/content/impact'
-import { HERO_STAGE } from '~/hero/stages'
-
-definePageMeta({ heroStages: [HERO_STAGE.totalImpact] })
 
 useSeoMeta({
   title: 'Total Impact',
@@ -15,7 +12,8 @@ useSeoMeta({
   <main class="content-section">
     <div class="wrap total-impact">
       <header>
-        <h1>Progress toward {{ WIEMO_IMPACT.studentGoal.toLocaleString('en') }} students</h1>
+        <h1>Total Impact</h1>
+        <h2>Progress toward {{ WIEMO_IMPACT.studentGoal.toLocaleString('en') }} students</h2>
         <p class="lede">{{ SITE_CONTENT.goal }}</p>
       </header>
 
@@ -45,6 +43,15 @@ useSeoMeta({
 
     max-width: 760px;
     line-height: 0.9;
+  }
+
+  h2 {
+    max-width: 760px;
+    margin-top: 14px;
+    color: var(--body-copy);
+    font-family: $font-display;
+    font-size: clamp(25px, 3.2vw, 46px);
+    line-height: 1;
   }
 }
 

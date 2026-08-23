@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { HERO_STAGE } from '~/hero/stages'
-
-definePageMeta({ heroStages: [HERO_STAGE.series] })
-
 const {
   data: posts,
   error: postsError,
@@ -63,7 +59,8 @@ useSeoMeta({
   <main class="content-section blog-page">
     <div class="wrap">
       <header class="blog-page__header">
-        <h1>Energy spectrum</h1>
+        <h1>Learning Series</h1>
+        <h2>Energy spectrum</h2>
         <p class="lede">
           Follow learning paths across a spectrum of ideas. Series become more challenging
           as you move down; within each series, newer posts glow brighter from left to right.
@@ -89,6 +86,13 @@ useSeoMeta({
   &__header {
     max-width: 800px;
     margin-bottom: 80px;
+
+    h2 {
+      margin-top: 12px;
+      color: var(--body-copy);
+      font-family: $font-display;
+      font-size: clamp(26px, 3vw, 42px);
+    }
   }
 
 }

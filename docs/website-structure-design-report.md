@@ -78,9 +78,9 @@ Every route renders through the same app shell:
 - `NuxtPage`
 - `SiteFooter`
 
-`Hero` is shown only when the current route has `route.meta.heroStages`. Pages opt into hero behavior using `definePageMeta`.
+`Hero` is shown only on the homepage. Inner pages begin directly with their page-specific heading and content.
 
-Manual review implication: if a page appears to have unexpected top spacing, overlapping navigation, or a missing hero, inspect both the route file and `app/app.vue`.
+Manual review implication: if a page appears to have unexpected top spacing or overlapping navigation, inspect both the route file and `app/app.vue`.
 
 ### 3. Navigation is data-driven but not CMS-driven
 
@@ -160,17 +160,17 @@ Hero stages are defined in `app/hero/stages.ts`. Each stage maps:
 - visible label
 - headline word
 
-The homepage uses a multi-stage sequence: galaxy, earth, DNA, human, matter, collision. Most inner pages use a single stage, such as People for About, Camera for Gallery, Hourglass for Series/Timeline, Handshake for Volunteer, and EarthContinents for Total Impact.
+The homepage uses a multi-stage sequence: galaxy, earth, DNA, human, matter, collision. Inner pages do not render the hero.
 
 Rendering path:
 
-1. Page sets `definePageMeta({ heroStages: [...] })`.
-2. `app/app.vue` checks whether `route.meta.heroStages` exists.
+1. The homepage sets `definePageMeta({ heroStages: HOME_HERO_STAGES })`.
+2. `app/app.vue` renders `Hero` only when the current path is `/`.
 3. `Hero.vue` derives particle options and text options.
 4. `ParticleCanvas.client.vue` creates or updates `ParticleExperience`.
 5. `ParticleExperience` uses Three.js and GLB shapes from `public/models`.
 
-Manual review implication: for visual or performance problems around the hero, check route metadata, `public/models`, and `app/hero/three` together.
+Manual review implication: for visual or performance problems around the homepage hero, check its route metadata, `public/models`, and `app/hero/three` together.
 
 ### 7. The visual design system is SCSS-based
 
@@ -523,4 +523,3 @@ Observed generation warnings:
 6. Should blog dropdown posts be hard-coded or content-driven?
 7. Are the large generated chunks acceptable for the intended audience’s devices and network conditions?
 8. Should the Timeline page remain a placeholder, or does it need real content before manual sign-off?
-
