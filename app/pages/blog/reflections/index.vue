@@ -2,8 +2,11 @@
 import { COLOR_MODE_ATTRIBUTE } from '~~/shared/colorMode'
 import { HERO_STAGE } from '~/hero/stages'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.reflections],
+definePageMeta({ heroStages: [HERO_STAGE.reflections] })
+
+useSeoMeta({
+  title: 'Reflections',
+  description: 'Read first-hand WIEMO reflections on teaching particle physics, working with students and turning curiosity into accessible science education.',
 })
 
 const {

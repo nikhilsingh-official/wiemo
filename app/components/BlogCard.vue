@@ -38,6 +38,7 @@ const formatDate = (date: Date | string) =>
           :src="post.thumbnail"
           :alt="post.thumbnailAlt"
           loading="lazy"
+          decoding="async"
         >
       </div>
 

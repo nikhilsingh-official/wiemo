@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { SITE_CONTENT } from '~/content/siteContent'
+import { WIEMO_IMPACT } from '~/content/impact'
 import { HERO_STAGE } from '~/hero/stages'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.totalImpact],
+definePageMeta({ heroStages: [HERO_STAGE.totalImpact] })
+
+useSeoMeta({
+  title: 'Total Impact',
+  description: `See WIEMO’s progress toward reaching ${WIEMO_IMPACT.studentGoal.toLocaleString('en')} students through accessible particle physics education by the end of ${WIEMO_IMPACT.studentGoalYear}.`,
 })
 </script>
 
@@ -11,7 +15,7 @@ definePageMeta({
   <main class="content-section">
     <div class="wrap total-impact">
       <header>
-        <h1>Progress toward 1,000 students</h1>
+        <h1>Progress toward {{ WIEMO_IMPACT.studentGoal.toLocaleString('en') }} students</h1>
         <p class="lede">{{ SITE_CONTENT.goal }}</p>
       </header>
 

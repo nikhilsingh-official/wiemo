@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { HERO_STAGE } from '~/hero/stages'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.series],
-})
+definePageMeta({ heroStages: [HERO_STAGE.series] })
 
 const {
   data: posts,
@@ -56,7 +54,7 @@ const seriesList = computed(() => {
 })
 
 useSeoMeta({
-  title: 'Series energy spectrum',
+  title: 'Learning Series',
   description: 'Explore WIEMO learning series across five particle-physics-inspired energy tiers.',
 })
 </script>

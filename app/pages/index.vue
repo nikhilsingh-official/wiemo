@@ -5,6 +5,11 @@ import { HOME_HERO_STAGES } from '~/hero/stages'
 definePageMeta({
   heroStages: HOME_HERO_STAGES,
 })
+
+useSeoMeta({
+  title: 'What Is Everything Made Of?',
+  description: 'WIEMO is a student-led initiative bringing accessible particle physics education to students in rural and underserved communities across Bengaluru.',
+})
 </script>
 
 <template>
@@ -12,7 +17,7 @@ definePageMeta({
     <section class="content-section home-intro">
       <div class="wrap home-intro__grid">
         <div>
-          <h1>{{ SITE_CONTENT.strapline }}</h1>
+          <h2>{{ SITE_CONTENT.strapline }}</h2>
         </div>
         <div class="home-intro__copy">
           <p class="home-intro__eyebrow">Our vision</p>
@@ -79,6 +84,8 @@ definePageMeta({
             <img
               :src="partner.logo"
               :alt="partner.name"
+              loading="lazy"
+              decoding="async"
             >
           </a>
         </div>
@@ -105,6 +112,7 @@ definePageMeta({
             :key="preview.to"
             class="page-preview"
             :to="preview.to"
+            no-prefetch
           >
             <h2>{{ preview.title }}</h2>
             <p>{{ preview.copy }}</p>
@@ -133,7 +141,7 @@ definePageMeta({
   gap: 72px;
   align-items: start;
 
-  h1 {
+  h2 {
     // Fluid across the desktop range but floored, so the strapline stays the
     // largest thing on the page instead of collapsing to body-copy size.
     max-width: 55vw;

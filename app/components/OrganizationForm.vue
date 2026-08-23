@@ -13,6 +13,7 @@ const form = reactive({
 })
 
 const showSubmissionNotice = ref(false)
+const submissionError = ref('')
 const locationListId = useId()
 const { wordCount: proposalWordCount, isOverLimit: proposalIsOverLimit } = useWordLimit(
   () => form.proposal,
@@ -20,7 +21,15 @@ const { wordCount: proposalWordCount, isOverLimit: proposalIsOverLimit } = useWo
 )
 
 function handleSubmit() {
-  if (proposalIsOverLimit.value) return
+  if (proposalIsOverLimit.value) {
+    submissionError.value = `Please keep the proposal within ${PROPOSAL_WORD_LIMIT} words.`
+    return
+  }
+
+  if (!form.organizationName || !form.location || !form.email || !form.phone || !form.proposal.trim()) {
+    submissionError.value = 'Please complete every required field before submitting.'
+    return
+  }
 
   const subject = `Collaboration inquiry — ${form.organizationName}`
   const body = [
@@ -30,15 +39,17 @@ function handleSubmit() {
     `Phone number: ${form.phone}`,
     '',
     'Proposal or inquiry:',
-    form.proposal,
+    form.proposal.trim(),
   ].join('\n')
 
+  submissionError.value = ''
   showSubmissionNotice.value = true
   window.location.href = `${SITE_CONTENT.contact.emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 watch(form, () => {
   showSubmissionNotice.value = false
+  submissionError.value = ''
 }, { deep: true })
 </script>
 
@@ -100,8 +111,11 @@ watch(form, () => {
           v-model.trim="form.phone"
           autocomplete="tel"
           inputmode="tel"
+          maxlength="20"
           name="phone"
+          pattern="[0-9+() -]{7,20}"
           required
+          title="Enter a valid phone number using 7 to 20 digits or phone symbols."
           type="tel"
         >
       </label>
@@ -124,6 +138,9 @@ watch(form, () => {
         >
           {{ proposalWordCount }} / {{ PROPOSAL_WORD_LIMIT }} words
         </span>
+        <span v-if="proposalIsOverLimit" id="proposal-error" class="field__error" role="alert">
+          Please shorten this proposal to {{ PROPOSAL_WORD_LIMIT }} words or fewer.
+        </span>
       </label>
     </div>
 
@@ -134,6 +151,7 @@ watch(form, () => {
       <p v-if="showSubmissionNotice" class="organization-form__notice" role="status">
         Your email app should open with this inquiry addressed to WIEMO.
       </p>
+      <p v-if="submissionError" class="organization-form__error" role="alert">{{ submissionError }}</p>
     </div>
   </form>
 </template>
@@ -193,6 +211,13 @@ watch(form, () => {
 .field__counter--error {
   color: var(--core);
   font-weight: 700;
+}
+
+.field__error,
+.organization-form__error {
+  color: var(--core);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .organization-form__footer {

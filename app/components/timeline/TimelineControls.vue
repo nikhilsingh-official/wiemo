@@ -244,7 +244,7 @@ const VIEWS = [
 }
 
 .segment {
-  min-height: 28px;
+  min-height: 36px;
   padding: 5px 11px;
   border: 1px solid transparent;
   border-radius: 999px;
@@ -281,10 +281,12 @@ const VIEWS = [
 @media (max-width: 560px) {
   .timeline-controls {
     gap: 12px 14px;
+    padding: 12px;
   }
 
-  .timeline-controls__group--view {
-    margin-left: auto;
-  }
+  .timeline-controls__position { margin-left: auto; }
+  .timeline-controls__group { flex: 1 1 100%; justify-content: space-between; }
+  .timeline-controls__group--view { margin-left: 0; }
+  .segment { flex: 1; min-height: 44px; }
 }
 </style>

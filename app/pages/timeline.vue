@@ -10,12 +10,14 @@ import TimelineBeamline from '~/components/timeline/TimelineBeamline.vue'
 import TimelineControls from '~/components/timeline/TimelineControls.vue'
 import TimelineList from '~/components/timeline/TimelineList.vue'
 import TimelineReadout from '~/components/timeline/TimelineReadout.vue'
+import { WIEMO_IMPACT } from '~/content/impact'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.timeline],
+definePageMeta({ heroStages: [HERO_STAGE.timeline] })
+
+useSeoMeta({
+  title: 'Timeline',
+  description: `Follow WIEMO’s journey from its first particle physics pilot session to ${WIEMO_IMPACT.sessionsDelivered} sessions reaching ${WIEMO_IMPACT.studentsReached} students across Bengaluru.`,
 })
-
-useHead({ title: 'Timeline — WIEMO' })
 
 const route = useRoute()
 const router = useRouter()
@@ -34,6 +36,13 @@ const player = useTimelinePlayer(total, {
 })
 
 const view = ref<TimelineView>('beamline')
+
+onMounted(() => {
+  if (window.matchMedia('(max-width: 760px)').matches) {
+    view.value = 'list'
+    player.pause()
+  }
+})
 
 const activeIndex = player.index
 const activeMilestone = computed(() => TIMELINE_MILESTONES[activeIndex.value] ?? TIMELINE_MILESTONES[0]!)
@@ -73,8 +82,8 @@ const openOnBeamline = (index: number) => {
 
         <div class="timeline-header__copy">
           <p>
-            Follow WIEMO from its first pilot session to more than 350 students reached
-            across Bengaluru. Play it through, or step to any milestone yourself.
+            Follow WIEMO from its first pilot session to {{ WIEMO_IMPACT.studentsReached }} students
+            reached across Bengaluru. Play it through, or step to any milestone yourself.
           </p>
           <dl class="timeline-header__summary">
             <div>
@@ -151,7 +160,7 @@ const openOnBeamline = (index: number) => {
 .timeline-page {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: clip;
   border-bottom: 1px solid var(--line);
 }
 
@@ -256,6 +265,9 @@ const openOnBeamline = (index: number) => {
 
   .timeline-console {
     margin-top: 56px;
+    gap: 36px;
   }
+
+  .timeline-header h1 { font-size: 52px; line-height: 0.9; }
 }
 </style>

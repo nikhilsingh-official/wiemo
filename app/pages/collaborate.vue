@@ -2,11 +2,12 @@
 import { SITE_CONTENT } from '~/content/siteContent'
 import { HERO_STAGE } from '~/hero/stages'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.collaborate],
-})
+definePageMeta({ heroStages: [HERO_STAGE.collaborate] })
 
-useHead({ title: 'Collaborate with Us — WIEMO' })
+useSeoMeta({
+  title: 'Collaborate',
+  description: 'Schools, NGOs and educators can collaborate with WIEMO to bring engaging particle physics sessions to students and communities.',
+})
 </script>
 
 <template>

@@ -1,0 +1,21 @@
+{
+  "name": "The What is Everything Made of Initiative",
+  "short_name": "WIEMO",
+  "description": "Physics and particle physics education for rural and underserved communities.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#05111d",
+  "background_color": "#05111d",
+  "display": "standalone"
+}
+

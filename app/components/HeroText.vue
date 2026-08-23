@@ -6,9 +6,11 @@ import type { TextOptionsInput } from '~/hero/text-typing/types'
 withDefaults(
   defineProps<{
     headlineText: string
+    showBrand?: boolean
     textOptions?: TextOptionsInput
   }>(),
   {
+    showBrand: false,
     textOptions: () => ({}),
   },
 )
@@ -16,6 +18,7 @@ withDefaults(
 
 <template>
   <div>
+    <h1 v-if="showBrand" class="hero__brand">WIEMO</h1>
     <HeroHeader
       class="hero__header"
       :text="headlineText"
@@ -25,13 +28,23 @@ withDefaults(
       {{ SITE_CONTENT.shortDescription }}
     </p>
     <div class="hero__CTA">
-      <NuxtLink to="/volunteer"><button class="hero__CTA__bright">Volunteer</button></NuxtLink>
-      <NuxtLink to="/about"><button class="hero__CTA__dim">Learn More</button></NuxtLink>
+      <NuxtLink class="hero__CTA__bright" to="/volunteer" no-prefetch>Volunteer</NuxtLink>
+      <NuxtLink class="hero__CTA__dim" to="/about" no-prefetch>Learn More</NuxtLink>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.hero__brand {
+  margin-bottom: 14px;
+  color: var(--core);
+  font-family: $font-mono;
+  font-size: clamp(18px, 1.6vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  line-height: 1;
+}
+
 .hero__copy {
   max-width: 704px;
   margin: 20px 0 0;
@@ -61,6 +74,7 @@ withDefaults(
   line-height: 1;
   text-transform: uppercase;
   cursor: pointer;
+  text-decoration: none;
   transition:
     background-color $transition-fast $transition-ease,
     border-color $transition-fast $transition-ease,

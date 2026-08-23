@@ -2,11 +2,12 @@
 import { SITE_CONTENT } from '~/content/siteContent'
 import { HERO_STAGE } from '~/hero/stages'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.about],
-})
+definePageMeta({ heroStages: [HERO_STAGE.about] })
 
-useHead({ title: 'About Us — WIEMO' })
+useSeoMeta({
+  title: 'About Us',
+  description: 'Learn how WIEMO grew from a CERN Masterclass experience into a student-led initiative making particle physics accessible across Bengaluru.',
+})
 </script>
 
 <template>
@@ -300,6 +301,18 @@ useHead({ title: 'About Us — WIEMO' })
 }
 
 @media (max-width: 560px) {
+  .about-intro h1 { font-size: 42px; line-height: 0.96; }
+  .about-story h2,
+  .about-mission h2,
+  .about-work h2,
+  .about-team h2 { font-size: 34px; }
+
+  .about-intro__copy p,
+  .about-story__copy p,
+  .about-mission__copy p { font-size: 16px; line-height: 1.72; }
+
+  .about-story__turn { padding-left: 18px; font-size: 21px !important; }
+  .vision-readout p { font-size: 20px; }
   .topic-grid { grid-template-columns: 1fr; }
   .about-team li { grid-template-columns: 20px 1fr; }
   .about-team small,

@@ -15,7 +15,6 @@ const props = withDefaults(
 
 const options = computed(() => defineTextOptions(props.textoptions))
 const displayedText = ref('')
-const announcedText = ref('')
 const prefersReducedMotion = ref(false)
 
 const cursorStyle = computed(() => ({
@@ -30,13 +29,11 @@ function finishImmediately(target: string) {
   if (typingTimer) clearTimeout(typingTimer)
   typingTimer = undefined
   displayedText.value = target
-  announcedText.value = target
 }
 
 function animateTo(target: string) {
   const current = displayedText.value
   if (current === target) {
-    announcedText.value = target
     typingTimer = undefined
     return
   }
@@ -49,7 +46,6 @@ function animateTo(target: string) {
   }
 
   if (displayedText.value === target) {
-    announcedText.value = target
     typingTimer = undefined
     return
   }
@@ -90,20 +86,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="hero-header">
-    <h1 class="hero-header__heading">
-      <span aria-hidden="true">
-        <span class="anchor-text">Particles are</span>
-        <span class="change-text">
-          {{ displayedText }}
-          <span class="hero-header__cursor" :style="cursorStyle">|</span>
-        </span>
+  <div class="hero-header" aria-hidden="true">
+    <div class="hero-header__heading">
+      <span class="anchor-text">Particles are</span>
+      <span class="change-text">
+        {{ displayedText }}
+        <span class="hero-header__cursor" :style="cursorStyle">|</span>
       </span>
-      <span
-        class="hero-header__announcement"
-        aria-live="polite"
-      >Particles are {{ announcedText }}</span>
-    </h1>
+    </div>
   </div>
 </template>
 
@@ -163,10 +153,6 @@ onBeforeUnmount(() => {
   .change-text {
     min-height: 51px;
   }
-}
-
-.hero-header__announcement {
-  @include visually-hidden;
 }
 
 @keyframes cursor-blink {

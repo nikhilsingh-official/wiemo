@@ -2,11 +2,12 @@
 import { SITE_CONTENT } from '~/content/siteContent'
 import { HERO_STAGE } from '~/hero/stages'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.volunteer],
-})
+definePageMeta({ heroStages: [HERO_STAGE.volunteer] })
 
-useHead({ title: 'Volunteer with Us — WIEMO' })
+useSeoMeta({
+  title: 'Volunteer',
+  description: 'Volunteer with WIEMO to teach physics, build educational resources or help share accessible particle physics with more students.',
+})
 </script>
 
 <template>

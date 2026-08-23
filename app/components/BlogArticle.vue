@@ -47,6 +47,7 @@ const formatDate = (date: Date | string) =>
         <img
           :src="post.thumbnail"
           :alt="post.thumbnailAlt"
+          decoding="async"
         >
         <figcaption v-if="post.imageCredit">
           {{ post.imageCredit }}

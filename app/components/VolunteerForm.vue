@@ -4,6 +4,7 @@ import {
   VOLUNTEER_ROLES,
   type VolunteerRole,
 } from '~/content/volunteer'
+import { SITE_CONTENT } from '~/content/siteContent'
 
 const REASON_WORD_LIMIT = 300
 
@@ -28,6 +29,7 @@ const form = reactive<VolunteerFormData>({
 })
 
 const showSubmissionNotice = ref(false)
+const submissionError = ref('')
 const locationListId = useId()
 
 const { wordCount: reasonWordCount, isOverLimit: reasonIsOverLimit } = useWordLimit(
@@ -37,14 +39,36 @@ const { wordCount: reasonWordCount, isOverLimit: reasonIsOverLimit } = useWordLi
 
 function handleSubmit() {
   if (reasonIsOverLimit.value) {
+    submissionError.value = `Please keep your answer within ${REASON_WORD_LIMIT} words.`
     return
   }
 
+  if (!form.fullName || !form.email || !form.phone || !form.age || !form.location || !form.role || !form.reason.trim()) {
+    submissionError.value = 'Please complete every required field before submitting.'
+    return
+  }
+
+  const subject = `Volunteer application — ${form.fullName}`
+  const body = [
+    `Full name: ${form.fullName}`,
+    `Email ID: ${form.email}`,
+    `Phone number: ${form.phone}`,
+    `Age: ${form.age}`,
+    `Location: ${form.location}`,
+    `Role: ${form.role}`,
+    '',
+    'Why do you want to work with WIEMO?',
+    form.reason.trim(),
+  ].join('\n')
+
+  submissionError.value = ''
   showSubmissionNotice.value = true
+  window.location.href = `${SITE_CONTENT.contact.emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 watch(form, () => {
   showSubmissionNotice.value = false
+  submissionError.value = ''
 }, { deep: true })
 </script>
 
@@ -89,8 +113,11 @@ watch(form, () => {
           v-model.trim="form.phone"
           autocomplete="tel"
           inputmode="tel"
+          maxlength="20"
           name="phone"
+          pattern="[0-9+() -]{7,20}"
           required
+          title="Enter a valid phone number using 7 to 20 digits or phone symbols."
           type="tel"
         >
       </label>
@@ -173,6 +200,9 @@ watch(form, () => {
       >
         {{ reasonWordCount }} / {{ REASON_WORD_LIMIT }} words
       </span>
+      <span v-if="reasonIsOverLimit" id="reason-error" class="field__error" role="alert">
+        Please shorten this answer to {{ REASON_WORD_LIMIT }} words or fewer.
+      </span>
     </label>
 
     <div class="volunteer-form__footer">
@@ -184,8 +214,9 @@ watch(form, () => {
         Submit application
       </button>
       <p v-if="showSubmissionNotice" class="volunteer-form__notice" role="status">
-        Your application is ready. Submission delivery will be connected once the volunteer workflow is finalised.
+        Your email app should open with the completed application addressed to WIEMO.
       </p>
+      <p v-if="submissionError" class="volunteer-form__error" role="alert">{{ submissionError }}</p>
     </div>
   </form>
 </template>
@@ -347,6 +378,13 @@ watch(form, () => {
 // escalates through brightness and weight instead.
 .field__counter--error {
   color: var(--core);
+  font-weight: 600;
+}
+
+.field__error,
+.volunteer-form__error {
+  color: var(--core);
+  font-size: 13px;
   font-weight: 600;
 }
 

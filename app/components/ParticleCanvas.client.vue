@@ -161,7 +161,9 @@ async function createExperience(options: ParticleOptions): Promise<void> {
 watch(
   canvas,
   (element) => {
-    if (element) void createExperience(activeOptions)
+    if (!element) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    void createExperience(activeOptions)
   },
   { flush: 'post' },
 )
@@ -202,7 +204,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <canvas ref="canvas" aria-label="GPU particle morph animation" />
+  <canvas ref="canvas" aria-hidden="true" />
 </template>
 
 <style lang="scss" scoped>

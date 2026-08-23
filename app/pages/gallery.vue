@@ -4,11 +4,12 @@ import GalleryLightbox from '~/components/gallery/GalleryLightbox.vue'
 import GallerySessionLog from '~/components/gallery/GallerySessionLog.vue'
 import { GALLERY_FRAMES, GALLERY_SESSIONS } from '~/content/gallery'
 
-definePageMeta({
-  heroStages: [HERO_STAGE.gallery],
-})
+definePageMeta({ heroStages: [HERO_STAGE.gallery] })
 
-useHead({ title: 'Gallery — WIEMO' })
+useSeoMeta({
+  title: 'Gallery',
+  description: 'Explore photographs from WIEMO physics outreach visits with schools and student centres across Bengaluru.',
+})
 
 const activeFrameId = ref<number | null>(null)
 

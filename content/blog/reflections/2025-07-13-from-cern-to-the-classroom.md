@@ -1,6 +1,6 @@
 ---
 title: "From CERN to the Classroom: My First WIEMO Session"
-subheading: One week at CERN became one enormous question shared with more than 180 students.
+subheading: One week at CERN became one enormous question shared with 180 students.
 excerpt: WIEMO’s first session began with an opportunity at CERN and the belief that particle physics should feel accessible to every curious student.
 author: Agastya Kartikeyan
 date: 2025-07-13
@@ -16,7 +16,7 @@ draft: false
 
 Yesterday, I had the chance to give my first-ever physics lecture, *What Is Everything Made Of?*, at Kristu Jayanti CMI Public School.
 
-Over 180 students.
+180 students.
 
 One enormous question.
 
@@ -36,7 +36,7 @@ That idea became What Is Everything Made Of?
 
 Yesterday’s lecture was the first step.
 
-Standing in front of more than 180 students was exciting, but also slightly overwhelming. I did not know exactly how they would respond to a topic as unfamiliar as particle physics.
+Standing in front of 180 students was exciting, but also slightly overwhelming. I did not know exactly how they would respond to a topic as unfamiliar as particle physics.
 
 But as the session continued, the room filled with questions, curiosity and energy. The students were not afraid to think beyond the textbook. They wanted to know more, challenge ideas and understand how the universe worked.
 

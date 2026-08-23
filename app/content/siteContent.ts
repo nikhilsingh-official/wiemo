@@ -1,3 +1,5 @@
+import { WIEMO_IMPACT } from './impact'
+
 export const SITE_CONTENT = {
   initiativeName: 'The What is Everything Made of Initiative',
   strapline: 'Dedicated to the quest of physics for all.',
@@ -13,18 +15,13 @@ export const SITE_CONTENT = {
   impactMetrics: [
     {
       label: 'Students impacted',
-      value: '351',
-      note: 'Goal: 1,000 students by the end of 2026',
-    },
-    {
-      label: 'Schools and student centres',
-      value: '3',
-      note: 'Three partner communities across Bengaluru',
+      value: String(WIEMO_IMPACT.studentsReached),
+      note: `Goal: ${WIEMO_IMPACT.studentGoal.toLocaleString('en')} students by the end of ${WIEMO_IMPACT.studentGoalYear}`,
     },
     {
       label: 'Sessions delivered',
-      value: '7',
-      note: 'Seven sessions delivered since July 2025',
+      value: String(WIEMO_IMPACT.sessionsDelivered),
+      note: `${WIEMO_IMPACT.sessionsDelivered} sessions delivered since July 2025`,
     },
   ],
   partners: [
@@ -79,7 +76,7 @@ export const SITE_CONTENT = {
     {
       title: 'Our timeline',
       to: '/timeline',
-      copy: 'Follow WIEMO from its first pilot session to seven sessions reaching 351 students.',
+      copy: `Follow WIEMO from its first pilot session to ${WIEMO_IMPACT.sessionsDelivered} sessions reaching ${WIEMO_IMPACT.studentsReached} students.`,
     },
     {
       title: 'Reflections',
@@ -174,7 +171,7 @@ export const SITE_CONTENT = {
       'Interested in working with us? Get in touch through our form or via our contact details.',
   },
   contact: {
-    emailLabel: 'agastya@weimo.org',
-    emailHref: 'mailto:agastya@weimo.org',
+    emailLabel: 'agastya@wiemo.org',
+    emailHref: 'mailto:agastya@wiemo.org',
   },
 } as const

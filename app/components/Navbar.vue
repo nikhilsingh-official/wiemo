@@ -3,57 +3,20 @@ import { NAVBAR_BLOG_CATEGORIES, NAVBAR_ITEMS } from '~/navbar/items'
 
 const route = useRoute()
 const { colorMode, toggleColorMode } = useColorMode()
+const isMenuOpen = ref(false)
 
 const colorModeToggleLabel = computed(() =>
   `Switch to ${colorMode.value === 'dark' ? 'light' : 'dark'} mode`,
 )
 
-type NavbarBlogPost = {
-  title: string
-  to: string
-  date: Date | string
-}
-
-const toNavbarBlogPost = (post: { title: string, path: string, date: Date | string }): NavbarBlogPost => ({
-  title: post.title,
-  to: post.path,
-  date: post.date,
+watch(() => route.fullPath, () => {
+  isMenuOpen.value = false
 })
-
-const { data: queriedBlogPosts } = await useAsyncData('navbar-blog-posts', async () => {
-  const [reflections, series] = await Promise.all([
-    queryCollection('reflections')
-      .select('title', 'path', 'date')
-      .where('draft', '=', false)
-      .order('date', 'DESC')
-      .limit(3)
-      .all(),
-    queryCollection('series')
-      .select('title', 'path', 'date')
-      .where('draft', '=', false)
-      .order('date', 'DESC')
-      .limit(3)
-      .all(),
-  ])
-
-  return [...reflections, ...series]
-    .map(toNavbarBlogPost)
-    .sort((postA, postB) => new Date(postB.date).getTime() - new Date(postA.date).getTime())
-    .slice(0, 3)
-})
-
-const navbarBlogPosts = computed(() => queriedBlogPosts.value ?? [])
-
-const formatDate = (date: Date | string) =>
-  new Intl.DateTimeFormat('en', {
-    month: 'short',
-    day: 'numeric',
-  }).format(new Date(date))
 </script>
 
 <template>
-  <nav class="navbar" aria-label="Particle physics site navigation">
-    <NuxtLink class="navbar__brand" to="/" aria-label="Wiemo home">
+  <nav class="navbar" aria-label="WIEMO site navigation" @keydown.esc="isMenuOpen = false">
+    <NuxtLink class="navbar__brand" to="/" aria-label="WIEMO home" no-prefetch>
       <img
         class="navbar__brand-mark navbar__brand-mark--dark"
         src="/logos/wiemo_navbar_darkmode.svg"
@@ -67,7 +30,7 @@ const formatDate = (date: Date | string) =>
         aria-hidden="true"
       >
     </NuxtLink>
-    <ul class="navbar__list">
+    <ul id="primary-navigation" :class="['navbar__list', { 'navbar__list--open': isMenuOpen }]">
       <li
         v-for="item in NAVBAR_ITEMS"
         :key="item.to"
@@ -84,32 +47,20 @@ const formatDate = (date: Date | string) =>
             ]"
             :to="item.to"
             aria-haspopup="true"
+            no-prefetch
           >
             {{ item.label }}
           </NuxtLink>
 
-          <div
-            v-if="navbarBlogPosts.length"
-            class="navbar__dropdown"
-            aria-label="Blog posts"
-          >
+          <div class="navbar__dropdown" aria-label="Blog categories">
             <NuxtLink
               v-for="category in NAVBAR_BLOG_CATEGORIES"
               :key="category.to"
               class="navbar__dropdown-link navbar__dropdown-link--category"
               :to="category.to"
+              no-prefetch
             >
               <span>{{ category.title }}</span>
-            </NuxtLink>
-
-            <NuxtLink
-              v-for="post in navbarBlogPosts"
-              :key="post.to"
-              class="navbar__dropdown-link"
-              :to="post.to"
-            >
-              <span>{{ post.title }}</span>
-              <time :datetime="String(post.date)">{{ formatDate(post.date) }}</time>
             </NuxtLink>
           </div>
         </template>
@@ -119,11 +70,22 @@ const formatDate = (date: Date | string) =>
           class="navbar__link"
           exact-active-class="navbar__link--active"
           :to="item.to"
+          no-prefetch
         >
           {{ item.label }}
         </NuxtLink>
       </li>
     </ul>
+    <button
+      class="navbar__menu-toggle"
+      type="button"
+      aria-controls="primary-navigation"
+      :aria-expanded="isMenuOpen"
+      :aria-label="isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'"
+      @click="isMenuOpen = !isMenuOpen"
+    >
+      <span /><span /><span />
+    </button>
     <button
       class="navbar__theme-toggle"
       type="button"
@@ -255,6 +217,26 @@ const formatDate = (date: Date | string) =>
 
   &:focus-visible {
     outline-offset: -2px;
+  }
+}
+
+.navbar__menu-toggle {
+  display: none;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in srgb, var(--beam) 20%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel) 40%, transparent);
+  cursor: pointer;
+  place-content: center;
+
+  span {
+    display: block;
+    width: 18px;
+    height: 1px;
+    margin-block: 3px;
+    background: var(--beam);
   }
 }
 
@@ -541,6 +523,40 @@ const formatDate = (date: Date | string) =>
 
   .navbar__link {
     padding-inline: 12px;
+  }
+
+  .navbar__menu-toggle {
+    display: grid;
+  }
+
+  .navbar__list {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+    display: none;
+    width: auto;
+    max-height: calc(100dvh - 96px);
+    min-height: 0;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid color-mix(in srgb, var(--core) 14%, transparent);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--panel) 98%, transparent);
+    box-shadow: 0 24px 56px rgb(0 0 0 / 42%);
+
+    &--open {
+      display: grid;
+    }
+  }
+
+  .navbar__item,
+  .navbar__link {
+    width: 100%;
+  }
+
+  .navbar__dropdown {
+    display: none;
   }
 
   // Too narrow for a floating panel — the dropdown spans the screen instead.

@@ -11,6 +11,7 @@ const PARTICLE_COUNT = 72_000
 const FALLBACK_HERO_STAGE = HERO_STAGE.collision
 
 const route = useRoute()
+const isHomePage = computed(() => route.path === '/')
 const activeHeroStages = computed<readonly HeroStage[]>(() => {
   const stages = route.meta.heroStages
   return stages?.length ? stages : [FALLBACK_HERO_STAGE]
@@ -18,7 +19,7 @@ const activeHeroStages = computed<readonly HeroStage[]>(() => {
 
 const particleOptions = computed(() => defineParticleOptions({
   modelUrls: activeHeroStages.value.map(
-    (stage) => `/models/${stage.modelFilename}`,
+    stage => `/models/${stage.modelFilename}`,
   ),
   modelNames: activeHeroStages.value.map(getParticleStageName),
   autoPlay: activeHeroStages.value.length > 1,
@@ -44,14 +45,6 @@ const morphPercent = computed(() => Math.round(morph.value.progress * 100))
 const morphProgressStyle = computed(() => ({
   transform: `scaleX(${morph.value.easedProgress})`,
 }))
-const heroAriaLabel = computed(() => {
-  const firstStage = activeHeroStages.value[0]
-  const lastStage = activeHeroStages.value.at(-1) ?? firstStage
-  if (!firstStage || !lastStage) return 'Particle model animation'
-  if (firstStage === lastStage) return `Particle form: ${firstStage.label}`
-  return `Particle forms cycling from ${firstStage.label} to ${lastStage.label}`
-})
-
 function getParticleStageName(stage: HeroStage): string {
   return stage.modelFilename
 }
@@ -100,21 +93,23 @@ watch(
 </script>
 
 <template>
-  <section class="hero" :aria-label="heroAriaLabel">
+  <section class="hero" aria-label="WIEMO introduction">
     <HeroText
       class="hero__text"
       :headline-text="headlineText"
+      :show-brand="isHomePage"
       :text-options="textOptions"
     />
     <ParticleCanvas
       class="hero__canvas"
+      aria-hidden="true"
       :options="particleOptions"
       @morph-progress="trackMorph"
     />
     <HeroImpactMetrics />
     <HeroMorphIndicator
       class="hero__morph-readout"
-      aria-label="Particle model transition progress"
+      aria-hidden="true"
       :morph-from="morphFrom"
       :morph-to="morphTo"
       :morph-percent="morphPercent"

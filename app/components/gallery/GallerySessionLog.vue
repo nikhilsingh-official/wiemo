@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import GalleryFrameCard from './GalleryFrame.vue'
 import type { GallerySession } from '~/content/gallery'
+import { WIEMO_IMPACT } from '~/content/impact'
 
 defineOptions({ name: 'GallerySessionLog' })
 
@@ -20,16 +21,17 @@ const emit = defineEmits<{
 <template>
   <section class="gallery-log" aria-labelledby="gallery-title">
     <header class="wrap gallery-log__header">
-      <p class="gallery-log__eyebrow">Field archive / outreach sessions</p>
+      <p class="gallery-log__eyebrow">Field archive / documented visits</p>
       <div class="gallery-log__headline">
-        <h1 id="gallery-title">{{ frameCount }} frames.<br>{{ sessionCount }} sessions.</h1>
+        <h1 id="gallery-title">{{ frameCount }} frames.<br>{{ sessionCount }} documented visits.</h1>
         <div class="gallery-log__readout" aria-label="Gallery summary">
           <p><strong>{{ String(frameCount).padStart(3, '0') }}</strong> frames</p>
-          <p><strong>{{ String(sessionCount).padStart(3, '0') }}</strong> sessions</p>
+          <p><strong>{{ String(sessionCount).padStart(3, '0') }}</strong> visits</p>
         </div>
       </div>
       <p class="gallery-log__intro">
-        A field record of workshops, questions, and the people who made them happen.
+        A field record from {{ sessionCount }} documented visits within WIEMO’s
+        {{ WIEMO_IMPACT.sessionsDelivered }} sessions delivered to date.
       </p>
     </header>
 
@@ -46,7 +48,7 @@ const emit = defineEmits<{
             <span />
           </div>
           <div class="gallery-log__session-meta">
-            <p>Session {{ String(session.index).padStart(2, '0') }}</p>
+            <p>Visit {{ String(session.index).padStart(2, '0') }}</p>
             <h2 :id="`${session.id}-gallery-title`">{{ session.partner }}</h2>
             <p>
               <span>{{ session.location }}</span>
@@ -226,5 +228,16 @@ const emit = defineEmits<{
   .gallery-log__header { padding-bottom: 64px; }
   .gallery-log__sessions { gap: 76px; }
   .gallery-log__grid { grid-template-columns: 1fr; gap: 24px; }
+
+  .gallery-log__headline h1 { font-size: 42px; }
+
+  .gallery-log__readout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    p { min-width: 0; padding: 14px; }
+    strong { font-size: 28px; }
+  }
+
+  .gallery-log__session-meta > p:last-child { flex-wrap: wrap; }
 }
 </style>

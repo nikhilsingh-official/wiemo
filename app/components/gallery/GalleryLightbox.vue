@@ -17,7 +17,9 @@ const emit = defineEmits<{
 }>()
 
 const closeButton = ref<HTMLButtonElement | null>(null)
+const lightboxElement = ref<HTMLDivElement | null>(null)
 let previousBodyOverflow = ''
+let previouslyFocusedElement: HTMLElement | null = null
 
 const handleKeydown = (event: KeyboardEvent) => {
   if (!props.frame) return
@@ -34,19 +36,40 @@ const handleKeydown = (event: KeyboardEvent) => {
     event.preventDefault()
     emit('next')
   }
+  else if (event.key === 'Tab') {
+    const focusable = Array.from(
+      lightboxElement.value?.querySelectorAll<HTMLElement>('button:not(:disabled), [href], [tabindex]:not([tabindex="-1"])') ?? [],
+    )
+    const first = focusable[0]
+    const last = focusable.at(-1)
+    if (!first || !last) return
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    }
+    else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
 }
 
-watch(() => props.frame, async (frame) => {
+watch(() => props.frame, async (frame, previousFrame) => {
   if (!import.meta.client) return
 
-  if (frame) {
+  if (frame && !previousFrame) {
+    previouslyFocusedElement = document.activeElement as HTMLElement | null
     previousBodyOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     await nextTick()
     closeButton.value?.focus()
   }
-  else {
+  else if (!frame && previousFrame) {
     document.body.style.overflow = previousBodyOverflow
+    await nextTick()
+    previouslyFocusedElement?.focus()
+    previouslyFocusedElement = null
   }
 })
 
@@ -61,6 +84,7 @@ onBeforeUnmount(() => {
   <Teleport to="body">
     <Transition name="lightbox">
       <div
+        ref="lightboxElement"
         v-if="frame"
         class="lightbox"
         role="dialog"
@@ -112,6 +136,7 @@ onBeforeUnmount(() => {
             class="lightbox__image"
             :src="frame.src"
             :alt="frame.alt"
+            decoding="async"
           >
         </div>
 
@@ -149,6 +174,7 @@ onBeforeUnmount(() => {
     repeating-linear-gradient(90deg, transparent 0 63px, rgb(51 180 236 / 7%) 64px),
     repeating-linear-gradient(0deg, transparent 0 63px, rgb(51 180 236 / 7%) 64px);
   backdrop-filter: blur(18px);
+  min-height: 100dvh;
 }
 
 .lightbox__readout {
@@ -198,6 +224,9 @@ onBeforeUnmount(() => {
   letter-spacing: 1.4px;
   text-transform: uppercase;
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
 }
 
 .lightbox__close span:last-child {
@@ -251,6 +280,8 @@ onBeforeUnmount(() => {
   letter-spacing: 1.3px;
   text-transform: uppercase;
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
   transition: color $transition-fast $transition-ease;
 }
 
@@ -324,7 +355,7 @@ onBeforeUnmount(() => {
     padding: 12px;
   }
 
-  .lightbox__image { max-height: calc(100vh - 230px); }
+  .lightbox__image { max-height: calc(100dvh - 230px); }
 
   .lightbox__arrow {
     grid-row: 3;
@@ -342,5 +373,9 @@ onBeforeUnmount(() => {
 
     p:last-child { display: none; }
   }
+}
+
+@include reduced-motion {
+  .lightbox__image { animation: none; }
 }
 </style>

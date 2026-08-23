@@ -15,8 +15,21 @@ const PRELOADED_FONTS = [
   '/fonts/Monaspace_Neon/MonaspaceNeon-Regular.woff2',
 ]
 
+const STUDIO_CONFIG = {
+  route: '/_studio',
+  repository: {
+    provider: 'github',
+    owner: 'nikhilsingh-official',
+    repo: 'wiemo',
+    branch: process.env.STUDIO_BRANCH_NAME ?? 'cms/nuxt-studio',
+  },
+} as const
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // Spread preserves Studio's normal top-level runtime config while avoiding
+  // an upstream typing gap when the module is intentionally absent in prod.
+  ...({ studio: STUDIO_CONFIG }),
   compatibilityDate: '2025-07-15',
   buildDir: process.env.NUXT_BUILD_DIR ?? '.nuxt',
   devtools: { enabled: true },
@@ -24,9 +37,18 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'particle-physics',
+      htmlAttrs: { lang: 'en' },
+      meta: [
+        { name: 'application-name', content: 'WIEMO' },
+        { name: 'theme-color', content: '#05111d' },
+        { name: 'color-scheme', content: 'dark light' },
+      ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'shortcut icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
         ...PRELOADED_FONTS.map(href => ({
           rel: 'preload' as const,
           as: 'font' as const,
@@ -47,6 +69,9 @@ export default defineNuxtConfig({
   nitro: {
     // Static JS/CSS was being served uncompressed (~1.7 MB on the home page).
     compressPublicAssets: { gzip: true, brotli: true },
+    prerender: {
+      routes: ['/sitemap.xml'],
+    },
   },
 
   vite: {
@@ -68,13 +93,4 @@ export default defineNuxtConfig({
     ...(studioEnabled ? ['nuxt-studio'] : []),
   ],
 
-  studio: {
-    route: '/_studio',
-    repository: {
-      provider: 'github',
-      owner: 'nikhilsingh-official',
-      repo: 'wiemo',
-      branch: process.env.STUDIO_BRANCH_NAME ?? 'cms/nuxt-studio',
-    },
-  },
 })
