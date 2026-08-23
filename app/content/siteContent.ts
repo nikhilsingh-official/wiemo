@@ -151,7 +151,7 @@ export const SITE_CONTENT = {
         bio: 'Agastya began WIEMO after a 2024 CERN Masterclass changed the way he saw physics. He led the first pilot session in 2025 and continues to shape the initiative’s teaching, planning and partnerships.',
       },
       {
-        name: 'Reyansh',
+        name: 'Reyansh Sudhir',
         role: 'Lead — Outreach',
         bio: 'Reyansh explains difficult ideas with clarity, patience and energy. His ability to communicate in three languages helps WIEMO adapt its examples, explanations and questions for students from different backgrounds.',
       },

@@ -125,24 +125,8 @@ watch(
   height: 100svh;
   min-height: 460px;
   overflow: hidden;
-  background: var(--void);
+  background: transparent;
   border-bottom: 1px solid var(--line);
-
-  &::before {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background:
-      linear-gradient(
-        90deg,
-        rgb(var(--hero-overlay-rgb) / 78%) 0%,
-        rgb(var(--hero-overlay-rgb) / 58%) 28%,
-        rgb(var(--hero-overlay-rgb) / 18%) 58%,
-        transparent 82%
-      );
-    content: '';
-    pointer-events: none;
-  }
 }
 
 .hero__canvas {
@@ -180,17 +164,6 @@ watch(
 }
 
 @media (max-width: $breakpoint-small) {
-  .hero::before {
-    background:
-      linear-gradient(
-        180deg,
-        rgb(var(--hero-overlay-rgb) / 22%) 0%,
-        rgb(var(--hero-overlay-rgb) / 82%) 22%,
-        rgb(var(--hero-overlay-rgb) / 74%) 68%,
-        rgb(var(--hero-overlay-rgb) / 12%) 100%
-      );
-  }
-
   .hero__text {
     right: var(--gutter);
     left: var(--gutter);
