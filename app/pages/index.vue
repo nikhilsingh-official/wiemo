@@ -49,6 +49,10 @@ useHead({
             image: `${SITE_URL}/social-preview.png`,
             email: SITE_CONTENT.contact.emailLabel,
             description,
+            sameAs: [
+              'https://www.linkedin.com/company/wiemo.org/',
+              'https://www.instagram.com/wiemophysics/',
+            ],
           },
         ],
       }),
