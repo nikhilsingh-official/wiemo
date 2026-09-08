@@ -86,9 +86,9 @@ export const SITE_CONTENT = {
   ],
   homeTeachingImages: [
     {
-      src: '/images/gallery/makkala-006.jpg',
-      alt: 'A WIEMO facilitator speaking with students seated in a circle',
-      caption: 'Makkala Jagriti · Jul 2026',
+      src: '/images/gallery/parikrma-011.jpg',
+      alt: 'Students and WIEMO facilitators celebrating after the presentation',
+      caption: 'Parikrma Humanity Foundation',
     },
     {
       src: '/images/gallery/parikrma-002.jpg',
