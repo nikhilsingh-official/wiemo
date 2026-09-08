@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TIMELINE_MILESTONES, TIMELINE_SPAN } from '~/content/timeline'
+import { TIMELINE_MILESTONES } from '~/content/timeline'
 import {
   useTimelinePlayer,
   type TimelineSpeed,
@@ -71,35 +71,15 @@ const openOnBeamline = (index: number) => {
 </script>
 
 <template>
-  <main class="timeline-page">
-    <div class="timeline-page__inner">
+  <main class="timeline-page content-section">
+    <div class="wrap timeline-page__inner">
       <header class="timeline-header">
-        <div class="timeline-header__lead">
-          <p class="timeline-header__eyebrow">
-            WIEMO journey
-            <span aria-hidden="true">&middot;</span>
-            {{ TIMELINE_SPAN.from }} &ndash; {{ TIMELINE_SPAN.to }}
-          </p>
-          <h1>Timeline</h1>
-          <h2>One idea,<br><em>accelerated.</em></h2>
-        </div>
-
-        <div class="timeline-header__copy">
-          <p>
-            Follow WIEMO from its first pilot session to {{ WIEMO_IMPACT.studentsReached }} students
-            reached across Bengaluru. Play it through, or step to any milestone yourself.
-          </p>
-          <dl class="timeline-header__summary">
-            <div>
-              <dt>Milestones</dt>
-              <dd>{{ String(total).padStart(2, '0') }}</dd>
-            </div>
-            <div>
-              <dt>Span</dt>
-              <dd>{{ TIMELINE_SPAN.from }} &ndash; {{ TIMELINE_SPAN.to }}</dd>
-            </div>
-          </dl>
-        </div>
+        <p class="timeline-header__eyebrow">Our journey</p>
+        <h1>Timeline</h1>
+        <p class="lede">
+          Follow WIEMO from its first pilot session to {{ WIEMO_IMPACT.studentsReached }} students
+          reached across Bengaluru. Play it through, or explore each milestone yourself.
+        </p>
       </header>
 
       <section class="timeline-console" aria-label="Milestone browser">
@@ -162,46 +142,25 @@ const openOnBeamline = (index: number) => {
 
 <style scoped lang="scss">
 .timeline-page {
-  position: relative;
-  min-height: 100vh;
   overflow-x: clip;
-  border-bottom: 1px solid var(--line);
 }
 
 .timeline-page__inner {
-  width: min(1420px, calc(100% - (var(--gutter) * 2)));
-  margin-inline: auto;
-  padding-block: 104px 144px;
+  display: grid;
+  gap: 64px;
 }
 
 .timeline-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
-  gap: 80px;
-  align-items: end;
+  max-width: 860px;
 
   h1 {
-    margin-top: 18px;
-    font-family: $font-display;
-    font-size: clamp(44px, 5.2vw, 82px);
-    font-weight: 600;
-    letter-spacing: -0.055em;
+    @include responsive-page-heading;
+
+    margin-top: 12px;
     line-height: 0.9;
   }
 
-  h2 {
-    margin-top: 14px;
-    font-family: $font-display;
-    font-size: clamp(42px, 5.4vw, 82px);
-    font-weight: 600;
-    letter-spacing: -0.07em;
-    line-height: 0.86;
-  }
-
-  em {
-    color: var(--core);
-    font-weight: 400;
-  }
+  .lede { margin-top: 20px; }
 }
 
 .timeline-header__eyebrow {
@@ -213,43 +172,9 @@ const openOnBeamline = (index: number) => {
   text-transform: uppercase;
 }
 
-.timeline-header__copy {
-  display: grid;
-  gap: 24px;
-  max-width: 460px;
-  color: var(--body-copy);
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-.timeline-header__summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
-
-  dt {
-    color: var(--faint);
-    font-family: $font-mono;
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
-  dd {
-    margin-top: 6px;
-    color: var(--core);
-    font-family: $font-display;
-    font-size: 18px;
-    line-height: 1.1;
-  }
-}
-
 .timeline-console {
   display: grid;
-  gap: 68px;
-  margin-top: 84px;
+  gap: 52px;
 }
 
 .timeline-console__hint {
@@ -260,11 +185,6 @@ const openOnBeamline = (index: number) => {
 }
 
 @media (max-width: 1000px) {
-  .timeline-header {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
   .timeline-console {
     gap: 48px;
   }
@@ -272,16 +192,12 @@ const openOnBeamline = (index: number) => {
 
 @media (max-width: 760px) {
   .timeline-page__inner {
-    width: min(100% - 40px, 620px);
-    padding-block: 72px 120px;
+    gap: 44px;
   }
 
   .timeline-console {
-    margin-top: 56px;
     gap: 36px;
   }
-
-  .timeline-header h1 { font-size: 46px; }
-  .timeline-header h2 { font-size: 42px; line-height: 0.9; }
 }
+
 </style>

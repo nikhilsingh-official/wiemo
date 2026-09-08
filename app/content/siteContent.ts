@@ -91,9 +91,9 @@ export const SITE_CONTENT = {
       caption: 'Parikrma Humanity Foundation',
     },
     {
-      src: '/images/gallery/parikrma-002.jpg',
-      alt: 'A WIEMO facilitator presenting an illustration of Saturn to students',
-      caption: 'Parikrma Humanity Foundation',
+      src: '/images/gallery/kristu-011.jpg',
+      alt: 'A WIEMO student facilitator receiving a commemorative plaque',
+      caption: 'Kristu Jayanti CMI Public School · Jul 2025',
     },
   ],
   about: {

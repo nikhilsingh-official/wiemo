@@ -33,7 +33,10 @@ useSeoMeta({
 <template>
   <div class="site-shell">
     <PageBackground />
-    <div class="site-shell__content">
+    <div
+      class="site-shell__content"
+      :class="{ 'site-shell__content--interior': !isHomePage }"
+    >
       <NuxtRouteAnnouncer />
       <Navbar class="navbar__main" />
       <LazyHero v-if="isHomePage" />
@@ -62,6 +65,15 @@ useSeoMeta({
         color-mix(in srgb, var(--void) 16%, transparent) 42%,
         color-mix(in srgb, var(--black) 46%, transparent)
       );
+  }
+}
+
+// Interior-page headers share one navbar clearance rule. The 92px floor
+// covers the mobile bar's 12px offset, 56px minimum height, and 24px gap.
+.site-shell__content--interior {
+  :deep(> main.content-section),
+  :deep(> main > .content-section:first-child) {
+    padding-top: max(var(--section-padding), calc(10vh + 24px), 92px);
   }
 }
 
